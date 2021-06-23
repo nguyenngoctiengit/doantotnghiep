@@ -13,6 +13,7 @@ namespace doannhom
 {
     public partial class Dangnhap : Form
     {
+        NhaHangContext _context = new NhaHangContext();
         public Dangnhap()
         {
             InitializeComponent();
@@ -20,11 +21,6 @@ namespace doannhom
         int counter = 0;
         int len = 0;
         string txt;
-        private void button6_Click(object sender, EventArgs e)
-        {
-            Form frm = new Dangki();
-            frm.ShowDialog();
-        }
         private void button5_Click(object sender, EventArgs e)
         {
             DialogResult traloi;
@@ -42,17 +38,10 @@ namespace doannhom
             }
             if (comboBox1.Text == "Nhân Viên")
             {
-                
-                SqlConnection conn = new SqlConnection(@"Data Source=ADMIN\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True");
-                string sqlselect = "Select * from TaiKhoan where TenTK = '" + txtUser.Text
-                    + "' and MatKhau = '" + txtPass.Text
-                    + "' and ChucVu = N'Nhân Viên'";
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sqlselect, conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read() == true)
-                {
-                    this.Hide();
+                var taikhoan = (from a in _context.TaiKhoan where a.ChucVu == "Nhân Viên" select a.TenTk).FirstOrDefault();
+                var matkhau = (from a in _context.TaiKhoan where a.ChucVu == "Nhân Viên" select a.MatKhau).FirstOrDefault();
+                if (taikhoan == txtUser.Text && matkhau == txtPass.Text){ 
+                     this.Hide();
                     Form frm = new frMenuMain();
                     frm.ShowDialog();
                 }
@@ -63,14 +52,9 @@ namespace doannhom
             }
             if (comboBox1.Text == "Quản Lý")
             {
-                SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-GJ6UCAT;Initial Catalog=NhaHang;Integrated Security=True");
-                string sqlselect = "Select * from TaiKhoan where TenTK = '" + txtUser.Text
-                    + "' and MatKhau = '" + txtPass.Text
-                    + "' and ChucVu = N'Quản Lý'";
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sqlselect, conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read() == true)
+                var taikhoan = (from a in _context.TaiKhoan where a.ChucVu == "Quản Lý" select a.TenTk).FirstOrDefault();
+                var matkhau = (from a in _context.TaiKhoan where a.ChucVu == "Quản Lý" select a.MatKhau).FirstOrDefault();
+                if (taikhoan == txtUser.Text && matkhau == txtPass.Text)
                 {
                     this.Hide();
                     Form frm = new fmMenuMainAdmin();

@@ -117,8 +117,20 @@ namespace doannhom
         }
         public void Loadnv()
         {
-            string strSQL = "select * from NhanVien";
-            dgvnhanvien.DataSource = FillDataTable(strSQL);
+            dgvnhanvien.DataSource = (from a in _context.NhanVien
+                                     select new
+                                     {
+                                         a.MaNv,
+                                         a.TenNv,
+                                         a.GioiTinh,
+                                         a.NgaySinh,
+                                         a.Sdt,
+                                         a.DiaChi,
+                                         a.Email,
+                                         a.NgayVaoLam,
+                                         a.ChucVu,
+                                         a.PhuCap
+                                     }).ToList();
             gbtknv.Hide();
         }
         public void Loadpc()
@@ -438,7 +450,6 @@ namespace doannhom
             nvdaylam.ResetText();
             nvdiachi.ResetText();
             nvemail.ResetText();
-            nvluong.ResetText();
             nvngaysinh.ResetText();
             nvpc.ResetText();
             nvsdt.ResetText();
@@ -498,41 +509,60 @@ namespace doannhom
             }
         }
         //----------**************sự kiện nhân viên**********************---------------------------------
-        private void button15_Click(object sender, EventArgs e)
+        private void new_save_NV_Click(object sender, EventArgs e)
         {
-            try
+            switch (new_save_NV.Text)
             {
-                ConnectDB();
-                dinhdangday();
-                string strSQL = System.String.Concat("Insert Into NhanVien Values ('" +
-                this.nvmanv.Text.ToString() + "',N'" +
-                this.nvten.Text.ToString() + "',N'" +
-                this.nvgt.Text.ToString() + "','" +
-                this.nvngaysinh.Text.ToString() + "','" +
-                this.nvsdt.Text.ToString() + "',N'" +
-                this.nvdiachi.Text.ToString() + "',N'" +
-                this.nvemail.Text.ToString() + "','" +
-                this.nvdaylam.Text.ToString() + "',N'" +
-                this.nvcv.Text.ToString() + "','" +
-                this.nvluong.Text.ToString() + "','" +
-                this.nvpc.Text.ToString() + "')");
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadnv();
-
-                DisconnectDB();
-
-                MessageBox.Show("Thêm nhân viên thành công", "Thông Báo");
+                case "&NEW":
+                    new_save_NV.Text = "&SAVE";
+                    nvmanv.Enabled = true; nvmanv.ResetText();
+                    nvten.Enabled = true; nvten.ResetText();
+                    nvpc.Enabled = true; nvpc.ResetText();
+                    nvgt.Enabled = true; nvgt.ResetText();
+                    nvngaysinh.Enabled = true; nvngaysinh.ResetText();
+                    nvsdt.Enabled = true; nvsdt.ResetText();
+                    nvdiachi.Enabled = true; nvdiachi.ResetText();
+                    nvemail.Enabled = true; nvemail.ResetText();
+                    nvdaylam.Enabled = true; nvdaylam.ResetText();
+                    nvcv.Enabled = true; nvcv.ResetText();
+                    break;
+                case "&SAVE":
+                    try
+                    {
+                        var nv = new NhanVien();
+                        if (_context.NhanVien.Any(a => a.MaNv == this.nvmanv.Text.ToString())){
+                            MessageBox.Show("Mã nhân viên bị trùng, vui lòng nhập lại", "Thông Báo");
+                        } else if (!this.nvmanv.Text.StartsWith("NV"))
+                        {
+                            MessageBox.Show("Vui lòng nhập mã nhân viên NV + stt nhân viên", "Thông Báo");
+                        }
+                        else
+                        {
+                            nv.MaNv = this.nvmanv.Text.ToString();
+                            nv.TenNv = this.nvten.Text.ToString();
+                            nv.GioiTinh = this.nvgt.Text.ToString();
+                            nv.NgaySinh = this.nvngaysinh.Value;
+                            nv.Sdt = int.Parse(this.nvsdt.Text);
+                            nv.DiaChi = this.nvdiachi.Text.ToString();
+                            nv.Email = this.nvemail.Text.ToString();
+                            nv.NgayVaoLam = this.nvdaylam.Value;
+                            nv.ChucVu = this.nvcv.Text.ToString();
+                            nv.PhuCap = int.Parse(this.nvpc.Text.ToString());
+                            _context.NhanVien.Add(nv);
+                            _context.SaveChanges();
+                            new_save_NV.Text = "&NEW";
+                            button1.Text = "&EDIT";
+                            Loadnv();
+                            MessageBox.Show("Thêm nhân viên thành công", "Thông Báo");
+                        } 
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
             }
-            catch (SqlException)
-            {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-            }
+            
         }
         private void button16_Click(object sender, EventArgs e)
         {
@@ -540,74 +570,81 @@ namespace doannhom
             traloi = MessageBox.Show("Xác nhận xóa nhân viên", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (traloi == DialogResult.OK)
             {
-                ConnectDB();
                 try
                 {
+                    bool flag = false;
                     int r = dgvnhanvien.CurrentCell.RowIndex;
-
                     string strMaThucDon = dgvnhanvien.Rows[r].Cells[0].Value.ToString();
-
-                    string strSQL = System.String.Concat("Delete From NhanVien Where MaNV='" + strMaThucDon + "'");
-
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cnn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = strSQL;
-                    cmd.ExecuteNonQuery();
-
-                    Loadnv();
-
-                    DisconnectDB();
-
-                    MessageBox.Show("Xóa nhân viên thành công ", "Thông Báo");
+                    if (_context.PhanCong.Any(a => a.MaNv == strMaThucDon)){
+                        flag = true;
+                    };
+                    if (flag == true)
+                    {
+                        MessageBox.Show("Không thể xóa nhân viên, nhân viên đang được phân công", "Thông Báo");
+                    }
+                    else
+                    {
+                        var delete_item = _context.NhanVien.Where(a => a.MaNv == strMaThucDon).FirstOrDefault();
+                        _context.Remove(delete_item);
+                        _context.SaveChanges();
+                        Loadnv();
+                        MessageBox.Show("Xóa nhân viên thành công ", "Thông Báo");
+                    }
                 }
                 catch (SqlException)
                 {
                     MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
                 }
-
-                DisconnectDB();
             }
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            ConnectDB();
-            try
+            switch (button1.Text)
             {
-                dinhdangday();
-                int r = dgvnhanvien.CurrentCell.RowIndex;
-
-                string strMaKH = dgvnhanvien.Rows[r].Cells[0].Value.ToString();
-
-                string strSQL = System.String.Concat("Update NhanVien Set MaNV='" +
-                this.nvmanv.Text.ToString() + "', TenNV=N'" +
-                this.nvten.Text.ToString() + "', GioiTinh=N'" +
-                this.nvgt.Text.ToString() + "', NgaySinh='" +
-                this.nvngaysinh.Text.ToString() + "', SDT='" +
-                Convert.ToInt32(this.nvsdt.Text) + "', DiaChi=N'" +
-                this.nvdiachi.Text.ToString() + "', Email=N'" +
-                this.nvemail.Text.ToString() + "', NgayVaoLam=N'" +
-                this.nvdaylam.Text.ToString() + "', ChucVu=N'" +
-                this.nvcv.Text.ToString() + "', Luong='" +
-                Convert.ToInt32(this.nvluong.Text) + "', PhuCap='" +
-                Convert.ToInt32(this.nvpc.Text) + "'Where MaNV='" + strMaKH + "'");
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadnv();
-
-                DisconnectDB();
-
-                MessageBox.Show("Chỉnh sửa nhân viên thành công ", "Thông Báo");
+                case "&EDIT":
+                    button1.Text = "&SAVE";
+                    nvten.Enabled = true;
+                    nvpc.Enabled = true;
+                    nvgt.Enabled = true;
+                    nvngaysinh.Enabled = true;
+                    nvsdt.Enabled = true;
+                    nvdiachi.Enabled = true;
+                    nvemail.Enabled = true;
+                    nvdaylam.Enabled = true;
+                    nvcv.Enabled = true;
+                    break;
+                case "&SAVE":
+                    try
+                    {
+                        int r = dgvnhanvien.CurrentCell.RowIndex;
+                        string strMaNV = dgvnhanvien.Rows[r].Cells[0].Value.ToString();
+                        var nv = (from a in _context.NhanVien where a.MaNv == strMaNV select a).FirstOrDefault();
+                        nv.MaNv = this.nvmanv.Text.ToString();
+                        nv.TenNv = this.nvten.Text.ToString();
+                        nv.GioiTinh = this.nvgt.Text.ToString();
+                        nv.NgaySinh = this.nvngaysinh.Value;
+                        nv.Sdt = int.Parse(this.nvsdt.Text);
+                        nv.DiaChi = this.nvdiachi.Text.ToString();
+                        nv.Email = this.nvemail.Text.ToString();
+                        nv.NgayVaoLam = this.nvdaylam.Value;
+                        nv.ChucVu = this.nvcv.Text.ToString();
+                        nv.PhuCap = int.Parse(this.nvpc.Text.ToString());
+                        _context.NhanVien.Update(nv);
+                        _context.SaveChanges();
+                        button1.Text = "&EDIT";
+                        Loadnv();
+                        MessageBox.Show("Sửa nhân viên thành công", "Thông Báo");
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
             }
-            catch (SqlException)
-            {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-            }
+        }
+        private void btnReload_nv_Click(object sender, EventArgs e)
+        {
+            Loadnv();
         }
         private void button17_Click(object sender, EventArgs e)
         {
@@ -619,19 +656,57 @@ namespace doannhom
             {
                 MessageBox.Show("Tìm kiếm trống", "Thông Báo");
             }
-            if (string.IsNullOrEmpty(txttkmnv.Text) && txttktnv.Text != "")
+            if (cbSearchNv.Text == "Mã nhân viên")
             {
-                string strMaTD = Convert.ToString(txttktnv.Text);
-
-                string strSQL = "select * from NhanVien Where TenNV like N'%" + strMaTD + "%'";
-                dgvnhanvien.DataSource = FillDataTable(strSQL);
+                if (txttkmnv.Text == null || txttkmnv.Text == "")
+                {
+                    MessageBox.Show("Tìm kiếm trống", "Thông Báo");
+                }
+                else
+                {
+                    string maNv = Convert.ToString(txttkmnv.Text);
+                    dgvnhanvien.DataSource = (from a in _context.NhanVien
+                                                            where a.MaNv == maNv
+                                                            select new
+                                                            {
+                                                                a.MaNv,
+                                                                a.TenNv,
+                                                                a.GioiTinh,
+                                                                a.NgaySinh,
+                                                                a.Sdt,
+                                                                a.DiaChi,
+                                                                a.Email,
+                                                                a.NgayVaoLam,
+                                                                a.ChucVu,
+                                                                a.PhuCap
+                                                            }).ToList();
+                }
             }
-            if (string.IsNullOrEmpty(txttktnv.Text) && txttkmnv.Text != "")
+            else if (cbSearchNv.Text == "Tên nhân viên")
             {
-                string strMaTD = Convert.ToString(txttkmnv.Text);
-
-                string strSQL = "select * from NhanVien Where MaNV=N'" + strMaTD + "'";
-                dgvnhanvien.DataSource = FillDataTable(strSQL);
+                if (txttktnv.Text == null || txttktnv.Text == "")
+                {
+                    MessageBox.Show("Tìm kiếm trống", "Thông Báo");
+                }
+                else
+                {
+                    string TenNv = Convert.ToString(txttktnv.Text);
+                    dgvnhanvien.DataSource = (from a in _context.NhanVien
+                                              where a.TenNv == TenNv
+                                              select new
+                                              {
+                                                  a.MaNv,
+                                                  a.TenNv,
+                                                  a.GioiTinh,
+                                                  a.NgaySinh,
+                                                  a.Sdt,
+                                                  a.DiaChi,
+                                                  a.Email,
+                                                  a.NgayVaoLam,
+                                                  a.ChucVu,
+                                                  a.PhuCap
+                                              }).ToList();
+                }
             }
         }
         //----------**************sự kiện phân công nhân viên************---------------------------------
@@ -1551,6 +1626,36 @@ namespace doannhom
         }
 
         private void dgvnhanvien_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void nvmanv_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txttkmnv_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbSearchNv_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txttktnv_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nvgt_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

@@ -220,7 +220,6 @@
             this.nvdaylam = new System.Windows.Forms.DateTimePicker();
             this.nvcv = new System.Windows.Forms.ComboBox();
             this.label41 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
@@ -231,7 +230,6 @@
             this.nvemail = new System.Windows.Forms.TextBox();
             this.nvpc = new System.Windows.Forms.TextBox();
             this.nvdiachi = new System.Windows.Forms.TextBox();
-            this.nvluong = new System.Windows.Forms.TextBox();
             this.nvsdt = new System.Windows.Forms.TextBox();
             this.nvngaysinh = new System.Windows.Forms.DateTimePicker();
             this.nvgt = new System.Windows.Forms.ComboBox();
@@ -250,9 +248,8 @@
             this.txttkmnv = new System.Windows.Forms.TextBox();
             this.button17 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
+            this.new_save_NV = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.panel9 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabGoiMon = new System.Windows.Forms.TabPage();
@@ -279,6 +276,10 @@
             this.logo = new System.Windows.Forms.PictureBox();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btnReload_nv = new System.Windows.Forms.Button();
+            this.cbSearchNv = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.tabHT.SuspendLayout();
             this.panel18.SuspendLayout();
@@ -2622,7 +2623,6 @@
             this.groupBox8.Controls.Add(this.nvdaylam);
             this.groupBox8.Controls.Add(this.nvcv);
             this.groupBox8.Controls.Add(this.label41);
-            this.groupBox8.Controls.Add(this.label40);
             this.groupBox8.Controls.Add(this.label39);
             this.groupBox8.Controls.Add(this.label38);
             this.groupBox8.Controls.Add(this.label37);
@@ -2633,7 +2633,6 @@
             this.groupBox8.Controls.Add(this.nvemail);
             this.groupBox8.Controls.Add(this.nvpc);
             this.groupBox8.Controls.Add(this.nvdiachi);
-            this.groupBox8.Controls.Add(this.nvluong);
             this.groupBox8.Controls.Add(this.nvsdt);
             this.groupBox8.Controls.Add(this.nvngaysinh);
             this.groupBox8.Controls.Add(this.nvgt);
@@ -2651,6 +2650,7 @@
             // 
             // nvdaylam
             // 
+            this.nvdaylam.Enabled = false;
             this.nvdaylam.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.nvdaylam.Location = new System.Drawing.Point(614, 86);
             this.nvdaylam.Name = "nvdaylam";
@@ -2660,6 +2660,7 @@
             // nvcv
             // 
             this.nvcv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.nvcv.Enabled = false;
             this.nvcv.FormattingEnabled = true;
             this.nvcv.Items.AddRange(new object[] {
             "Nhân Viên",
@@ -2672,20 +2673,11 @@
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(532, 119);
+            this.label41.Location = new System.Drawing.Point(131, 116);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(60, 17);
             this.label41.TabIndex = 36;
             this.label41.Text = "Phụ cấp";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(154, 119);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(48, 17);
-            this.label40.TabIndex = 35;
-            this.label40.Text = "Lương";
             // 
             // label39
             // 
@@ -2708,7 +2700,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(160, 90);
+            this.label37.Location = new System.Drawing.Point(149, 91);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(42, 17);
             this.label37.TabIndex = 32;
@@ -2752,6 +2744,7 @@
             // 
             // nvemail
             // 
+            this.nvemail.Enabled = false;
             this.nvemail.Location = new System.Drawing.Point(220, 87);
             this.nvemail.Name = "nvemail";
             this.nvemail.Size = new System.Drawing.Size(214, 23);
@@ -2759,27 +2752,23 @@
             // 
             // nvpc
             // 
-            this.nvpc.Location = new System.Drawing.Point(614, 116);
+            this.nvpc.Enabled = false;
+            this.nvpc.Location = new System.Drawing.Point(220, 116);
             this.nvpc.Name = "nvpc";
             this.nvpc.Size = new System.Drawing.Size(214, 23);
             this.nvpc.TabIndex = 26;
             // 
             // nvdiachi
             // 
+            this.nvdiachi.Enabled = false;
             this.nvdiachi.Location = new System.Drawing.Point(1005, 58);
             this.nvdiachi.Name = "nvdiachi";
             this.nvdiachi.Size = new System.Drawing.Size(214, 23);
             this.nvdiachi.TabIndex = 23;
             // 
-            // nvluong
-            // 
-            this.nvluong.Location = new System.Drawing.Point(220, 116);
-            this.nvluong.Name = "nvluong";
-            this.nvluong.Size = new System.Drawing.Size(214, 23);
-            this.nvluong.TabIndex = 21;
-            // 
             // nvsdt
             // 
+            this.nvsdt.Enabled = false;
             this.nvsdt.Location = new System.Drawing.Point(614, 58);
             this.nvsdt.Name = "nvsdt";
             this.nvsdt.Size = new System.Drawing.Size(214, 23);
@@ -2787,6 +2776,7 @@
             // 
             // nvngaysinh
             // 
+            this.nvngaysinh.Enabled = false;
             this.nvngaysinh.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.nvngaysinh.Location = new System.Drawing.Point(220, 58);
             this.nvngaysinh.Name = "nvngaysinh";
@@ -2796,6 +2786,7 @@
             // nvgt
             // 
             this.nvgt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.nvgt.Enabled = false;
             this.nvgt.FormattingEnabled = true;
             this.nvgt.Items.AddRange(new object[] {
             "Nam",
@@ -2804,6 +2795,7 @@
             this.nvgt.Name = "nvgt";
             this.nvgt.Size = new System.Drawing.Size(214, 25);
             this.nvgt.TabIndex = 19;
+            this.nvgt.SelectedIndexChanged += new System.EventHandler(this.nvgt_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -2816,13 +2808,16 @@
             // 
             // nvmanv
             // 
+            this.nvmanv.Enabled = false;
             this.nvmanv.Location = new System.Drawing.Point(220, 26);
             this.nvmanv.Name = "nvmanv";
             this.nvmanv.Size = new System.Drawing.Size(214, 23);
             this.nvmanv.TabIndex = 4;
+            this.nvmanv.TextChanged += new System.EventHandler(this.nvmanv_TextChanged);
             // 
             // nvten
             // 
+            this.nvten.Enabled = false;
             this.nvten.Location = new System.Drawing.Point(614, 26);
             this.nvten.Name = "nvten";
             this.nvten.Size = new System.Drawing.Size(214, 23);
@@ -2849,13 +2844,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnReload_nv);
             this.groupBox1.Controls.Add(this.label48);
             this.groupBox1.Controls.Add(this.gbtknv);
             this.groupBox1.Controls.Add(this.button17);
             this.groupBox1.Controls.Add(this.button16);
-            this.groupBox1.Controls.Add(this.button15);
+            this.groupBox1.Controls.Add(this.new_save_NV);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(174, 0);
             this.groupBox1.Name = "groupBox1";
@@ -2878,6 +2873,8 @@
             // 
             // gbtknv
             // 
+            this.gbtknv.Controls.Add(this.label13);
+            this.gbtknv.Controls.Add(this.cbSearchNv);
             this.gbtknv.Controls.Add(this.btntknv);
             this.gbtknv.Controls.Add(this.txttktnv);
             this.gbtknv.Controls.Add(this.label42);
@@ -2885,7 +2882,7 @@
             this.gbtknv.Controls.Add(this.txttkmnv);
             this.gbtknv.Location = new System.Drawing.Point(446, 7);
             this.gbtknv.Name = "gbtknv";
-            this.gbtknv.Size = new System.Drawing.Size(546, 107);
+            this.gbtknv.Size = new System.Drawing.Size(592, 107);
             this.gbtknv.TabIndex = 7;
             this.gbtknv.TabStop = false;
             this.gbtknv.Text = "Tìm kiếm nhân viên";
@@ -2895,9 +2892,9 @@
             this.btntknv.BackColor = System.Drawing.Color.White;
             this.btntknv.BackgroundImage = global::doannhom.Properties.Resources._1564719734820_444444;
             this.btntknv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btntknv.Location = new System.Drawing.Point(398, 26);
+            this.btntknv.Location = new System.Drawing.Point(385, 26);
             this.btntknv.Name = "btntknv";
-            this.btntknv.Size = new System.Drawing.Size(141, 54);
+            this.btntknv.Size = new System.Drawing.Size(67, 54);
             this.btntknv.TabIndex = 40;
             this.btntknv.UseVisualStyleBackColor = false;
             this.btntknv.Click += new System.EventHandler(this.btntknv_Click);
@@ -2908,6 +2905,7 @@
             this.txttktnv.Name = "txttktnv";
             this.txttktnv.Size = new System.Drawing.Size(214, 23);
             this.txttktnv.TabIndex = 39;
+            this.txttktnv.TextChanged += new System.EventHandler(this.txttktnv_TextChanged);
             // 
             // label42
             // 
@@ -2933,72 +2931,61 @@
             this.txttkmnv.Name = "txttkmnv";
             this.txttkmnv.Size = new System.Drawing.Size(214, 23);
             this.txttkmnv.TabIndex = 6;
+            this.txttkmnv.TextChanged += new System.EventHandler(this.txttkmnv_TextChanged);
             // 
             // button17
             // 
-            this.button17.BackColor = System.Drawing.Color.Transparent;
-            this.button17.BackgroundImage = global::doannhom.Properties.Resources.Search_icon;
+            this.button17.BackColor = System.Drawing.Color.Gray;
             this.button17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button17.ForeColor = System.Drawing.Color.Transparent;
-            this.button17.Location = new System.Drawing.Point(339, 30);
+            this.button17.ForeColor = System.Drawing.Color.Black;
+            this.button17.Location = new System.Drawing.Point(256, 30);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(78, 60);
             this.button17.TabIndex = 6;
+            this.button17.Text = "&SEARCH";
             this.button17.UseVisualStyleBackColor = false;
             this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // button16
             // 
-            this.button16.BackColor = System.Drawing.Color.Transparent;
-            this.button16.BackgroundImage = global::doannhom.Properties.Resources.Editing_Delete_icon;
+            this.button16.BackColor = System.Drawing.Color.Gray;
             this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button16.ForeColor = System.Drawing.Color.Transparent;
+            this.button16.Cursor = System.Windows.Forms.Cursors.No;
+            this.button16.ForeColor = System.Drawing.Color.Black;
             this.button16.Location = new System.Drawing.Point(90, 30);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(78, 60);
             this.button16.TabIndex = 5;
+            this.button16.Text = "&DELETE";
             this.button16.UseVisualStyleBackColor = false;
             this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
-            // button15
+            // new_save_NV
             // 
-            this.button15.BackColor = System.Drawing.Color.Transparent;
-            this.button15.BackgroundImage = global::doannhom.Properties.Resources.Button_Add_icon;
-            this.button15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button15.ForeColor = System.Drawing.Color.Transparent;
-            this.button15.Location = new System.Drawing.Point(10, 30);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(78, 60);
-            this.button15.TabIndex = 4;
-            this.button15.Tag = "";
-            this.button15.UseVisualStyleBackColor = false;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
+            this.new_save_NV.BackColor = System.Drawing.Color.Gray;
+            this.new_save_NV.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.new_save_NV.ForeColor = System.Drawing.Color.Black;
+            this.new_save_NV.Location = new System.Drawing.Point(10, 30);
+            this.new_save_NV.Name = "new_save_NV";
+            this.new_save_NV.Size = new System.Drawing.Size(78, 60);
+            this.new_save_NV.TabIndex = 4;
+            this.new_save_NV.Tag = "";
+            this.new_save_NV.Text = "&NEW";
+            this.new_save_NV.UseVisualStyleBackColor = false;
+            this.new_save_NV.Click += new System.EventHandler(this.new_save_NV_Click);
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BackgroundImage = global::doannhom.Properties.Resources.edit_icon;
+            this.button1.BackColor = System.Drawing.Color.Gray;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.ForeColor = System.Drawing.Color.Transparent;
+            this.button1.ForeColor = System.Drawing.Color.Black;
             this.button1.Location = new System.Drawing.Point(172, 30);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(78, 60);
             this.button1.TabIndex = 3;
+            this.button1.Text = "&EDIT";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.BackgroundImage = global::doannhom.Properties.Resources.Button_Reload_icon;
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.ForeColor = System.Drawing.Color.Transparent;
-            this.button2.Location = new System.Drawing.Point(255, 30);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(78, 60);
-            this.button2.TabIndex = 2;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // panel9
             // 
@@ -3287,7 +3274,45 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // fmMenuMain
+            // btnReload_nv
+            // 
+            this.btnReload_nv.BackColor = System.Drawing.Color.Gray;
+            this.btnReload_nv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReload_nv.ForeColor = System.Drawing.Color.Black;
+            this.btnReload_nv.Location = new System.Drawing.Point(344, 30);
+            this.btnReload_nv.Name = "btnReload_nv";
+            this.btnReload_nv.Size = new System.Drawing.Size(78, 60);
+            this.btnReload_nv.TabIndex = 29;
+            this.btnReload_nv.Text = "&RELOAD";
+            this.btnReload_nv.UseVisualStyleBackColor = false;
+            this.btnReload_nv.Click += new System.EventHandler(this.btnReload_nv_Click);
+            // 
+            // cbSearchNv
+            // 
+            this.cbSearchNv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSearchNv.FormattingEnabled = true;
+            this.cbSearchNv.SelectedItem = null;
+            this.cbSearchNv.SelectedText = "Mã nhân viên";
+            this.cbSearchNv.Items.AddRange(new object[] {
+            "Mã nhân viên",
+            "Tên nhân viên"});
+            this.cbSearchNv.Location = new System.Drawing.Point(465, 53);
+            this.cbSearchNv.Name = "cbSearchNv";
+            this.cbSearchNv.Size = new System.Drawing.Size(121, 25);
+            this.cbSearchNv.TabIndex = 41;
+            this.cbSearchNv.SelectedIndexChanged += new System.EventHandler(this.cbSearchNv_SelectedIndexChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(462, 29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(89, 17);
+            this.label13.TabIndex = 42;
+            this.label13.Text = "Search theo:";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
+            // fmMenuMainAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -3296,7 +3321,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.18868F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "fmMenuMain";
+            this.Name = "fmMenuMainAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Chào mừng bạn đến với phần mềm quản lý nhà hàng";
             this.Load += new System.EventHandler(this.fmMenuMain_Load);
@@ -3576,7 +3601,6 @@
         private System.Windows.Forms.DateTimePicker nvdaylam;
         private System.Windows.Forms.ComboBox nvcv;
         private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label37;
@@ -3587,7 +3611,6 @@
         private System.Windows.Forms.TextBox nvemail;
         private System.Windows.Forms.TextBox nvpc;
         private System.Windows.Forms.TextBox nvdiachi;
-        private System.Windows.Forms.TextBox nvluong;
         private System.Windows.Forms.TextBox nvsdt;
         private System.Windows.Forms.DateTimePicker nvngaysinh;
         private System.Windows.Forms.ComboBox nvgt;
@@ -3605,9 +3628,8 @@
         private System.Windows.Forms.TextBox txttkmnv;
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Button button16;
-        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button new_save_NV;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TabPage tabGoiMon;
@@ -3643,7 +3665,9 @@
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.Label timelbl;
         private System.Windows.Forms.Timer timer1;
-
-
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button btnReload_nv;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox cbSearchNv;
     }
 }
