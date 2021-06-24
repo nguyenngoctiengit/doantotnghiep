@@ -135,8 +135,15 @@ namespace doannhom
         }
         public void Loadpc()
         {
-            string strSQL = "select * from PhanCong";
-            dgvphancong.DataSource = FillDataTable(strSQL);
+            dgvphancong.DataSource = (from a in _context.PhanCong
+                                     select new
+                                     {
+                                         a.MaBan,
+                                         a.MaCa,
+                                         a.MaNv,
+                                         a.NgayBatDau,
+                                         a.NgayKetThuc
+                                     }).ToList();            
             gbtkpc.Hide();
         }
         public void Loadca()
@@ -169,19 +176,15 @@ namespace doannhom
         }
         public void loadmacaphancongtuca()
         {
-            string strSQL = "select * from Ca";
-            cbmaca.DataSource = FillDataTable(strSQL);
-            cbmaca.DisplayMember = "MaCa";
-            cbmaca.ValueMember = "MaCa";
-            cnn.Close();
+            cbmaca.DataSource = (from a in _context.Ca select a.MaCa).ToList();
+/*            cbmaca.DisplayMember = "MaCa";
+            cbmaca.ValueMember = "MaCa";*/
         }
         public void loadmanvphancongtunhanvien()
         {
-            string strSQL = "select * from NhanVien";
-            cbmanv.DataSource = FillDataTable(strSQL);
-            cbmanv.DisplayMember = "MaNV";
-            cbmanv.ValueMember = "MaNV";
-            cnn.Close();
+            cbmanv.DataSource = (from a in _context.NhanVien select new { a.MaNv, a.TenNv }).ToList();
+            cbmanv.DisplayMember = "TenNv";
+            cbmanv.ValueMember = "MaNv";
         }
         public void loadmabanphancongtuban()
         {
@@ -364,9 +367,9 @@ namespace doannhom
         }
         private void dgvphancong_SelectionChanged(object sender, EventArgs e)
         {
-            cbmaca.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[0].Value);
-            cbmanv.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
-            cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[2].Value);
+            cbmaca.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
+            cbmanv.SelectedValue = Convert.ToString(dgvphancong.CurrentRow.Cells[2].Value);
+            cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[0].Value);
             pcdaybd.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[3].Value);
             pcdaykt.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[4].Value);
         }
@@ -460,17 +463,6 @@ namespace doannhom
         {
             Loadpc();
             Loadca();
-            cbmaca.Focus();
-            txtmaca.ResetText();
-            txttenca.ResetText();
-            txtluuy.ResetText();
-            cbmaca.ResetText();
-            cbmanv.ResetText();
-            cbmaban.ResetText();
-            pcdaybd.ResetText();
-            pcdaykt.ResetText();
-            txttkpcmc.ResetText();
-            txttkpcmnv.ResetText();
         }
 
         private void button26_Click(object sender, EventArgs e)
@@ -710,34 +702,101 @@ namespace doannhom
             }
         }
         //----------**************sự kiện phân công nhân viên************---------------------------------
+        private void Enable_and_ResetText_Phancong()
+        {
+            cbmaca.Focus();
+            cbmaca.ResetText();cbmaca.Enabled = true;
+            cbmanv.ResetText();cbmanv.Enabled = true;
+            pcdaybd.ResetText();pcdaybd.Enabled = true;
+            pcdaykt.ResetText();pcdaykt.Enabled = true;
+            cbmaban.ResetText();cbmaban.Enabled = true;
+        }
+        private void Enable_Phancong()
+        {
+            cbmaca.Focus();
+            cbmaca.Enabled = true;
+            cbmanv.Enabled = true;
+            pcdaybd.Enabled = true;
+            pcdaykt.Enabled = true;
+            cbmaban.Enabled = true;
+        }
+        private void Disnable_Phancong()
+        {
+            cbmaca.Focus();
+            cbmaca.Enabled = false;
+            cbmanv.Enabled = false;
+            pcdaybd.Enabled = false;
+            pcdaykt.Enabled = false;
+            cbmaban.Enabled = false;
+        }
         private void button18_Click(object sender, EventArgs e)
         {
-            try
+            switch (button18.Text)
             {
-                ConnectDB();
-                dinhdangday();
-                string strSQL = System.String.Concat("Insert Into PhanCong Values ('" +
-                this.cbmaca.Text.ToString() + "','" +
-                this.cbmanv.Text.ToString() + "','" +
-                this.cbmaban.Text.ToString() + "','" +
-                this.pcdaybd.Text.ToString() + "','" +
-                this.pcdaykt.Text.ToString() + "')");
+                case "&NEW":
+                    button18.Text = "&SAVE";
+                    Enable_and_ResetText_Phancong();
+                    break;
+                case "&SAVE":
+                    try
+                    {
+                        var pc = new PhanCong();
+                        pc.MaCa = this.cbmaca.SelectedValue.ToString();
+                        pc.MaNv = this.cbmanv.SelectedValue.ToString();
+                        pc.MaBan = this.cbmaban.SelectedValue.ToString();
+                        pc.NgayBatDau = this.pcdaybd.Value;
+                        pc.NgayKetThuc = this.pcdaykt.Value;
+                        _context.PhanCong.Add(pc);
+                        _context.SaveChanges();
+                        button18.Text = "&NEW";
+                        Disnable_Phancong();
 
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadpc();
-
-                DisconnectDB();
-
-                MessageBox.Show("Thêm thành công phân công", "Thông Báo");
+                        Loadpc();
+                        MessageBox.Show("Thêm nhân viên thành công", "Thông Báo");
+                        
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
             }
-            catch (SqlException)
+        }
+        private void btnEdit_pc_Click(object sender, EventArgs e)
+        {
+            switch (btnEdit_pc.Text)
             {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                case "&EDIT":
+                    btnEdit_pc.Text = "&SAVE";
+                    button18.Text = "&NEW";
+                    Enable_Phancong();
+                    break;
+                case "&SAVE":
+                    try
+                    {
+                        int r = dgvphancong.CurrentCell.RowIndex;
+                        string strManv = dgvphancong.Rows[r].Cells[1].Value.ToString();
+                        string strMaca = dgvphancong.Rows[r].Cells[0].Value.ToString();
+                        string strMaban = dgvphancong.Rows[r].Cells[2].Value.ToString();
+                        var item_return = (from a in _context.PhanCong where a.MaNv == strManv && a.MaCa == strMaca && a.MaBan == strMaban select a).FirstOrDefault();
+                        item_return.MaCa = this.cbmaca.SelectedValue.ToString();
+                        item_return.MaNv = this.cbmanv.SelectedValue.ToString();
+                        item_return.MaBan = this.cbmaban.SelectedValue.ToString();
+                        item_return.NgayBatDau = this.pcdaybd.Value;
+                        item_return.NgayKetThuc = this.pcdaykt.Value;
+                        _context.PhanCong.Update(item_return);
+                        _context.SaveChanges();
+                        Disnable_Phancong();
+                        btnEdit_pc.Text = "&EDIT";
+                        Loadpc();
+                        MessageBox.Show("Chỉnh sửa nhân viên thành công", "Thông Báo");
+
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
             }
         }
         private void button3_Click(object sender, EventArgs e)
@@ -775,30 +834,19 @@ namespace doannhom
                 try
                 {
                     int r = dgvphancong.CurrentCell.RowIndex;
-
                     string strManv = dgvphancong.Rows[r].Cells[1].Value.ToString();
                     string strMaca = dgvphancong.Rows[r].Cells[0].Value.ToString();
                     string strMaban = dgvphancong.Rows[r].Cells[2].Value.ToString();
-                    string strSQL = System.String.Concat("Delete From PhanCong Where MaCa='" + strMaca + "' and MaNV='" + strManv + "' and MaBan='" + strMaban + "'");
-
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cnn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = strSQL;
-                    cmd.ExecuteNonQuery();
-
+                    var item_delete = (from a in _context.PhanCong where a.MaNv == strManv && a.MaCa == strMaca && a.MaBan == strMaban select a).FirstOrDefault();
+                    _context.PhanCong.Remove(item_delete);
+                    _context.SaveChanges();
                     Loadpc();
-
-                    DisconnectDB();
-
                     MessageBox.Show("Xóa phân công thành công ", "Thông Báo");
                 }
                 catch (SqlException)
                 {
                     MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
                 }
-
-                DisconnectDB();
             }
         }
         //----------**************sự kiện khách hàng*********************---------------------------------
@@ -1652,12 +1700,41 @@ namespace doannhom
 
         private void txttktnv_TextChanged(object sender, EventArgs e)
         {
-
+            string db = "Data Source=DESKTOP-GJ6UCAT;Initial Catalog=NhaHang;Integrated Security=true;";
+            SqlConnection con = new SqlConnection(db);
+            con.Open();
+            SqlDataAdapter adapt = new SqlDataAdapter("select * from NhanVien where TenNV like '" + txttktnv.Text + "%'", con);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            dgvnhanvien.DataSource = dt;
+            con.Close();
         }
 
         private void nvgt_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
+
+        private void dgvphancong_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void cbmaca_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbmanv_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pcdaybd_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

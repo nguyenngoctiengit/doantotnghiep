@@ -239,8 +239,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnReload_nv = new System.Windows.Forms.Button();
             this.label48 = new System.Windows.Forms.Label();
             this.gbtknv = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cbSearchNv = new System.Windows.Forms.ComboBox();
             this.btntknv = new System.Windows.Forms.Button();
             this.txttktnv = new System.Windows.Forms.TextBox();
             this.label42 = new System.Windows.Forms.Label();
@@ -277,9 +280,7 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.btnReload_nv = new System.Windows.Forms.Button();
-            this.cbSearchNv = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
+            this.btnEdit_pc = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.tabHT.SuspendLayout();
             this.panel18.SuspendLayout();
@@ -2238,8 +2239,10 @@
             this.dgvphancong.Location = new System.Drawing.Point(0, 0);
             this.dgvphancong.Name = "dgvphancong";
             this.dgvphancong.RowTemplate.Height = 24;
+            this.dgvphancong.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvphancong.Size = new System.Drawing.Size(777, 331);
             this.dgvphancong.TabIndex = 0;
+            this.dgvphancong.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvphancong_CellContentClick);
             this.dgvphancong.SelectionChanged += new System.EventHandler(this.dgvphancong_SelectionChanged);
             // 
             // groupBox14
@@ -2264,20 +2267,24 @@
             // cbmaca
             // 
             this.cbmaca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbmaca.Enabled = false;
             this.cbmaca.FormattingEnabled = true;
             this.cbmaca.Location = new System.Drawing.Point(174, 24);
             this.cbmaca.Name = "cbmaca";
             this.cbmaca.Size = new System.Drawing.Size(190, 25);
             this.cbmaca.TabIndex = 23;
+            this.cbmaca.SelectedIndexChanged += new System.EventHandler(this.cbmaca_SelectedIndexChanged);
             // 
             // cbmanv
             // 
             this.cbmanv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbmanv.Enabled = false;
             this.cbmanv.FormattingEnabled = true;
             this.cbmanv.Location = new System.Drawing.Point(537, 24);
             this.cbmanv.Name = "cbmanv";
             this.cbmanv.Size = new System.Drawing.Size(190, 25);
             this.cbmanv.TabIndex = 22;
+            this.cbmanv.SelectedIndexChanged += new System.EventHandler(this.cbmanv_SelectedIndexChanged);
             // 
             // label49
             // 
@@ -2317,6 +2324,7 @@
             // 
             // pcdaykt
             // 
+            this.pcdaykt.Enabled = false;
             this.pcdaykt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.pcdaykt.Location = new System.Drawing.Point(174, 84);
             this.pcdaykt.Name = "pcdaykt";
@@ -2325,15 +2333,18 @@
             // 
             // pcdaybd
             // 
+            this.pcdaybd.Enabled = false;
             this.pcdaybd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.pcdaybd.Location = new System.Drawing.Point(176, 55);
             this.pcdaybd.Name = "pcdaybd";
             this.pcdaybd.Size = new System.Drawing.Size(190, 23);
             this.pcdaybd.TabIndex = 16;
+            this.pcdaybd.ValueChanged += new System.EventHandler(this.pcdaybd_ValueChanged);
             // 
             // cbmaban
             // 
             this.cbmaban.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbmaban.Enabled = false;
             this.cbmaban.FormattingEnabled = true;
             this.cbmaban.Location = new System.Drawing.Point(537, 55);
             this.cbmaban.Name = "cbmaban";
@@ -2427,6 +2438,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnEdit_pc);
             this.groupBox2.Controls.Add(this.label60);
             this.groupBox2.Controls.Add(this.gbtkpc);
             this.groupBox2.Controls.Add(this.button3);
@@ -2513,53 +2525,53 @@
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.BackgroundImage = global::doannhom.Properties.Resources.Search_icon;
+            this.button3.BackColor = System.Drawing.Color.Gray;
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.ForeColor = System.Drawing.Color.Transparent;
-            this.button3.Location = new System.Drawing.Point(255, 30);
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Location = new System.Drawing.Point(350, 30);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(78, 60);
             this.button3.TabIndex = 6;
+            this.button3.Text = "&SEARCH";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.BackgroundImage = global::doannhom.Properties.Resources.Editing_Delete_icon;
+            this.button4.BackColor = System.Drawing.Color.Gray;
             this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button4.ForeColor = System.Drawing.Color.Transparent;
-            this.button4.Location = new System.Drawing.Point(90, 30);
+            this.button4.ForeColor = System.Drawing.Color.Black;
+            this.button4.Location = new System.Drawing.Point(178, 30);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(78, 60);
             this.button4.TabIndex = 5;
+            this.button4.Text = "&DELETE";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button18
             // 
-            this.button18.BackColor = System.Drawing.Color.Transparent;
-            this.button18.BackgroundImage = global::doannhom.Properties.Resources.Button_Add_icon;
+            this.button18.BackColor = System.Drawing.Color.Gray;
             this.button18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button18.ForeColor = System.Drawing.Color.Transparent;
+            this.button18.ForeColor = System.Drawing.Color.Black;
             this.button18.Location = new System.Drawing.Point(10, 30);
             this.button18.Name = "button18";
             this.button18.Size = new System.Drawing.Size(78, 60);
             this.button18.TabIndex = 4;
+            this.button18.Text = "&NEW";
             this.button18.UseVisualStyleBackColor = false;
             this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // button20
             // 
-            this.button20.BackColor = System.Drawing.Color.Transparent;
-            this.button20.BackgroundImage = global::doannhom.Properties.Resources.Button_Reload_icon;
+            this.button20.BackColor = System.Drawing.Color.Gray;
             this.button20.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button20.ForeColor = System.Drawing.Color.Transparent;
-            this.button20.Location = new System.Drawing.Point(172, 30);
+            this.button20.ForeColor = System.Drawing.Color.Black;
+            this.button20.Location = new System.Drawing.Point(266, 30);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(78, 60);
             this.button20.TabIndex = 2;
+            this.button20.Text = "&RELOAD";
             this.button20.UseVisualStyleBackColor = false;
             this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
@@ -2859,6 +2871,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Danh mục";
             // 
+            // btnReload_nv
+            // 
+            this.btnReload_nv.BackColor = System.Drawing.Color.Gray;
+            this.btnReload_nv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReload_nv.ForeColor = System.Drawing.Color.Black;
+            this.btnReload_nv.Location = new System.Drawing.Point(344, 30);
+            this.btnReload_nv.Name = "btnReload_nv";
+            this.btnReload_nv.Size = new System.Drawing.Size(78, 60);
+            this.btnReload_nv.TabIndex = 29;
+            this.btnReload_nv.Text = "&RELOAD";
+            this.btnReload_nv.UseVisualStyleBackColor = false;
+            this.btnReload_nv.Click += new System.EventHandler(this.btnReload_nv_Click);
+            // 
             // label48
             // 
             this.label48.AutoSize = true;
@@ -2886,6 +2911,29 @@
             this.gbtknv.TabIndex = 7;
             this.gbtknv.TabStop = false;
             this.gbtknv.Text = "Tìm kiếm nhân viên";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(462, 29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(89, 17);
+            this.label13.TabIndex = 42;
+            this.label13.Text = "Search theo:";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
+            // cbSearchNv
+            // 
+            this.cbSearchNv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSearchNv.FormattingEnabled = true;
+            this.cbSearchNv.Items.AddRange(new object[] {
+            "Mã nhân viên",
+            "Tên nhân viên"});
+            this.cbSearchNv.Location = new System.Drawing.Point(465, 53);
+            this.cbSearchNv.Name = "cbSearchNv";
+            this.cbSearchNv.Size = new System.Drawing.Size(121, 25);
+            this.cbSearchNv.TabIndex = 41;
+            this.cbSearchNv.SelectedIndexChanged += new System.EventHandler(this.cbSearchNv_SelectedIndexChanged);
             // 
             // btntknv
             // 
@@ -3274,43 +3322,19 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnReload_nv
+            // btnEdit_pc
             // 
-            this.btnReload_nv.BackColor = System.Drawing.Color.Gray;
-            this.btnReload_nv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnReload_nv.ForeColor = System.Drawing.Color.Black;
-            this.btnReload_nv.Location = new System.Drawing.Point(344, 30);
-            this.btnReload_nv.Name = "btnReload_nv";
-            this.btnReload_nv.Size = new System.Drawing.Size(78, 60);
-            this.btnReload_nv.TabIndex = 29;
-            this.btnReload_nv.Text = "&RELOAD";
-            this.btnReload_nv.UseVisualStyleBackColor = false;
-            this.btnReload_nv.Click += new System.EventHandler(this.btnReload_nv_Click);
-            // 
-            // cbSearchNv
-            // 
-            this.cbSearchNv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSearchNv.FormattingEnabled = true;
-            this.cbSearchNv.SelectedItem = null;
-            this.cbSearchNv.SelectedText = "Mã nhân viên";
-            this.cbSearchNv.Items.AddRange(new object[] {
-            "Mã nhân viên",
-            "Tên nhân viên"});
-            this.cbSearchNv.Location = new System.Drawing.Point(465, 53);
-            this.cbSearchNv.Name = "cbSearchNv";
-            this.cbSearchNv.Size = new System.Drawing.Size(121, 25);
-            this.cbSearchNv.TabIndex = 41;
-            this.cbSearchNv.SelectedIndexChanged += new System.EventHandler(this.cbSearchNv_SelectedIndexChanged);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(462, 29);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(89, 17);
-            this.label13.TabIndex = 42;
-            this.label13.Text = "Search theo:";
-            this.label13.Click += new System.EventHandler(this.label13_Click);
+            this.btnEdit_pc.BackColor = System.Drawing.Color.Gray;
+            this.btnEdit_pc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnEdit_pc.ForeColor = System.Drawing.Color.Black;
+            this.btnEdit_pc.Location = new System.Drawing.Point(94, 30);
+            this.btnEdit_pc.Name = "btnEdit_pc";
+            this.btnEdit_pc.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnEdit_pc.Size = new System.Drawing.Size(78, 60);
+            this.btnEdit_pc.TabIndex = 29;
+            this.btnEdit_pc.Text = "&EDIT";
+            this.btnEdit_pc.UseVisualStyleBackColor = false;
+            this.btnEdit_pc.Click += new System.EventHandler(this.btnEdit_pc_Click);
             // 
             // fmMenuMainAdmin
             // 
@@ -3669,5 +3693,6 @@
         private System.Windows.Forms.Button btnReload_nv;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox cbSearchNv;
+        private System.Windows.Forms.Button btnEdit_pc;
     }
 }
