@@ -9,6 +9,7 @@ namespace doannhom.Models
 {
     public partial class PhanCong
     {
+        public int MaPC { get; set; }
         public string MaCa { get; set; }
         public string MaNv { get; set; }
         public string MaBan { get; set; }

@@ -152,22 +152,13 @@
             this.panel20 = new System.Windows.Forms.Panel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label62 = new System.Windows.Forms.Label();
-            this.pnbtnxoa = new System.Windows.Forms.Panel();
-            this.button31 = new System.Windows.Forms.Button();
-            this.button36 = new System.Windows.Forms.Button();
             this.gbtktd = new System.Windows.Forms.GroupBox();
             this.button10 = new System.Windows.Forms.Button();
             this.tkttd = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
             this.tkmtd = new System.Windows.Forms.TextBox();
-            this.pnbtnsua = new System.Windows.Forms.Panel();
-            this.button28 = new System.Windows.Forms.Button();
-            this.button29 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.pnbtnthem = new System.Windows.Forms.Panel();
-            this.button27 = new System.Windows.Forms.Button();
-            this.btn = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
@@ -200,6 +191,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnEdit_pc = new System.Windows.Forms.Button();
             this.label60 = new System.Windows.Forms.Label();
             this.gbtkpc = new System.Windows.Forms.GroupBox();
             this.btntkpc = new System.Windows.Forms.Button();
@@ -280,7 +272,6 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.btnEdit_pc = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.tabHT.SuspendLayout();
             this.panel18.SuspendLayout();
@@ -319,10 +310,7 @@
             this.groupBox16.SuspendLayout();
             this.panel20.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.pnbtnxoa.SuspendLayout();
             this.gbtktd.SuspendLayout();
-            this.pnbtnsua.SuspendLayout();
-            this.pnbtnthem.SuspendLayout();
             this.panel21.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPC.SuspendLayout();
@@ -1694,6 +1682,7 @@
             this.dgvloaitd.RowTemplate.Height = 24;
             this.dgvloaitd.Size = new System.Drawing.Size(717, 324);
             this.dgvloaitd.TabIndex = 5;
+            this.dgvloaitd.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvloaitd_CellContentClick);
             this.dgvloaitd.SelectionChanged += new System.EventHandler(this.dgvloaitd_SelectionChanged_1);
             // 
             // dgvthucdon
@@ -1703,8 +1692,10 @@
             this.dgvthucdon.Location = new System.Drawing.Point(0, 126);
             this.dgvthucdon.Name = "dgvthucdon";
             this.dgvthucdon.RowTemplate.Height = 24;
+            this.dgvthucdon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvthucdon.Size = new System.Drawing.Size(591, 332);
             this.dgvthucdon.TabIndex = 4;
+            this.dgvthucdon.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvthucdon_CellContentClick);
             this.dgvthucdon.SelectionChanged += new System.EventHandler(this.dgvthucdon_SelectionChanged);
             // 
             // groupBox11
@@ -1727,10 +1718,12 @@
             this.groupBox11.TabIndex = 2;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Thông tin thực đơn";
+            this.groupBox11.Enter += new System.EventHandler(this.groupBox11_Enter);
             // 
             // txtmaloai
             // 
             this.txtmaloai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtmaloai.Enabled = false;
             this.txtmaloai.FormattingEnabled = true;
             this.txtmaloai.Items.AddRange(new object[] {
             "Dĩa",
@@ -1749,6 +1742,7 @@
             this.txtmaloai.Name = "txtmaloai";
             this.txtmaloai.Size = new System.Drawing.Size(214, 25);
             this.txtmaloai.TabIndex = 23;
+            this.txtmaloai.SelectedIndexChanged += new System.EventHandler(this.txtmaloai_SelectedIndexChanged);
             // 
             // groupBox16
             // 
@@ -1766,7 +1760,7 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(94, 60);
+            this.label46.Location = new System.Drawing.Point(235, 31);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(59, 17);
             this.label46.TabIndex = 20;
@@ -1774,22 +1768,24 @@
             // 
             // txtltdmaloai
             // 
-            this.txtltdmaloai.Location = new System.Drawing.Point(174, 28);
+            this.txtltdmaloai.Enabled = false;
+            this.txtltdmaloai.Location = new System.Drawing.Point(65, 28);
             this.txtltdmaloai.Name = "txtltdmaloai";
-            this.txtltdmaloai.Size = new System.Drawing.Size(349, 23);
+            this.txtltdmaloai.Size = new System.Drawing.Size(161, 23);
             this.txtltdmaloai.TabIndex = 19;
             // 
             // txtltdtenloai
             // 
-            this.txtltdtenloai.Location = new System.Drawing.Point(174, 57);
+            this.txtltdtenloai.Enabled = false;
+            this.txtltdtenloai.Location = new System.Drawing.Point(311, 28);
             this.txtltdtenloai.Name = "txtltdtenloai";
-            this.txtltdtenloai.Size = new System.Drawing.Size(349, 23);
+            this.txtltdtenloai.Size = new System.Drawing.Size(215, 23);
             this.txtltdtenloai.TabIndex = 21;
             // 
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(100, 30);
+            this.label43.Location = new System.Drawing.Point(6, 28);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(53, 17);
             this.label43.TabIndex = 18;
@@ -1798,6 +1794,7 @@
             // txtdvt
             // 
             this.txtdvt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtdvt.Enabled = false;
             this.txtdvt.FormattingEnabled = true;
             this.txtdvt.Items.AddRange(new object[] {
             "Dĩa",
@@ -1819,6 +1816,7 @@
             // 
             // txtdongia
             // 
+            this.txtdongia.Enabled = false;
             this.txtdongia.Location = new System.Drawing.Point(465, 87);
             this.txtdongia.Name = "txtdongia";
             this.txtdongia.Size = new System.Drawing.Size(214, 23);
@@ -1844,10 +1842,12 @@
             // 
             // txtmatd
             // 
+            this.txtmatd.Enabled = false;
             this.txtmatd.Location = new System.Drawing.Point(132, 25);
             this.txtmatd.Name = "txtmatd";
             this.txtmatd.Size = new System.Drawing.Size(214, 23);
             this.txtmatd.TabIndex = 4;
+            this.txtmatd.TextChanged += new System.EventHandler(this.txtmatd_TextChanged);
             // 
             // label23
             // 
@@ -1860,6 +1860,7 @@
             // 
             // txttentd
             // 
+            this.txttentd.Enabled = false;
             this.txttentd.Location = new System.Drawing.Point(132, 55);
             this.txttentd.Name = "txttentd";
             this.txttentd.Size = new System.Drawing.Size(214, 23);
@@ -1896,11 +1897,8 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.label62);
-            this.groupBox4.Controls.Add(this.pnbtnxoa);
             this.groupBox4.Controls.Add(this.gbtktd);
-            this.groupBox4.Controls.Add(this.pnbtnsua);
             this.groupBox4.Controls.Add(this.button7);
-            this.groupBox4.Controls.Add(this.pnbtnthem);
             this.groupBox4.Controls.Add(this.button8);
             this.groupBox4.Controls.Add(this.button24);
             this.groupBox4.Controls.Add(this.button25);
@@ -1925,43 +1923,6 @@
             this.label62.TabIndex = 28;
             this.label62.Text = "00:00:00";
             // 
-            // pnbtnxoa
-            // 
-            this.pnbtnxoa.Controls.Add(this.button31);
-            this.pnbtnxoa.Controls.Add(this.button36);
-            this.pnbtnxoa.Location = new System.Drawing.Point(446, 12);
-            this.pnbtnxoa.Name = "pnbtnxoa";
-            this.pnbtnxoa.Size = new System.Drawing.Size(558, 91);
-            this.pnbtnxoa.TabIndex = 7;
-            // 
-            // button31
-            // 
-            this.button31.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
-            this.button31.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button31.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button31.ForeColor = System.Drawing.Color.Red;
-            this.button31.Location = new System.Drawing.Point(290, 24);
-            this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(230, 43);
-            this.button31.TabIndex = 1;
-            this.button31.Text = "Xóa loại thực đơn";
-            this.button31.UseVisualStyleBackColor = true;
-            this.button31.Click += new System.EventHandler(this.button31_Click);
-            // 
-            // button36
-            // 
-            this.button36.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
-            this.button36.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button36.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button36.ForeColor = System.Drawing.Color.Red;
-            this.button36.Location = new System.Drawing.Point(40, 24);
-            this.button36.Name = "button36";
-            this.button36.Size = new System.Drawing.Size(230, 43);
-            this.button36.TabIndex = 0;
-            this.button36.Text = "Xóa thực đơn";
-            this.button36.UseVisualStyleBackColor = true;
-            this.button36.Click += new System.EventHandler(this.button36_Click);
-            // 
             // gbtktd
             // 
             this.gbtktd.Controls.Add(this.button10);
@@ -1969,9 +1930,9 @@
             this.gbtktd.Controls.Add(this.label55);
             this.gbtktd.Controls.Add(this.label56);
             this.gbtktd.Controls.Add(this.tkmtd);
-            this.gbtktd.Location = new System.Drawing.Point(446, 12);
+            this.gbtktd.Location = new System.Drawing.Point(433, 11);
             this.gbtktd.Name = "gbtktd";
-            this.gbtktd.Size = new System.Drawing.Size(558, 102);
+            this.gbtktd.Size = new System.Drawing.Size(605, 102);
             this.gbtktd.TabIndex = 9;
             this.gbtktd.TabStop = false;
             this.gbtktd.Text = "Tìm kiếm thực đơn";
@@ -2020,43 +1981,6 @@
             this.tkmtd.Size = new System.Drawing.Size(214, 23);
             this.tkmtd.TabIndex = 6;
             // 
-            // pnbtnsua
-            // 
-            this.pnbtnsua.Controls.Add(this.button28);
-            this.pnbtnsua.Controls.Add(this.button29);
-            this.pnbtnsua.Location = new System.Drawing.Point(446, 12);
-            this.pnbtnsua.Name = "pnbtnsua";
-            this.pnbtnsua.Size = new System.Drawing.Size(558, 91);
-            this.pnbtnsua.TabIndex = 7;
-            // 
-            // button28
-            // 
-            this.button28.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
-            this.button28.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button28.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button28.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button28.Location = new System.Drawing.Point(290, 24);
-            this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(230, 43);
-            this.button28.TabIndex = 1;
-            this.button28.Text = "Sửa loại thực đơn";
-            this.button28.UseVisualStyleBackColor = true;
-            this.button28.Click += new System.EventHandler(this.button28_Click);
-            // 
-            // button29
-            // 
-            this.button29.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
-            this.button29.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button29.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button29.Location = new System.Drawing.Point(40, 24);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(230, 43);
-            this.button29.TabIndex = 0;
-            this.button29.Text = "Sửa thực đơn";
-            this.button29.UseVisualStyleBackColor = true;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
-            // 
             // button7
             // 
             this.button7.BackColor = System.Drawing.Color.Transparent;
@@ -2070,79 +1994,42 @@
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // pnbtnthem
-            // 
-            this.pnbtnthem.Controls.Add(this.button27);
-            this.pnbtnthem.Controls.Add(this.btn);
-            this.pnbtnthem.Location = new System.Drawing.Point(446, 12);
-            this.pnbtnthem.Name = "pnbtnthem";
-            this.pnbtnthem.Size = new System.Drawing.Size(558, 91);
-            this.pnbtnthem.TabIndex = 6;
-            // 
-            // button27
-            // 
-            this.button27.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
-            this.button27.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button27.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button27.Location = new System.Drawing.Point(290, 24);
-            this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(230, 43);
-            this.button27.TabIndex = 1;
-            this.button27.Text = "Thêm loại thực đơn";
-            this.button27.UseVisualStyleBackColor = true;
-            this.button27.Click += new System.EventHandler(this.button27_Click);
-            // 
-            // btn
-            // 
-            this.btn.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
-            this.btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btn.Location = new System.Drawing.Point(40, 24);
-            this.btn.Name = "btn";
-            this.btn.Size = new System.Drawing.Size(230, 43);
-            this.btn.TabIndex = 0;
-            this.btn.Text = "Thêm thực đơn";
-            this.btn.UseVisualStyleBackColor = true;
-            this.btn.Click += new System.EventHandler(this.btn_Click);
-            // 
             // button8
             // 
-            this.button8.BackColor = System.Drawing.Color.Transparent;
-            this.button8.BackgroundImage = global::doannhom.Properties.Resources.Editing_Delete_icon;
+            this.button8.BackColor = System.Drawing.Color.Gray;
             this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button8.ForeColor = System.Drawing.Color.Transparent;
+            this.button8.ForeColor = System.Drawing.Color.Black;
             this.button8.Location = new System.Drawing.Point(90, 30);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(78, 60);
             this.button8.TabIndex = 5;
+            this.button8.Text = "&DELETE";
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button24
             // 
-            this.button24.BackColor = System.Drawing.Color.Transparent;
-            this.button24.BackgroundImage = global::doannhom.Properties.Resources.Button_Add_icon;
+            this.button24.BackColor = System.Drawing.Color.Gray;
             this.button24.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button24.ForeColor = System.Drawing.Color.Transparent;
+            this.button24.ForeColor = System.Drawing.Color.Black;
             this.button24.Location = new System.Drawing.Point(10, 30);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(78, 60);
             this.button24.TabIndex = 4;
+            this.button24.Text = "&NEW";
             this.button24.UseVisualStyleBackColor = false;
             this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
             // button25
             // 
-            this.button25.BackColor = System.Drawing.Color.Transparent;
-            this.button25.BackgroundImage = global::doannhom.Properties.Resources.edit_icon;
+            this.button25.BackColor = System.Drawing.Color.Gray;
             this.button25.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button25.ForeColor = System.Drawing.Color.Transparent;
+            this.button25.ForeColor = System.Drawing.Color.Black;
             this.button25.Location = new System.Drawing.Point(172, 30);
             this.button25.Name = "button25";
             this.button25.Size = new System.Drawing.Size(78, 60);
             this.button25.TabIndex = 3;
+            this.button25.Text = "&EDIT";
             this.button25.UseVisualStyleBackColor = false;
             this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
@@ -2219,6 +2106,7 @@
             this.dgvca.Location = new System.Drawing.Point(0, 0);
             this.dgvca.Name = "dgvca";
             this.dgvca.RowTemplate.Height = 24;
+            this.dgvca.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvca.Size = new System.Drawing.Size(528, 325);
             this.dgvca.TabIndex = 0;
             this.dgvca.SelectionChanged += new System.EventHandler(this.dgvca_SelectionChanged);
@@ -2453,6 +2341,20 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Danh mục";
             // 
+            // btnEdit_pc
+            // 
+            this.btnEdit_pc.BackColor = System.Drawing.Color.Gray;
+            this.btnEdit_pc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnEdit_pc.ForeColor = System.Drawing.Color.Black;
+            this.btnEdit_pc.Location = new System.Drawing.Point(94, 30);
+            this.btnEdit_pc.Name = "btnEdit_pc";
+            this.btnEdit_pc.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnEdit_pc.Size = new System.Drawing.Size(78, 60);
+            this.btnEdit_pc.TabIndex = 29;
+            this.btnEdit_pc.Text = "&EDIT";
+            this.btnEdit_pc.UseVisualStyleBackColor = false;
+            this.btnEdit_pc.Click += new System.EventHandler(this.btnEdit_pc_Click);
+            // 
             // label60
             // 
             this.label60.AutoSize = true;
@@ -2501,7 +2403,7 @@
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(80, 58);
+            this.label51.Location = new System.Drawing.Point(62, 58);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(46, 17);
             this.label51.TabIndex = 38;
@@ -3322,20 +3224,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnEdit_pc
-            // 
-            this.btnEdit_pc.BackColor = System.Drawing.Color.Gray;
-            this.btnEdit_pc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEdit_pc.ForeColor = System.Drawing.Color.Black;
-            this.btnEdit_pc.Location = new System.Drawing.Point(94, 30);
-            this.btnEdit_pc.Name = "btnEdit_pc";
-            this.btnEdit_pc.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnEdit_pc.Size = new System.Drawing.Size(78, 60);
-            this.btnEdit_pc.TabIndex = 29;
-            this.btnEdit_pc.Text = "&EDIT";
-            this.btnEdit_pc.UseVisualStyleBackColor = false;
-            this.btnEdit_pc.Click += new System.EventHandler(this.btnEdit_pc_Click);
-            // 
             // fmMenuMainAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -3395,11 +3283,8 @@
             this.panel20.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.pnbtnxoa.ResumeLayout(false);
             this.gbtktd.ResumeLayout(false);
             this.gbtktd.PerformLayout();
-            this.pnbtnsua.ResumeLayout(false);
-            this.pnbtnthem.ResumeLayout(false);
             this.panel21.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.tabPC.ResumeLayout(false);
@@ -3558,22 +3443,13 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Panel panel20;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Panel pnbtnxoa;
-        private System.Windows.Forms.Button button31;
-        private System.Windows.Forms.Button button36;
         private System.Windows.Forms.GroupBox gbtktd;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.TextBox tkttd;
         private System.Windows.Forms.Label label55;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.TextBox tkmtd;
-        private System.Windows.Forms.Panel pnbtnsua;
-        private System.Windows.Forms.Button button28;
-        private System.Windows.Forms.Button button29;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Panel pnbtnthem;
-        private System.Windows.Forms.Button button27;
-        private System.Windows.Forms.Button btn;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button25;

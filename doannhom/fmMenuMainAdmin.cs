@@ -138,6 +138,7 @@ namespace doannhom
             dgvphancong.DataSource = (from a in _context.PhanCong
                                      select new
                                      {
+                                         a.MaPC,
                                          a.MaBan,
                                          a.MaCa,
                                          a.MaNv,
@@ -148,26 +149,31 @@ namespace doannhom
         }
         public void Loadca()
         {
-            string strSQL = "select * from Ca";
-            dgvca.DataSource = FillDataTable(strSQL);
+            dgvca.DataSource = (from a in _context.Ca select new { a.MaCa, a.TenCa, a.LuuY, a.NgayBd, a.NgayKt }).ToList();
         }
         public void Loadtd()
         {
-            string strSQL = "select * from ThucDon";
-            dgvthucdon.DataSource = FillDataTable(strSQL);
+            dgvthucdon.DataSource = (from a in _context.MonAn
+                                    select new
+                                    {
+                                        a.MaMonAn,
+                                        a.MaLoai,
+                                        a.TenMon,
+                                        a.Dvt,
+                                        a.DonGia
+                                    }).ToList();
             gbtktd.Hide();
-            pnbtnxoa.Hide();
-            pnbtnthem.Hide();
-            pnbtnsua.Hide();
         }
         public void Loadltd()
         {
-            string strSQL = "select * from Loaithucdon";
-            dgvloaitd.DataSource = FillDataTable(strSQL);
+            dgvloaitd.DataSource = (from a in _context.LoaiMonAn
+                                   select new
+                                   {
+                                       a.MaLoai,
+                                       a.TenLoai,
+                                   }).ToList();
             gbtktd.Hide();
-            pnbtnxoa.Hide();
-            pnbtnthem.Hide();
-            pnbtnsua.Hide();
+
         }
         public void Loadhd()
         {
@@ -196,11 +202,9 @@ namespace doannhom
         }
         public void loadloaithucdontuloai()
         {
-            string strSQL = "select * from MonAn";
-            txtmaloai.DataSource = FillDataTable(strSQL);
-            txtmaloai.DisplayMember = "MaMonAN";
-            txtmaloai.ValueMember = "MaMonAN";
-            cnn.Close();
+            txtmaloai.DataSource = (from a in _context.LoaiMonAn select new { a.MaLoai, a.TenLoai }).ToList();
+            txtmaloai.DisplayMember = "TenLoai";
+            txtmaloai.ValueMember = "MaLoai";
         }
         public void loadloaithucdonlenmonan()
         {
@@ -367,11 +371,11 @@ namespace doannhom
         }
         private void dgvphancong_SelectionChanged(object sender, EventArgs e)
         {
-            cbmaca.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
-            cbmanv.SelectedValue = Convert.ToString(dgvphancong.CurrentRow.Cells[2].Value);
-            cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[0].Value);
-            pcdaybd.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[3].Value);
-            pcdaykt.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[4].Value);
+            cbmaca.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[2].Value);
+            cbmanv.SelectedValue = Convert.ToString(dgvphancong.CurrentRow.Cells[3].Value);
+            cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
+            pcdaybd.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[4].Value);
+            pcdaykt.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[5].Value);
         }
         private void dgvca_SelectionChanged(object sender, EventArgs e)
         {
@@ -477,9 +481,7 @@ namespace doannhom
             txtdvt.ResetText();
             txtltdmaloai.ResetText();
             txtltdtenloai.ResetText();
-            pnbtnsua.Hide();
-            pnbtnthem.Hide();
-            pnbtnxoa.Hide();
+
         }
         //----------**************sự kiện update tài khoản***************---------------------------------     
         private void tkbtnsua_Click(object sender, EventArgs e)
@@ -735,6 +737,7 @@ namespace doannhom
             {
                 case "&NEW":
                     button18.Text = "&SAVE";
+                    btnEdit_pc.Text = "&EDIT";
                     Enable_and_ResetText_Phancong();
                     break;
                 case "&SAVE":
@@ -749,6 +752,7 @@ namespace doannhom
                         _context.PhanCong.Add(pc);
                         _context.SaveChanges();
                         button18.Text = "&NEW";
+                        btnEdit_pc.Text = "&EDIT";
                         Disnable_Phancong();
 
                         Loadpc();
@@ -775,10 +779,9 @@ namespace doannhom
                     try
                     {
                         int r = dgvphancong.CurrentCell.RowIndex;
-                        string strManv = dgvphancong.Rows[r].Cells[1].Value.ToString();
-                        string strMaca = dgvphancong.Rows[r].Cells[0].Value.ToString();
-                        string strMaban = dgvphancong.Rows[r].Cells[2].Value.ToString();
-                        var item_return = (from a in _context.PhanCong where a.MaNv == strManv && a.MaCa == strMaca && a.MaBan == strMaban select a).FirstOrDefault();
+                        var maPc = dgvphancong.Rows[r].Cells[0];
+                        int MaPc = (int)maPc.Value;
+                        var item_return = (from a in _context.PhanCong where a.MaPC == MaPc select a).FirstOrDefault();
                         item_return.MaCa = this.cbmaca.SelectedValue.ToString();
                         item_return.MaNv = this.cbmanv.SelectedValue.ToString();
                         item_return.MaBan = this.cbmaban.SelectedValue.ToString();
@@ -788,6 +791,7 @@ namespace doannhom
                         _context.SaveChanges();
                         Disnable_Phancong();
                         btnEdit_pc.Text = "&EDIT";
+                        button18.Text = "&NEW";
                         Loadpc();
                         MessageBox.Show("Chỉnh sửa nhân viên thành công", "Thông Báo");
 
@@ -834,11 +838,10 @@ namespace doannhom
                 try
                 {
                     int r = dgvphancong.CurrentCell.RowIndex;
-                    string strManv = dgvphancong.Rows[r].Cells[1].Value.ToString();
-                    string strMaca = dgvphancong.Rows[r].Cells[0].Value.ToString();
-                    string strMaban = dgvphancong.Rows[r].Cells[2].Value.ToString();
-                    var item_delete = (from a in _context.PhanCong where a.MaNv == strManv && a.MaCa == strMaca && a.MaBan == strMaban select a).FirstOrDefault();
-                    _context.PhanCong.Remove(item_delete);
+                    var maPc = dgvphancong.Rows[r].Cells[0];
+                    int MaPc = (int)maPc.Value;
+                    var item_return = (from a in _context.PhanCong where a.MaPC == MaPc select a).FirstOrDefault();
+                    _context.PhanCong.Remove(item_return);
                     _context.SaveChanges();
                     Loadpc();
                     MessageBox.Show("Xóa phân công thành công ", "Thông Báo");
@@ -852,156 +855,78 @@ namespace doannhom
         //----------**************sự kiện khách hàng*********************---------------------------------
 
         //----------**************sự kiện show hide thực đơn*************---------------------------------
+        private void enable_resetText_td()
+        {
+            txtmatd.Focus();
+            txtmatd.ResetText();txtmatd.Enabled = true;
+            txttentd.ResetText();txttentd.Enabled = true;
+            txtmaloai.ResetText();txtmaloai.Enabled = true;
+            txtdongia.ResetText();txtdongia.Enabled = true;
+            txtdvt.ResetText();txtdvt.Enabled = true;
+        }
+        private void disable_td()
+        {
+            txtmatd.Enabled = false;
+            txttentd.Enabled = false;
+            txtmaloai.Enabled = false;
+            txtdongia.Enabled = false;
+            txtdvt.Enabled = false;
+        }
+        private void enable_td()
+        {
+            txtmatd.Enabled = true;
+            txttentd.Enabled = true;
+            txtmaloai.Enabled = true;
+            txtdongia.Enabled = true;
+            txtdvt.Enabled = true;
+        }
         private void button24_Click(object sender, EventArgs e)
         {
-            pnbtnsua.Hide();
-            pnbtnthem.Show();
-            pnbtnxoa.Hide();
+            switch (button24.Text)
+            {
+                case "&NEW":
+                    button24.Text = "&SAVE";
+                    button25.Text = "&EDIT";
+                    enable_resetText_td();
+                    break;
+                case "&SAVE":
+                    try
+                    {
+                        var mn = new MonAn();
+                        if (_context.MonAn.Any(a => a.MaMonAn == this.txtmatd.Text.ToString()))
+                        {
+                            MessageBox.Show("Mã món ăn bị trùng, vui lòng nhập lại", "Thông Báo");
+                        }
+                        else if (!this.txtmatd.Text.StartsWith("TD"))
+                        {
+                            MessageBox.Show("Vui lòng nhập mã món ăn TD + stt món ăn", "Thông Báo");
+                        }
+                        else
+                        {
+                            mn.MaMonAn = this.txtmatd.Text.ToString();
+                            mn.TenMon = this.txttentd.Text.ToString();
+                            mn.DonGia = int.Parse(this.txtdongia.Text.ToString());
+                            mn.Dvt = this.txtdvt.Text.ToString();
+                            mn.MaLoai = this.txtmaloai.SelectedValue.ToString();
+                            _context.MonAn.Add(mn);
+                            _context.SaveChanges();
+                            button24.Text = "&NEW";
+                            button25.Text = "&EDIT";
+                            disable_td();
+                            Loadtd();
+                            MessageBox.Show("Thêm món ăn thành công", "Thông Báo");
+                        }
+
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
+            }
             gbtktd.Hide();
         }
         private void button8_Click(object sender, EventArgs e)
-        {
-            pnbtnsua.Hide();
-            pnbtnthem.Hide();
-            pnbtnxoa.Show();
-            gbtktd.Hide();
-        }
-        private void button25_Click(object sender, EventArgs e)
-        {
-            pnbtnsua.Show();
-            pnbtnthem.Hide();
-            pnbtnxoa.Hide();
-            gbtktd.Hide();
-        }
-        private void button7_Click(object sender, EventArgs e)
-        {
-            pnbtnsua.Hide();
-            pnbtnthem.Hide();
-            pnbtnxoa.Hide();
-            gbtktd.Show();
-        }
-        //----------**************sự kiện thực đơn***********************---------------------------------
-        private void btn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ConnectDB();
-
-                string strSQL = System.String.Concat("Insert Into ThucDon Values ('" +
-                this.txtmatd.Text.ToString() + "','" +
-                this.txtmaloai.Text.ToString() + "',N'" +
-                this.txttentd.Text.ToString() + "','" +
-                this.txtdvt.Text.ToString() + "','" +
-                Convert.ToInt32(this.txtdongia.Text) + "')");
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadtd();
-
-                DisconnectDB();
-
-                MessageBox.Show("Đã thêm mới thực đơn", "Thông Báo");
-            }
-            catch (SqlException)
-            {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-            }
-        }
-        private void button27_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ConnectDB();
-
-                string strSQL = System.String.Concat("Insert Into LoaiThucDon Values ('" +
-                this.txtltdmaloai.Text.ToString() + "',N'" +
-                this.txtltdtenloai.Text.ToString() + "')");
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadltd();
-
-                DisconnectDB();
-
-                MessageBox.Show("Đã thêm mới loại thực đơn", "Thông Báo");
-            }
-            catch (SqlException)
-            {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-            }
-        }
-        private void button29_Click(object sender, EventArgs e)
-        {
-            ConnectDB();
-            try
-            {
-                int r = dgvthucdon.CurrentCell.RowIndex;
-
-                string strMaKH = dgvthucdon.Rows[r].Cells[0].Value.ToString();
-
-                string strSQL = System.String.Concat("Update ThucDon Set MaTD='" +
-                this.txtmatd.Text.ToString() + "', MaLoai='" +
-                this.txtmaloai.Text.ToString() + "', TenTD=N'" +
-                this.txttentd.Text.ToString() + "', DVT=N'" +
-                this.txtdvt.Text.ToString() + "', DonGia='" +
-                Convert.ToInt32(this.txtdongia.Text) + "'Where MaTD='" + strMaKH + "'");
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadtd();
-
-                DisconnectDB();
-
-                MessageBox.Show("Chỉnh sửa thực đơn thành công ", "Thông Báo");
-            }
-            catch (SqlException)
-            {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-            }
-        }
-        private void button28_Click(object sender, EventArgs e)
-        {
-            ConnectDB();
-            try
-            {
-                int r = dgvloaitd.CurrentCell.RowIndex;
-
-                string strMaKH = dgvloaitd.Rows[r].Cells[0].Value.ToString();
-
-                string strSQL = System.String.Concat("Update LoaiThucDon Set MaLoai='" +
-                this.txtltdmaloai.Text.ToString() + "', TenLoai=N'" +
-                this.txtltdtenloai.Text.ToString() + "'Where MaLoai='" + strMaKH + "'");
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                Loadltd();
-
-                DisconnectDB();
-
-                MessageBox.Show("Chỉnh sửa loại thực đơn thành công ", "Thông Báo");
-            }
-            catch (SqlException)
-            {
-                MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-            }
-        }
-        private void button36_Click(object sender, EventArgs e)
         {
             DialogResult traloi;
             traloi = MessageBox.Show("Xác nhận xóa thực đơn", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
@@ -1011,65 +936,27 @@ namespace doannhom
                 try
                 {
                     int r = dgvthucdon.CurrentCell.RowIndex;
-
-                    string strMaThucDon = dgvthucdon.Rows[r].Cells[0].Value.ToString();
-
-                    string strSQL = System.String.Concat("Delete From ThucDon Where MaTD='" + strMaThucDon + "'");
-
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cnn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = strSQL;
-                    cmd.ExecuteNonQuery();
-
+                    string MaTd = dgvthucdon.Rows[r].Cells[0].Value.ToString();
+                    var item_return = (from a in _context.MonAn where a.MaMonAn == MaTd select a).FirstOrDefault();
+                    _context.MonAn.Remove(item_return);
+                    _context.SaveChanges();
                     Loadtd();
-
-                    DisconnectDB();
-
                     MessageBox.Show("Xóa thực đơn thành công ", "Thông Báo");
                 }
                 catch (SqlException)
                 {
                     MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
                 }
-
-                DisconnectDB();
             }
         }
-        private void button31_Click(object sender, EventArgs e)
+        private void button25_Click(object sender, EventArgs e)
         {
-            DialogResult traloi;
-            traloi = MessageBox.Show("Xác nhận xóa loại thực đơn", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-            if (traloi == DialogResult.OK)
-            {
-                ConnectDB();
-                try
-                {
-                    int r = dgvloaitd.CurrentCell.RowIndex;
+            gbtktd.Hide();
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
 
-                    string strMaThucDon = dgvloaitd.Rows[r].Cells[0].Value.ToString();
-
-                    string strSQL = System.String.Concat("Delete From LoaiThucDon Where MaLoai='" + strMaThucDon + "'");
-
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cnn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = strSQL;
-                    cmd.ExecuteNonQuery();
-
-                    Loadltd();
-
-                    DisconnectDB();
-
-                    MessageBox.Show("Xóa loại thực đơn thành công ", "Thông Báo");
-                }
-                catch (SqlException)
-                {
-                    MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
-                }
-
-                DisconnectDB();
-            }
+            gbtktd.Show();
         }
         private void button10_Click(object sender, EventArgs e)
         {
@@ -1735,6 +1622,29 @@ namespace doannhom
 
         }
 
-        
+        private void dgvthucdon_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvloaitd_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtmatd_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtmaloai_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox11_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

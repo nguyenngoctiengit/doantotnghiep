@@ -207,8 +207,9 @@ namespace doannhom.Models
 
             modelBuilder.Entity<PhanCong>(entity =>
             {
-                entity.HasKey(e => new { e.MaCa, e.MaNv, e.MaBan, e.NgayBatDau })
-                    .HasName("PK__PhanCong__AD7933AD8C582EFA");
+                entity.HasKey(e => e.MaPC);
+
+                entity.Property(e => e.MaPC).HasColumnName("MaPC");
 
                 entity.Property(e => e.MaCa).HasMaxLength(10);
 
