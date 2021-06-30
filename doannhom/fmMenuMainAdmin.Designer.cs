@@ -272,6 +272,9 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btnthemloaitd = new System.Windows.Forms.Button();
+            this.btnxoaloaitd = new System.Windows.Forms.Button();
+            this.btnsualoaitd = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.tabHT.SuspendLayout();
             this.panel18.SuspendLayout();
@@ -766,6 +769,7 @@
             this.dataGridView2.RowTemplate.Height = 24;
             this.dataGridView2.Size = new System.Drawing.Size(123, 219);
             this.dataGridView2.TabIndex = 8;
+            this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             // 
             // dataGridView1
             // 
@@ -775,6 +779,7 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(123, 219);
             this.dataGridView1.TabIndex = 7;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // button30
             // 
@@ -904,6 +909,7 @@
             this.dgvmonan.RowTemplate.Height = 24;
             this.dgvmonan.Size = new System.Drawing.Size(365, 195);
             this.dgvmonan.TabIndex = 3;
+            this.dgvmonan.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvmonan_CellContentClick);
             this.dgvmonan.SelectionChanged += new System.EventHandler(this.dgvmonan_SelectionChanged);
             // 
             // comboBox1
@@ -914,6 +920,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(243, 25);
             this.comboBox1.TabIndex = 2;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label29
             // 
@@ -1035,7 +1042,7 @@
             this.button12.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
             this.button12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button12.Location = new System.Drawing.Point(141, 123);
+            this.button12.Location = new System.Drawing.Point(138, 120);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(379, 75);
             this.button12.TabIndex = 13;
@@ -1116,6 +1123,7 @@
             this.dgvban.RowTemplate.Height = 24;
             this.dgvban.Size = new System.Drawing.Size(359, 225);
             this.dgvban.TabIndex = 0;
+            this.dgvban.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvban_CellContentClick);
             this.dgvban.SelectionChanged += new System.EventHandler(this.dgvban_SelectionChanged);
             // 
             // pnban
@@ -1149,6 +1157,7 @@
             this.pnban.Name = "pnban";
             this.pnban.Size = new System.Drawing.Size(582, 368);
             this.pnban.TabIndex = 0;
+            this.pnban.Paint += new System.Windows.Forms.PaintEventHandler(this.pnban_Paint);
             // 
             // ban25
             // 
@@ -1746,6 +1755,9 @@
             // 
             // groupBox16
             // 
+            this.groupBox16.Controls.Add(this.btnsualoaitd);
+            this.groupBox16.Controls.Add(this.btnxoaloaitd);
+            this.groupBox16.Controls.Add(this.btnthemloaitd);
             this.groupBox16.Controls.Add(this.label46);
             this.groupBox16.Controls.Add(this.txtltdmaloai);
             this.groupBox16.Controls.Add(this.txtltdtenloai);
@@ -1773,6 +1785,7 @@
             this.txtltdmaloai.Name = "txtltdmaloai";
             this.txtltdmaloai.Size = new System.Drawing.Size(161, 23);
             this.txtltdmaloai.TabIndex = 19;
+            this.txtltdmaloai.TextChanged += new System.EventHandler(this.txtltdmaloai_TextChanged);
             // 
             // txtltdtenloai
             // 
@@ -1942,24 +1955,24 @@
             this.button10.BackColor = System.Drawing.Color.White;
             this.button10.BackgroundImage = global::doannhom.Properties.Resources._1564719734820_444444;
             this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button10.Location = new System.Drawing.Point(398, 26);
+            this.button10.Location = new System.Drawing.Point(486, 25);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(141, 54);
+            this.button10.Size = new System.Drawing.Size(97, 54);
             this.button10.TabIndex = 40;
             this.button10.UseVisualStyleBackColor = false;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // tkttd
             // 
-            this.tkttd.Location = new System.Drawing.Point(156, 55);
+            this.tkttd.Location = new System.Drawing.Point(169, 52);
             this.tkttd.Name = "tkttd";
-            this.tkttd.Size = new System.Drawing.Size(214, 23);
+            this.tkttd.Size = new System.Drawing.Size(311, 23);
             this.tkttd.TabIndex = 39;
             // 
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(38, 58);
+            this.label55.Location = new System.Drawing.Point(26, 52);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(92, 17);
             this.label55.TabIndex = 38;
@@ -1968,7 +1981,7 @@
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(44, 29);
+            this.label56.Location = new System.Drawing.Point(32, 25);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(86, 17);
             this.label56.TabIndex = 5;
@@ -1976,21 +1989,21 @@
             // 
             // tkmtd
             // 
-            this.tkmtd.Location = new System.Drawing.Point(156, 26);
+            this.tkmtd.Location = new System.Drawing.Point(169, 25);
             this.tkmtd.Name = "tkmtd";
-            this.tkmtd.Size = new System.Drawing.Size(214, 23);
+            this.tkmtd.Size = new System.Drawing.Size(311, 23);
             this.tkmtd.TabIndex = 6;
             // 
             // button7
             // 
-            this.button7.BackColor = System.Drawing.Color.Transparent;
-            this.button7.BackgroundImage = global::doannhom.Properties.Resources.Search_icon;
+            this.button7.BackColor = System.Drawing.Color.Gray;
             this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button7.ForeColor = System.Drawing.Color.Transparent;
+            this.button7.ForeColor = System.Drawing.Color.Black;
             this.button7.Location = new System.Drawing.Point(339, 30);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(78, 60);
             this.button7.TabIndex = 6;
+            this.button7.Text = "&SEARCH";
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
@@ -2035,14 +2048,14 @@
             // 
             // button26
             // 
-            this.button26.BackColor = System.Drawing.Color.Transparent;
-            this.button26.BackgroundImage = global::doannhom.Properties.Resources.Button_Reload_icon;
+            this.button26.BackColor = System.Drawing.Color.Gray;
             this.button26.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button26.ForeColor = System.Drawing.Color.Transparent;
+            this.button26.ForeColor = System.Drawing.Color.Black;
             this.button26.Location = new System.Drawing.Point(255, 30);
             this.button26.Name = "button26";
             this.button26.Size = new System.Drawing.Size(78, 60);
             this.button26.TabIndex = 2;
+            this.button26.Text = "&RELOAD";
             this.button26.UseVisualStyleBackColor = false;
             this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
@@ -3224,6 +3237,36 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnthemloaitd
+            // 
+            this.btnthemloaitd.Location = new System.Drawing.Point(65, 71);
+            this.btnthemloaitd.Name = "btnthemloaitd";
+            this.btnthemloaitd.Size = new System.Drawing.Size(75, 23);
+            this.btnthemloaitd.TabIndex = 22;
+            this.btnthemloaitd.Text = "Thêm";
+            this.btnthemloaitd.UseVisualStyleBackColor = true;
+            this.btnthemloaitd.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // btnxoaloaitd
+            // 
+            this.btnxoaloaitd.Location = new System.Drawing.Point(356, 71);
+            this.btnxoaloaitd.Name = "btnxoaloaitd";
+            this.btnxoaloaitd.Size = new System.Drawing.Size(75, 23);
+            this.btnxoaloaitd.TabIndex = 23;
+            this.btnxoaloaitd.Text = "Xóa";
+            this.btnxoaloaitd.UseVisualStyleBackColor = true;
+            this.btnxoaloaitd.Click += new System.EventHandler(this.btnxoaloaitd_Click);
+            // 
+            // btnsualoaitd
+            // 
+            this.btnsualoaitd.Location = new System.Drawing.Point(219, 71);
+            this.btnsualoaitd.Name = "btnsualoaitd";
+            this.btnsualoaitd.Size = new System.Drawing.Size(75, 23);
+            this.btnsualoaitd.TabIndex = 24;
+            this.btnsualoaitd.Text = "Sửa";
+            this.btnsualoaitd.UseVisualStyleBackColor = true;
+            this.btnsualoaitd.Click += new System.EventHandler(this.btnsualoaitd_Click);
+            // 
             // fmMenuMainAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -3570,5 +3613,8 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox cbSearchNv;
         private System.Windows.Forms.Button btnEdit_pc;
+        private System.Windows.Forms.Button btnsualoaitd;
+        private System.Windows.Forms.Button btnxoaloaitd;
+        private System.Windows.Forms.Button btnthemloaitd;
     }
 }

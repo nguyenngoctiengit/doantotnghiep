@@ -208,11 +208,9 @@ namespace doannhom
         }
         public void loadloaithucdonlenmonan()
         {
-            string strSQL = "select * from LoaiMonAn";
-            comboBox1.DataSource = FillDataTable(strSQL);
+            comboBox1.DataSource = (from a in _context.LoaiMonAn select new { a.MaLoai, a.TenLoai }).ToList();
             comboBox1.DisplayMember = "TenLoai";
             comboBox1.ValueMember = "MaLoai";
-            cnn.Close();
         }
         public void loadmabanvaocb()
         {
@@ -473,15 +471,6 @@ namespace doannhom
         {
             Loadltd();
             Loadtd();
-            txtmatd.Focus();
-            txtmatd.ResetText();
-            txttentd.ResetText();
-            txtmaloai.ResetText();
-            txtdongia.ResetText();
-            txtdvt.ResetText();
-            txtltdmaloai.ResetText();
-            txtltdtenloai.ResetText();
-
         }
         //----------**************sự kiện update tài khoản***************---------------------------------     
         private void tkbtnsua_Click(object sender, EventArgs e)
@@ -855,6 +844,116 @@ namespace doannhom
         //----------**************sự kiện khách hàng*********************---------------------------------
 
         //----------**************sự kiện show hide thực đơn*************---------------------------------
+        private void btnsualoaitd_Click(object sender, EventArgs e)
+        {
+            switch (btnsualoaitd.Text)
+            {
+                case "Sửa":
+                    btnsualoaitd.Text = "Save";
+                    btnthemloaitd.Text = "Thêm";
+                    txtltdtenloai.Enabled = true;
+                    break;
+                case "Save":
+                    try
+                    {
+                        int r = dgvloaitd.CurrentCell.RowIndex;
+                        string MaLoaiTD = dgvloaitd.Rows[r].Cells[0].Value.ToString();
+                        var item_return = (from a in _context.LoaiMonAn where a.MaLoai == MaLoaiTD select a).FirstOrDefault();
+                        item_return.TenLoai = this.txtltdtenloai.Text.ToString();
+                        _context.LoaiMonAn.Update(item_return);
+                        _context.SaveChanges();
+                        txtltdtenloai.Enabled = false;
+                        btnsualoaitd.Text = "Sửa";
+                        btnthemloaitd.Text = "Thêm";
+                        loadloaithucdontuloai();
+                        Loadltd();
+                        MessageBox.Show("Chỉnh sửa loại món ăn thành công", "Thông Báo");
+
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
+            }
+            gbtktd.Hide();
+        }
+        private void btnxoaloaitd_Click(object sender, EventArgs e)
+        {
+            DialogResult traloi;
+            traloi = MessageBox.Show("Xác nhận xóa loại món ăn", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (traloi == DialogResult.OK)
+            {
+                ConnectDB();
+                try
+                {
+                    int r = dgvloaitd.CurrentCell.RowIndex;
+                    string MaLoaiTD = dgvloaitd.Rows[r].Cells[0].Value.ToString();
+                    var item_return = (from a in _context.LoaiMonAn where a.MaLoai == MaLoaiTD select a).FirstOrDefault();
+                    if (_context.MonAn.Any(a => a.MaLoai == item_return.MaLoai))
+                    {
+                        MessageBox.Show("Loại món ăn chứa món ăn, không thể xóa", "Thông Báo");
+                    }
+                    else
+                    {
+                        _context.LoaiMonAn.Remove(item_return);
+                        _context.SaveChanges();
+                        loadloaithucdontuloai();
+                        Loadltd();
+                        MessageBox.Show("Xóa loại món ăn thành công ", "Thông Báo");
+                    }
+                }
+                catch (SqlException)
+                {
+                    MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                }
+            }
+        }
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            switch (btnthemloaitd.Text)
+            {
+                case "Thêm":
+                    btnthemloaitd.Text = "Save";
+                    btnsualoaitd.Text = "Sửa";
+                    txtltdmaloai.Enabled = true;
+                    txtltdtenloai.Enabled = true;
+                    txtltdmaloai.ResetText();
+                    txtltdtenloai.ResetText();
+                    break;
+                case "Save":
+                    try
+                    {
+                        var item = new LoaiMonAn();
+                        if (_context.LoaiMonAn.Any(a => a.MaLoai == this.txtltdmaloai.Text.ToString()))
+                        {
+                            MessageBox.Show("Mã loại món ăn bị trùng, vui lòng nhập lại", "Thông Báo");
+                        }
+                        else if (!this.txtltdmaloai.Text.StartsWith("ML"))
+                        {
+                            MessageBox.Show("Vui lòng nhập mã loại món ăn ML + stt món ăn", "Thông Báo");
+                        }
+                        else
+                        {
+                            item.MaLoai = this.txtltdmaloai.Text.ToString();
+                            item.TenLoai = this.txtltdtenloai.Text.ToString();
+                            _context.LoaiMonAn.Add(item);
+                            _context.SaveChanges();
+                            btnthemloaitd.Text = "Thêm";
+                            btnsualoaitd.Text = "Sửa";
+                            loadloaithucdontuloai();
+                            Loadltd();
+                            MessageBox.Show("Thêm loại món ăn thành công", "Thông Báo");
+                        }
+
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
+            }
+        }
         private void enable_resetText_td()
         {
             txtmatd.Focus();
@@ -951,6 +1050,40 @@ namespace doannhom
         }
         private void button25_Click(object sender, EventArgs e)
         {
+            switch (button25.Text)
+            {
+                case "&EDIT":
+                    button25.Text = "&SAVE";
+                    button24.Text = "&NEW";
+                    enable_td();
+                    break;
+                case "&SAVE":
+                    try
+                    {
+                        int r = dgvthucdon.CurrentCell.RowIndex;
+                        var MaTD = dgvthucdon.Rows[r].Cells[0];
+                        var maMonAn = (string)MaTD.Value;
+                        var item_return = (from a in _context.MonAn where a.MaMonAn == maMonAn select a).FirstOrDefault();
+                        item_return.MaMonAn = this.txtmatd.Text.ToString();
+                        item_return.TenMon = this.txttentd.Text.ToString();
+                        item_return.DonGia = int.Parse(this.txtdongia.Text.ToString());
+                        item_return.Dvt = this.txtdvt.Text.ToString();
+                        item_return.MaLoai = this.txtmaloai.SelectedValue.ToString();
+                        _context.MonAn.Update(item_return);
+                        _context.SaveChanges();
+                        disable_td();
+                        button25.Text = "&EDIT";
+                        button24.Text = "&NEW";
+                        Loadtd();
+                        MessageBox.Show("Chỉnh sửa món ăn thành công", "Thông Báo");
+
+                    }
+                    catch (SqlException)
+                    {
+                        MessageBox.Show("Lỗi, vui lòng kiểm tra lại ", "Thông Báo");
+                    }
+                    break;
+            }
             gbtktd.Hide();
         }
         private void button7_Click(object sender, EventArgs e)
@@ -968,14 +1101,14 @@ namespace doannhom
             {
                 string strMaTD = Convert.ToString(tkttd.Text);
 
-                string strSQL = "select * from ThucDon Where TenTD like N'%" + strMaTD + "%'";
+                string strSQL = "select * from MonAn Where TenMon like N'%" + strMaTD + "%'";
                 dgvthucdon.DataSource = FillDataTable(strSQL);
             }
             if (string.IsNullOrEmpty(tkttd.Text) && tkmtd.Text != "")
             {
                 string strMaTD = Convert.ToString(tkmtd.Text);
 
-                string strSQL = "select * from ThucDon Where MaTD=N'" + strMaTD + "'";
+                string strSQL = "select * from MonAn Where MaMonAN=N'" + strMaTD + "'";
                 dgvthucdon.DataSource = FillDataTable(strSQL);
             }
         }
@@ -983,9 +1116,18 @@ namespace doannhom
         //hãy thở cái rồi làm//
         private void button37_Click(object sender, EventArgs e)
         {
-            string strTen = Convert.ToString(comboBox1.Text);
-            string strSQL = "select ThucDon.MaTD, ThucDon.TenTD, ThucDon.DonGia, LoaiThucDon.TenLoai from ThucDon, LoaiThucDon where ThucDon.MaLoai = LoaiThucDon.MaLoai and TenLoai = N'" + strTen + "'";
-            dgvmonan.DataSource = FillDataTable(strSQL);
+            string strTen = comboBox1.SelectedValue.ToString();
+            dgvmonan.DataSource = (from a in _context.MonAn
+                                  join b in _context.LoaiMonAn on a.MaLoai equals b.MaLoai
+                                  where b.MaLoai == strTen
+                                  select new
+                                  {
+                                      a.MaMonAn,
+                                      a.TenMon,
+                                      a.DonGia,
+                                      a.Dvt,
+                                      b.TenLoai
+                                  }).ToList();
         }//tim kiem loai thuc don goi mon
         private void button11_Click(object sender, EventArgs e)
         {
@@ -1643,6 +1785,46 @@ namespace doannhom
         }
 
         private void groupBox11_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtltdmaloai_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pnban_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvmonan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvban_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
