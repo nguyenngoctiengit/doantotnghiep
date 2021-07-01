@@ -16,7 +16,7 @@ namespace doannhom.Models
         }
 
         public string MaBan { get; set; }
-        public string TinhTrang { get; set; }
+        public int TinhTrang { get; set; }
 
         public virtual ICollection<HoaDon> HoaDon { get; set; }
         public virtual ICollection<PhanCong> PhanCong { get; set; }

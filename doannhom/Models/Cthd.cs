@@ -9,6 +9,7 @@ namespace doannhom.Models
 {
     public partial class Cthd
     {
+        public int MaCTHD { get; set; }
         public int MaHd { get; set; }
         public string MaMonAn { get; set; }
         public int? SoLuong { get; set; }

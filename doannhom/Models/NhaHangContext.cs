@@ -48,8 +48,7 @@ namespace doannhom.Models
                 entity.Property(e => e.MaBan).HasMaxLength(10);
 
                 entity.Property(e => e.TinhTrang)
-                    .IsRequired()
-                    .HasMaxLength(20);
+                    .IsRequired().HasColumnType("tinyint");
             });
 
             modelBuilder.Entity<Ca>(entity =>
@@ -74,8 +73,9 @@ namespace doannhom.Models
 
             modelBuilder.Entity<Cthd>(entity =>
             {
-                entity.HasKey(e => new { e.MaHd, e.MaMonAn })
-                    .HasName("PK__CTHD__6C34D782C4A28199");
+                entity.Property(e => e.MaCTHD).HasColumnName("MaCTHD");
+
+                entity.HasKey(e => e.MaCTHD);
 
                 entity.ToTable("CTHD");
 
@@ -102,16 +102,10 @@ namespace doannhom.Models
                     .HasName("PK__HoaDon__2725A6E083A769B9");
 
                 entity.Property(e => e.MaHd)
-                    .HasColumnName("MaHD")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaHD");
 
                 entity.Property(e => e.MaBan)
                     .IsRequired()
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.MaKh)
-                    .IsRequired()
-                    .HasColumnName("MaKH")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.MaNv)

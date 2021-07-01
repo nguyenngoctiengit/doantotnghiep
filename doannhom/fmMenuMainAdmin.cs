@@ -57,7 +57,7 @@ namespace doannhom
             cmd = new SqlCommand(lenhsql, cnn);
             cmd.ExecuteNonQuery();
         }
-        void deleleban()
+ /*       void deleleban()
         {
             ConnectDB();
             int r = dgvban.CurrentCell.RowIndex;
@@ -75,8 +75,8 @@ namespace doannhom
             ban();
 
             DisconnectDB();
-        }
-        void capnhatbantrong()
+        }*/
+/*        void capnhatbantrong()
         {
             ConnectDB();
 
@@ -91,7 +91,7 @@ namespace doannhom
             ban();
 
             DisconnectDB();
-        }
+        }*/
         private void FillChart()
         {
             string strSQL = "Select TenNV as 'hoten',luong from nhanvien";
@@ -110,6 +110,14 @@ namespace doannhom
             }
         }
         //Load Data từng tab
+        public void LoaddsBanconguoi()
+        {
+            dgvBanconguoi.DataSource = (from a in _context.Ban where a.TinhTrang == 1 select new { a.MaBan, Trangthai = (a.TinhTrang == 0) ? "Trống" : "Có người" }).ToList();
+        }
+        public void LoaddsBantrong()
+        {
+            dgvBantrong.DataSource = (from a in _context.Ban where a.TinhTrang == 0 select new { a.MaBan,Trangthai = (a.TinhTrang == 0) ? "Trống" : "Có người" }).ToList();
+        }
         public void Loadtk()
         {
             var db = new NhaHangContext();
@@ -212,39 +220,37 @@ namespace doannhom
             comboBox1.DisplayMember = "TenLoai";
             comboBox1.ValueMember = "MaLoai";
         }
-        public void loadmabanvaocb()
+/*        public void loadmabanvaocb()
         {
             string strSQL = "select * from Ban";
             comboBox3.DataSource = FillDataTable(strSQL);
             comboBox3.DisplayMember = "MaBan";
             comboBox3.ValueMember = "MaBan";
             cnn.Close();
-        }
+        }*/
         public void loadnhanvienohd()
         {
-            string strSQL = "select * from NhanVien";
-            comboBox4.DataSource = FillDataTable(strSQL);
-            comboBox4.DisplayMember = "MaNV";
+            comboBox4.DataSource = (from a in _context.NhanVien select new { a.MaNv, a.TenNv }).ToList();
+            comboBox4.DisplayMember = "TenNv";
             comboBox4.ValueMember = "MaNV";
-            cnn.Close();
         }
 
-        public void ban()
+ /*       public void ban()
         {
             string strSQL = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan='" + comboBox3.Text.ToString() + "' GROUP BY MaBan,TenTD,DonGia";
             dgvban.DataSource = FillDataTable(strSQL);
-        }
+        }*/
         public void loadthucdongoimon()
         {
             string strSQL = "select ThucDon.MaTD, ThucDon.TenTD, ThucDon.DonGia, LoaiThucDon.TenLoai from ThucDon, LoaiThucDon where ThucDon.MaLoai = LoaiThucDon.MaLoai";
             dgvmonan.DataSource = FillDataTable(strSQL);
         }
-        public void LoadData2()
+/*        public void LoadData2()
         {
             string strSQL = "select sum(DonGia) as 'Tổng thành tiền' from bonhodem";
             dgvtongtien.DataSource = FillDataTable(strSQL);
-        }
-        public void LoadData3()
+        }*/
+/*        public void LoadData3()
         {
             string strMaBan = "select MaBan as 'BànTrống' from Ban Where TinhTrang=N'Trống'";
             dataGridView1.DataSource = FillDataTable(strMaBan);
@@ -253,7 +259,7 @@ namespace doannhom
         {
             string strMaBan = "select MaBan as 'CóNgười' from Ban Where TinhTrang=N'Có Người'";
             dataGridView2.DataSource = FillDataTable(strMaBan);
-        }
+        }*/
         void loadkh()
         {
             string strSQL = "select * from khachhang";
@@ -395,13 +401,13 @@ namespace doannhom
             txtltdmaloai.Text = Convert.ToString(dgvloaitd.CurrentRow.Cells[0].Value);
             txtltdtenloai.Text = Convert.ToString(dgvloaitd.CurrentRow.Cells[1].Value);
         }
-        private void dgvban_SelectionChanged(object sender, EventArgs e)
+/*        private void dgvban_SelectionChanged(object sender, EventArgs e)
         {
             txtmabangm.Text = Convert.ToString(dgvban.CurrentRow.Cells[0].Value);
             txttentdgm.Text = Convert.ToString(dgvban.CurrentRow.Cells[1].Value);
             txtsltdgm.Text = Convert.ToString(dgvban.CurrentRow.Cells[2].Value);
-        }
-        private void dgvmonan_SelectionChanged(object sender, EventArgs e)
+        }*/
+/*        private void dgvmonan_SelectionChanged(object sender, EventArgs e)
         {
             tenthucdon.Text = Convert.ToString(dgvmonan.CurrentRow.Cells[1].Value);
             dongia.Text = Convert.ToString(dgvmonan.CurrentRow.Cells[2].Value);
@@ -409,7 +415,7 @@ namespace doannhom
         private void dgvtongtien_SelectionChanged(object sender, EventArgs e)
         {
             txttongtienban.Text = Convert.ToString(dgvtongtien.CurrentRow.Cells[0].Value);
-        }
+        }*/
         private void dataGridView4_SelectionChanged(object sender, EventArgs e)
         {
             textBox1.Text = Convert.ToString(dataGridView4.CurrentRow.Cells[0].Value);
@@ -417,13 +423,14 @@ namespace doannhom
         //----------*************************************---------------------------------
         private void fmMenuMain_Load(object sender, EventArgs e)
         {
-            Loadtk(); Loadnv(); Loadpc(); Loadca(); Loadtd(); Loadltd(); Loadhd(); ban(); LoadData2(); LoadData3(); LoadData4();
+            LoaddsBantrong(); LoaddsBanconguoi();
+            Loadtk(); Loadnv(); Loadpc(); Loadca(); Loadtd(); Loadltd(); Loadhd(); /*ban(); LoadData2();*//* LoadData3(); LoadData4()*/;
             loadmabanphancongtuban();
             loadmacaphancongtuca();
             loadmanvphancongtunhanvien();
             loadloaithucdontuloai();
             loadloaithucdonlenmonan();
-            loadmabanvaocb();
+            /*loadmabanvaocb();*/
             loadthucdongoimon();
             loadnhanvienohd();
             dinhdangday();
@@ -1133,38 +1140,45 @@ namespace doannhom
         {
             try
             {
-                ConnectDB();
+                var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                var hoadon = new HoaDon();
+                var cthd = new Cthd();
+                int r = dgvmonan.CurrentCell.RowIndex;
+                var MaTD = dgvmonan.Rows[r].Cells[0];
+                var dongia = dgvmonan.Rows[r].Cells[2];
+                hoadon.MaHd = mahoadonmax + 1;
+                var DonGia = (int)dongia.Value;
+                var mamonan = MaTD.Value.ToString();
+                hoadon.MaBan = this.txtBan.Text.ToString();
+                hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
+                hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
+                cthd.MaMonAn = mamonan;
+                cthd.SoLuong = 1;
+                cthd.DonGia = DonGia;
+                cthd.MaHd = hoadon.MaHd;
+                _context.HoaDon.Add(hoadon);
+                _context.Cthd.Add(cthd);
+                _context.SaveChanges();
 
-                string strSQL = System.String.Concat("Insert Into bonhodem Values ('" +
-                this.comboBox3.Text.ToString() + "',N'" +
-                this.tenthucdon.Text.ToString() + "',1,'" +
-                this.dongia.Text.ToString() + "')");
+               /* string strSQL1 = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=" + comboBox3.Text.ToString() + " GROUP BY MaBan,TenTD,DonGia";
+                dgvban.DataSource = FillDataTable(strSQL1);*/
 
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = strSQL;
-                cmd.ExecuteNonQuery();
-
-                string strSQL1 = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=" + comboBox3.Text.ToString() + " GROUP BY MaBan,TenTD,DonGia";
-                dgvban.DataSource = FillDataTable(strSQL1);
-
-                string strSQL2 = "select sum(DonGia) as 'Tổng thành tiền' from bonhodem Where MaBan="+ comboBox3.Text.ToString() + "GROUP BY MaBan,SoLuong";
+               /* string strSQL2 = "select sum(DonGia) as 'Tổng thành tiền' from bonhodem Where MaBan=" + comboBox3.Text.ToString() + "GROUP BY MaBan,SoLuong";
                 dgvtongtien.DataSource = FillDataTable(strSQL2);
 
                 string strSQL3 = "Update Ban Set TinhTrang=N'Có Người' Where MaBan='" + comboBox3.Text.ToString() + "'";
-                dataGridView3.DataSource = FillDataTable(strSQL3);
+                dgvBantrong.DataSource = FillDataTable(strSQL3);
                 //123
                 LoadData3();
                 LoadData4();
-                DisconnectDB();
+                DisconnectDB();*/
             }
             catch (SqlException)
             {
                 MessageBox.Show("Lỗi, vui lòng kiểm tra lại", "Thông Báo");
             }
         }//goi mon
-        private void button30_Click(object sender, EventArgs e)
+        /*private void button30_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txttentdgm.Text))
             {
@@ -1189,7 +1203,7 @@ namespace doannhom
 
                     txtmabangm.ResetText();
                     txttentdgm.ResetText();
-                    
+
                     DisconnectDB();
 
                     MessageBox.Show("Xóa thành công", "Thông Báo");
@@ -1228,232 +1242,382 @@ namespace doannhom
             {
                 MessageBox.Show(ex.ToString());
             }
-        }//thanh toan goi mon
+        }//thanh toan goi mon*/
         //load btn bàn------------------------
         private void ban1_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=1";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=1 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "1").Select(a => a.MaBan).FirstOrDefault();
+            txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                join b in _context.Ban on a.MaBan equals b.MaBan
+                                join c in _context.Cthd on a.MaHd equals c.MaHd
+                                where b.MaBan == maBan
+                                select new
+                                        {
+                                        c.MaMonAn,
+                                        c.SoLuong,
+                                        c.DonGia
+                                        }).ToList();
         }
         private void ban2_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=2";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=2 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "2").Select(a => a.MaBan).FirstOrDefault();
+            txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                join b in _context.Ban on a.MaBan equals b.MaBan
+                                join c in _context.Cthd on a.MaHd equals c.MaHd
+                                where b.MaBan == maBan
+                                select new
+                                {
+                                    c.MaMonAn,
+                                    c.SoLuong,
+                                    c.DonGia
+                                }).ToList();
         }
         private void ban3_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=3";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=3 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "3").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                join b in _context.Ban on a.MaBan equals b.MaBan
+                                join c in _context.Cthd on a.MaHd equals c.MaHd
+                                where b.MaBan == maBan
+                                select new
+                                {
+                                    c.MaMonAn,
+                                    c.SoLuong,
+                                    c.DonGia
+                                }).ToList();
         }
         private void ban4_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=4";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=4 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "4").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                join b in _context.Ban on a.MaBan equals b.MaBan
+                                join c in _context.Cthd on a.MaHd equals c.MaHd
+                                where b.MaBan == maBan
+                                select new
+                                {
+                                    c.MaMonAn,
+                                    c.SoLuong,
+                                    c.DonGia
+                                }).ToList();
         }
         private void ban5_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=5";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=5 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "5").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban6_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=6";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=6 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "6").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban7_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=7";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=7 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "7").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban8_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=8";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=8 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "8").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban9_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=9";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=9 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "9").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban10_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=10";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=10 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "10").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban11_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=11";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=11 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "11").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban12_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=12";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=12 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "12").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban13_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=13";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=13 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "13").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban14_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=14";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=14 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "14").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban15_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=15";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=15 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "15").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban16_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=16";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=16 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "16").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban17_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=17";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=17 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "17").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban18_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=18";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=18 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "18").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban19_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=19";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=19 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "19").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban20_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=20";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=20 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "20").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban21_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=21";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=21 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "21").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban22_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=22";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=22 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "22").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban23_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=23";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=23 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "23").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban24_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=24";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=24 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "24").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         private void ban25_Click(object sender, EventArgs e)
         {
-            string strMaBan = "select * from Ban Where MaBan=25";
-            dgvloadban.DataSource = FillDataTable(strMaBan);
-            comboBox3.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[0].Value);
-            comboBox2.Text = Convert.ToString(dgvloadban.CurrentRow.Cells[1].Value);
-            string strmonancuaban = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=25 GROUP BY MaBan,TenTD,DonGia";
-            dgvban.DataSource = FillDataTable(strmonancuaban);
+            var maBan = _context.Ban.Where(a => a.MaBan == "25").Select(a => a.MaBan).FirstOrDefault();
+            this.txtBan.Text = maBan;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
         }
         //////------------------------------------------------------------------------//////////////
         //////-------------xu ly su kien thu chi--------------------------------------//////////////
@@ -1825,6 +1989,41 @@ namespace doannhom
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txttongtienban_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void dataGridView3_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+
+        private void label57_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ban2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ban3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ban4_Click_1(object sender, EventArgs e)
         {
 
         }
