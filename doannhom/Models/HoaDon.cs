@@ -15,8 +15,7 @@ namespace doannhom.Models
         {
             Cthd = new HashSet<Cthd>();
         }
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int TinhTrang { get; set; }
         public int MaHd { get; set; }
         public string MaBan { get; set; }
         public string MaNv { get; set; }

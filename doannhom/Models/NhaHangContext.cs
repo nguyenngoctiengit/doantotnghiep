@@ -98,6 +98,8 @@ namespace doannhom.Models
 
             modelBuilder.Entity<HoaDon>(entity =>
             {
+                entity.Property(e => e.TinhTrang).HasColumnName("TinhTrang");
+
                 entity.HasKey(e => e.MaHd)
                     .HasName("PK__HoaDon__2725A6E083A769B9");
 

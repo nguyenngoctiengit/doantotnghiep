@@ -76,22 +76,22 @@ namespace doannhom
 
             DisconnectDB();
         }*/
-/*        void capnhatbantrong()
-        {
-            ConnectDB();
+        /*        void capnhatbantrong()
+                {
+                    ConnectDB();
 
-            string strSQL = System.String.Concat("Update Ban Set TinhTrang=N'TRỐNG' Where MaBan='" + comboBox3.Text.ToString() + "'");
+                    string strSQL = System.String.Concat("Update Ban Set TinhTrang=N'TRỐNG' Where MaBan='" + comboBox3.Text.ToString() + "'");
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cnn;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = strSQL;
-            cmd.ExecuteNonQuery();
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = cnn;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = strSQL;
+                    cmd.ExecuteNonQuery();
 
-            ban();
+                    ban();
 
-            DisconnectDB();
-        }*/
+                    DisconnectDB();
+                }*/
         private void FillChart()
         {
             string strSQL = "Select TenNV as 'hoten',luong from nhanvien";
@@ -110,6 +110,20 @@ namespace doannhom
             }
         }
         //Load Data từng tab
+        public void LoaddgvBan()
+        {
+            var maBan = txtBan.Text;
+            dgvban.DataSource = (from a in _context.HoaDon
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == maBan
+                                 select new
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
+        }
         public void LoaddsBanconguoi()
         {
             dgvBanconguoi.DataSource = (from a in _context.Ban where a.TinhTrang == 1 select new { a.MaBan, Trangthai = (a.TinhTrang == 0) ? "Trống" : "Có người" }).ToList();
@@ -1140,83 +1154,93 @@ namespace doannhom
         {
             try
             {
-                var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
-                var hoadon = new HoaDon();
-                var cthd = new Cthd();
-                int r = dgvmonan.CurrentCell.RowIndex;
-                var MaTD = dgvmonan.Rows[r].Cells[0];
-                var dongia = dgvmonan.Rows[r].Cells[2];
-                hoadon.MaHd = mahoadonmax + 1;
-                var DonGia = (int)dongia.Value;
-                var mamonan = MaTD.Value.ToString();
-                hoadon.MaBan = this.txtBan.Text.ToString();
-                hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
-                hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
-                cthd.MaMonAn = mamonan;
-                cthd.SoLuong = 1;
-                cthd.DonGia = DonGia;
-                cthd.MaHd = hoadon.MaHd;
-                _context.HoaDon.Add(hoadon);
-                _context.Cthd.Add(cthd);
-                _context.SaveChanges();
-
-               /* string strSQL1 = "select MaBan as 'Mã Bàn',TenTD as 'Tên Món',SUM(SoLuong) as 'Số lượng',DonGia as 'Đơn Giá' from bonhodem Where MaBan=" + comboBox3.Text.ToString() + " GROUP BY MaBan,TenTD,DonGia";
-                dgvban.DataSource = FillDataTable(strSQL1);*/
-
-               /* string strSQL2 = "select sum(DonGia) as 'Tổng thành tiền' from bonhodem Where MaBan=" + comboBox3.Text.ToString() + "GROUP BY MaBan,SoLuong";
-                dgvtongtien.DataSource = FillDataTable(strSQL2);
-
-                string strSQL3 = "Update Ban Set TinhTrang=N'Có Người' Where MaBan='" + comboBox3.Text.ToString() + "'";
-                dgvBantrong.DataSource = FillDataTable(strSQL3);
-                //123
-                LoadData3();
-                LoadData4();
-                DisconnectDB();*/
+                var maBan = this.txtBan.Text;
+                var Ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
+                var HD = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
+                if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
+                {
+                    var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a.MaHd).FirstOrDefault();
+                    var cthd = new Cthd();
+                    cthd.MaHd = maHoadon;
+                    int r = dgvmonan.CurrentCell.RowIndex;
+                    var MaTD = dgvmonan.Rows[r].Cells[0];
+                    var dongia = dgvmonan.Rows[r].Cells[2];
+                    var DonGia = (int)dongia.Value;
+                    var mamonan = MaTD.Value.ToString();
+                    cthd.MaMonAn = mamonan;
+                    cthd.SoLuong = 1;
+                    cthd.DonGia = DonGia;
+                    _context.Cthd.Add(cthd);
+                    _context.SaveChanges();
+                    LoaddsBantrong();
+                    LoaddsBanconguoi();
+                    LoaddgvBan();
+                    MessageBox.Show("Gọi món thành công", "Thông Báo");
+                }
+                else
+                {
+                    var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
+                    var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                    var hoadon = new HoaDon();
+                    var cthd = new Cthd();
+                    int r = dgvmonan.CurrentCell.RowIndex;
+                    var MaTD = dgvmonan.Rows[r].Cells[0];
+                    var dongia = dgvmonan.Rows[r].Cells[2];
+                    hoadon.MaHd = mahoadonmax + 1;
+                    var DonGia = (int)dongia.Value;
+                    var mamonan = MaTD.Value.ToString();
+                    hoadon.TinhTrang = 0;
+                    hoadon.MaBan = this.txtBan.Text.ToString();
+                    hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
+                    hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
+                    cthd.MaMonAn = mamonan;
+                    cthd.SoLuong = 1;
+                    cthd.DonGia = DonGia;
+                    cthd.MaHd = hoadon.MaHd;
+                    update_ban.TinhTrang = 1;
+                    _context.Ban.Update(update_ban);
+                    _context.HoaDon.Add(hoadon);
+                    _context.Cthd.Add(cthd);
+                    _context.SaveChanges();
+                    LoaddsBantrong();
+                    LoaddsBanconguoi();
+                    LoaddgvBan();
+                    MessageBox.Show("Gọi món thành công", "Thông Báo");
+                }
+                
             }
             catch (SqlException)
             {
                 MessageBox.Show("Lỗi, vui lòng kiểm tra lại", "Thông Báo");
             }
-        }//goi mon
-        /*private void button30_Click(object sender, EventArgs e)
+        }
+        private void button30_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txttentdgm.Text))
+            var maBan = this.txtBan.Text;
+            var ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
+            var hoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
+            if (maBan == "" || maBan == null)
             {
-                MessageBox.Show("Thực đơn đã chọn trống", "Thông báo");
-            }
-            else
+                MessageBox.Show("Vui lòng chọn bàn", "Thông Báo");
+            }else if (ban.TinhTrang == 0)
             {
-                ConnectDB();
-                try
-                {
-                    string strSQL = System.String.Concat("Delete From bonhodem Where MaBan ='" + txtmabangm.Text.ToString() + "' and TenTD=N'" + txttentdgm.Text.ToString() + "'");
-
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cnn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = strSQL;
-                    cmd.ExecuteNonQuery();
-
-                    ban();
-                    LoadData3();
-                    LoadData4();
-
-                    txtmabangm.ResetText();
-                    txttentdgm.ResetText();
-
-                    DisconnectDB();
-
-                    MessageBox.Show("Xóa thành công", "Thông Báo");
-                }
-                catch (SqlException)
-                {
-                    MessageBox.Show("Lỗi, vui lòng kiểm tra lại", "Thông Báo");
-                }
-
-                DisconnectDB();
+                MessageBox.Show("Bàn trống, không thể xóa", "Thông Báo");
+            }else if (ban.TinhTrang == 1 && hoadon.TinhTrang == 0)
+            {
+                int r = dgvban.CurrentCell.RowIndex;
+                var MaTD = dgvban.Rows[r].Cells[0];
+                var mamonan = MaTD.Value.ToString();
+                var item_delete = (from a in _context.Cthd where a.MaHd == hoadon.MaHd && a.MaMonAn == mamonan select a).FirstOrDefault();
+                _context.Cthd.Remove(item_delete);
+                _context.SaveChanges();
+                LoaddsBantrong();
+                LoaddsBanconguoi();
+                LoaddgvBan();
+                MessageBox.Show("Xóa món ăn thành công", "Thông Báo");
             }
-        }//xoa thuc don da chon goi mon
-        private void button12_Click(object sender, EventArgs e)
+
+        }
+        /*private void button12_Click(object sender, EventArgs e)
         {
             ConnectDB();
             try
@@ -2027,5 +2051,7 @@ namespace doannhom
         {
 
         }
+
+        
     }
 }

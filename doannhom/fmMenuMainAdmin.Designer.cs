@@ -795,21 +795,22 @@
             this.button30.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
             this.button30.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button30.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button30.Location = new System.Drawing.Point(903, 497);
+            this.button30.Location = new System.Drawing.Point(784, 498);
             this.button30.Name = "button30";
-            this.button30.Size = new System.Drawing.Size(282, 75);
+            this.button30.Size = new System.Drawing.Size(216, 75);
             this.button30.TabIndex = 14;
             this.button30.Text = "Xóa món";
             this.button30.UseVisualStyleBackColor = true;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
             // 
             // button11
             // 
             this.button11.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
             this.button11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.button11.Location = new System.Drawing.Point(615, 495);
+            this.button11.Location = new System.Drawing.Point(588, 498);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(282, 75);
+            this.button11.Size = new System.Drawing.Size(190, 75);
             this.button11.TabIndex = 5;
             this.button11.Text = "Gọi món";
             this.button11.UseVisualStyleBackColor = true;
@@ -1085,8 +1086,8 @@
             this.ban5.TabIndex = 44;
             this.ban5.Text = "5";
             this.ban5.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.ban5.Click += new System.EventHandler(this.ban5_Click);
             this.ban5.UseVisualStyleBackColor = false;
+            this.ban5.Click += new System.EventHandler(this.ban5_Click);
             // 
             // ban24
             // 
