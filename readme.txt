@@ -13,4 +13,4 @@ Tình trạng bàn(0: trống ; 1: có người)
 Điều kiện bàn:
 Chọn bàn(Bàn trống) -> Chọn loại thực đơn + nvien (Save with Hóa đơn)
 Điều kiện xóa món và gọi món
-
+tiến
