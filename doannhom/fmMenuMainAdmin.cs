@@ -1152,7 +1152,7 @@ namespace doannhom
         }//tim kiem loai thuc don goi mon
         private void button11_Click(object sender, EventArgs e)
         {
-            try
+                try
             {
                 var maBan = this.txtBan.Text;
                 var Ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
@@ -1160,6 +1160,7 @@ namespace doannhom
                 if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
                 {
                     var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a.MaHd).FirstOrDefault();
+                    var hoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
                     var cthd = new Cthd();
                     cthd.MaHd = maHoadon;
                     int r = dgvmonan.CurrentCell.RowIndex;
@@ -1170,6 +1171,9 @@ namespace doannhom
                     cthd.MaMonAn = mamonan;
                     cthd.SoLuong = 1;
                     cthd.DonGia = DonGia;
+                    var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
+                    hoadon.TongTien = giatien.Sum() + DonGia;
+                    _context.HoaDon.Update(hoadon);
                     _context.Cthd.Add(cthd);
                     _context.SaveChanges();
                     LoaddsBantrong();
@@ -1193,6 +1197,7 @@ namespace doannhom
                     hoadon.MaBan = this.txtBan.Text.ToString();
                     hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
                     hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
+                    hoadon.TongTien = DonGia;
                     cthd.MaMonAn = mamonan;
                     cthd.SoLuong = 1;
                     cthd.DonGia = DonGia;
