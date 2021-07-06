@@ -14,6 +14,8 @@ namespace doannhom
 {
     public partial class fmMenuMainAdmin : Form
     {
+        public static int MaHoadon;
+        public static int MaBan;
         public fmMenuMainAdmin()
         {
             InitializeComponent();
@@ -57,41 +59,6 @@ namespace doannhom
             cmd = new SqlCommand(lenhsql, cnn);
             cmd.ExecuteNonQuery();
         }
- /*       void deleleban()
-        {
-            ConnectDB();
-            int r = dgvban.CurrentCell.RowIndex;
-
-            string strMaThucDon = dgvban.Rows[r].Cells[0].Value.ToString();
-
-            string strSQL = System.String.Concat("Delete From bonhodem Where MaBan='" + comboBox3.Text.ToString() + "'");
-
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cnn;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = strSQL;
-            cmd.ExecuteNonQuery();
-
-            ban();
-
-            DisconnectDB();
-        }*/
-        /*        void capnhatbantrong()
-                {
-                    ConnectDB();
-
-                    string strSQL = System.String.Concat("Update Ban Set TinhTrang=N'TRỐNG' Where MaBan='" + comboBox3.Text.ToString() + "'");
-
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cnn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = strSQL;
-                    cmd.ExecuteNonQuery();
-
-                    ban();
-
-                    DisconnectDB();
-                }*/
         private void FillChart()
         {
             string strSQL = "Select TenNV as 'hoten',luong from nhanvien";
@@ -116,7 +83,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1152,7 +1119,7 @@ namespace doannhom
         }//tim kiem loai thuc don goi mon
         private void button11_Click(object sender, EventArgs e)
         {
-                try
+            try
             {
                 var maBan = this.txtBan.Text;
                 var Ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
@@ -1232,11 +1199,16 @@ namespace doannhom
                 MessageBox.Show("Bàn trống, không thể xóa", "Thông Báo");
             }else if (ban.TinhTrang == 1 && hoadon.TinhTrang == 0)
             {
+                
                 int r = dgvban.CurrentCell.RowIndex;
                 var MaTD = dgvban.Rows[r].Cells[0];
+                var dongia = dgvban.Rows[r].Cells[2];
+                var DonGia = (int)dongia.Value;
+                hoadon.TongTien = hoadon.TongTien - DonGia;
                 var mamonan = MaTD.Value.ToString();
                 var item_delete = (from a in _context.Cthd where a.MaHd == hoadon.MaHd && a.MaMonAn == mamonan select a).FirstOrDefault();
                 _context.Cthd.Remove(item_delete);
+                _context.HoaDon.Update(hoadon);
                 _context.SaveChanges();
                 LoaddsBantrong();
                 LoaddsBanconguoi();
@@ -1280,8 +1252,8 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                 join b in _context.Ban on a.MaBan equals b.MaBan
                                 join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan
-                                select new
+                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 select new
                                         {
                                         c.MaMonAn,
                                         c.SoLuong,
@@ -1295,8 +1267,8 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                 join b in _context.Ban on a.MaBan equals b.MaBan
                                 join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan
-                                select new
+                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 select new
                                 {
                                     c.MaMonAn,
                                     c.SoLuong,
@@ -1430,7 +1402,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -2056,7 +2028,16 @@ namespace doannhom
         {
 
         }
+        private void btnThanhtoan_Click(object sender, EventArgs e)
+        {
+            MaHoadon = (from a in _context.HoaDon where a.MaBan == this.txtBan.Text && a.TinhTrang == 0 select a.MaHd).FirstOrDefault();
+            Form2 form2 = new Form2(this);
+            form2.Show();
+        }
 
-        
+        private void dgvBantrong_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
