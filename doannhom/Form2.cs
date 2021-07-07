@@ -69,7 +69,7 @@ namespace doannhom
             var MaHD = int.Parse(mahoadon);
             var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
             hoadon.TinhTrang = 1;
-            var ban = (from a in _context.Ban where a.MaBan == MaBan select a).FirstOrDefault();
+            var ban = (from a in _context.Ban where a.MaBan == hoadon.MaBan select a).FirstOrDefault();
             ban.TinhTrang = 0;
             _context.HoaDon.Update(hoadon);
             _context.Ban.Update(ban);

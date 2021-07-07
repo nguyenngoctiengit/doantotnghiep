@@ -1190,14 +1190,15 @@ namespace doannhom
         {
             var maBan = this.txtBan.Text;
             var ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
-            var hoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
+            int mahoadon = (from a in _context.HoaDon where a.MaBan == maBan && a.TinhTrang == 0 select a).Max(a => a.MaHd);
+            var hoadon = (from a in _context.HoaDon where a.MaHd == mahoadon select a).FirstOrDefault();
             if (maBan == "" || maBan == null)
             {
                 MessageBox.Show("Vui lòng chọn bàn", "Thông Báo");
             }else if (ban.TinhTrang == 0)
             {
                 MessageBox.Show("Bàn trống, không thể xóa", "Thông Báo");
-            }else if (ban.TinhTrang == 1 && hoadon.TinhTrang == 0)
+            }else
             {
                 
                 int r = dgvban.CurrentCell.RowIndex;
@@ -1282,8 +1283,8 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                 join b in _context.Ban on a.MaBan equals b.MaBan
                                 join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan
-                                select new
+                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 select new
                                 {
                                     c.MaMonAn,
                                     c.SoLuong,
@@ -1297,8 +1298,8 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                 join b in _context.Ban on a.MaBan equals b.MaBan
                                 join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan
-                                select new
+                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 select new
                                 {
                                     c.MaMonAn,
                                     c.SoLuong,
@@ -1312,7 +1313,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1327,7 +1328,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1342,7 +1343,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1357,7 +1358,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1372,7 +1373,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1387,7 +1388,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1417,7 +1418,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1432,7 +1433,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1447,7 +1448,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1462,7 +1463,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1477,7 +1478,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1492,7 +1493,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1507,7 +1508,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1522,7 +1523,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1537,7 +1538,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1552,7 +1553,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1567,7 +1568,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1582,7 +1583,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1597,7 +1598,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
@@ -1612,7 +1613,7 @@ namespace doannhom
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan
+                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
