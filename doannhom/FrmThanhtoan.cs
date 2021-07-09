@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace doannhom
 {
-    public partial class Form2 : Form
+    public partial class FrmThanhtoan : Form
     {
         public NhaHangContext _context = new NhaHangContext();
         fmMenuMainAdmin fmMenuMain;
-        public Form2(fmMenuMainAdmin fmMenuMainAdmin)
+        public FrmThanhtoan(fmMenuMainAdmin fmMenuMainAdmin)
         {
             InitializeComponent();
             this.fmMenuMain = fmMenuMainAdmin;
@@ -36,6 +36,7 @@ namespace doannhom
             this.txtMaHD.Text = hoadon.MaHd.ToString();
             this.txtMaNV.Text = (from a in _context.NhanVien where a.MaNv == hoadon.MaNv select a.TenNv).FirstOrDefault();
             this.txtTongTien.Text = hoadon.TongTien.ToString();
+            this.dtpNgaytao.Text = hoadon.NgayLap.ToString();
         }
         public void LoadDgvMonAn()
         {
@@ -74,8 +75,34 @@ namespace doannhom
             _context.HoaDon.Update(hoadon);
             _context.Ban.Update(ban);
             _context.SaveChanges();
+            fmMenuMain.LoaddsBantrong();
+            fmMenuMain.LoaddsBanconguoi();
             MessageBox.Show("Thanh toán thành công", "Thông Báo");
             this.Close();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void printPreviewDialog1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(bitmap, 0, 0);
+        }
+        Bitmap bitmap;
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            Graphics g = this.CreateGraphics();
+            bitmap = new Bitmap(this.Size.Width, this.Size.Height, g);
+            Graphics mg = Graphics.FromImage(bitmap);
+            mg.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, this.Size);
+            printPreviewDialog1.ShowDialog();
         }
     }
 }

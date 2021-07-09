@@ -58,8 +58,6 @@
             this.dgvBanconguoi = new System.Windows.Forms.DataGridView();
             this.dgvBantrong = new System.Windows.Forms.DataGridView();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.txtBan = new System.Windows.Forms.TextBox();
@@ -221,6 +219,7 @@
             this.button10 = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.btnThanhtoan = new System.Windows.Forms.Button();
+            this.btnChuyenban = new System.Windows.Forms.Button();
             this.button30 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button37 = new System.Windows.Forms.Button();
@@ -261,6 +260,7 @@
             this.button44 = new System.Windows.Forms.Button();
             this.button42 = new System.Windows.Forms.Button();
             this.button40 = new System.Windows.Forms.Button();
+            this.btnGhepban = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.tabHT.SuspendLayout();
             this.panel18.SuspendLayout();
@@ -279,8 +279,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvBanconguoi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBantrong)).BeginInit();
             this.panel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox13.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvmonan)).BeginInit();
@@ -371,7 +369,7 @@
             this.panel18.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel18.Location = new System.Drawing.Point(3, 122);
             this.panel18.Name = "panel18";
-            this.panel18.Size = new System.Drawing.Size(1219, 460);
+            this.panel18.Size = new System.Drawing.Size(1219, 456);
             this.panel18.TabIndex = 3;
             // 
             // dataGridView4
@@ -609,32 +607,12 @@
             // 
             // panel12
             // 
-            this.panel12.Controls.Add(this.dataGridView2);
-            this.panel12.Controls.Add(this.dataGridView1);
+            this.panel12.Controls.Add(this.btnGhepban);
+            this.panel12.Controls.Add(this.btnChuyenban);
             this.panel12.Location = new System.Drawing.Point(965, 263);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(262, 224);
             this.panel12.TabIndex = 19;
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(132, 3);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.Size = new System.Drawing.Size(123, 219);
-            this.dataGridView2.TabIndex = 8;
-            this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(123, 219);
-            this.dataGridView1.TabIndex = 7;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // groupBox13
             // 
@@ -666,6 +644,7 @@
             // 
             // txtBan
             // 
+            this.txtBan.Enabled = false;
             this.txtBan.Location = new System.Drawing.Point(9, 93);
             this.txtBan.Name = "txtBan";
             this.txtBan.Size = new System.Drawing.Size(239, 23);
@@ -673,6 +652,7 @@
             // 
             // dateTimePicker1
             // 
+            this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePicker1.Location = new System.Drawing.Point(10, 150);
             this.dateTimePicker1.Name = "dateTimePicker1";
@@ -817,7 +797,7 @@
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel10.Location = new System.Drawing.Point(3, 122);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(1219, 460);
+            this.panel10.Size = new System.Drawing.Size(1219, 456);
             this.panel10.TabIndex = 5;
             // 
             // dgvloaitd
@@ -1245,7 +1225,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(3, 122);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1219, 460);
+            this.panel3.Size = new System.Drawing.Size(1219, 456);
             this.panel3.TabIndex = 3;
             // 
             // panel23
@@ -1652,7 +1632,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 123);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1219, 458);
+            this.panel1.Size = new System.Drawing.Size(1219, 454);
             this.panel1.TabIndex = 5;
             // 
             // dgvnhanvien
@@ -2418,6 +2398,19 @@
             this.btnThanhtoan.UseVisualStyleBackColor = true;
             this.btnThanhtoan.Click += new System.EventHandler(this.btnThanhtoan_Click);
             // 
+            // btnChuyenban
+            // 
+            this.btnChuyenban.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
+            this.btnChuyenban.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnChuyenban.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnChuyenban.Location = new System.Drawing.Point(3, 3);
+            this.btnChuyenban.Name = "btnChuyenban";
+            this.btnChuyenban.Size = new System.Drawing.Size(251, 75);
+            this.btnChuyenban.TabIndex = 23;
+            this.btnChuyenban.Text = "Chuyển bàn";
+            this.btnChuyenban.UseVisualStyleBackColor = true;
+            this.btnChuyenban.Click += new System.EventHandler(this.btnChuyenban_Click);
+            // 
             // button30
             // 
             this.button30.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
@@ -2527,7 +2520,7 @@
             this.ban10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ban10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.ban10.ForeColor = System.Drawing.Color.Red;
-            this.ban10.Location = new System.Drawing.Point(464, 6);
+            this.ban10.Location = new System.Drawing.Point(464, 78);
             this.ban10.Name = "ban10";
             this.ban10.Size = new System.Drawing.Size(110, 66);
             this.ban10.TabIndex = 45;
@@ -2547,7 +2540,7 @@
             this.ban5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ban5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.ban5.ForeColor = System.Drawing.Color.Red;
-            this.ban5.Location = new System.Drawing.Point(464, 78);
+            this.ban5.Location = new System.Drawing.Point(464, 6);
             this.ban5.Name = "ban5";
             this.ban5.Size = new System.Drawing.Size(110, 66);
             this.ban5.TabIndex = 44;
@@ -3113,6 +3106,19 @@
             this.button40.UseVisualStyleBackColor = true;
             this.button40.Click += new System.EventHandler(this.button40_Click);
             // 
+            // btnGhepban
+            // 
+            this.btnGhepban.BackgroundImage = global::doannhom.Properties.Resources._78060312_2865538826791637_8451075490411708416_n;
+            this.btnGhepban.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnGhepban.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnGhepban.Location = new System.Drawing.Point(3, 84);
+            this.btnGhepban.Name = "btnGhepban";
+            this.btnGhepban.Size = new System.Drawing.Size(251, 75);
+            this.btnGhepban.TabIndex = 24;
+            this.btnGhepban.Text = "Ghép bàn";
+            this.btnGhepban.UseVisualStyleBackColor = true;
+            this.btnGhepban.Click += new System.EventHandler(this.btnGhepban_Click);
+            // 
             // fmMenuMainAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -3145,8 +3151,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvBanconguoi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBantrong)).EndInit();
             this.panel12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -3244,8 +3248,6 @@
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.TabPage tabTC;
         private System.Windows.Forms.Panel panel12;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.GroupBox groupBox13;
@@ -3444,5 +3446,7 @@
         private System.Windows.Forms.DataGridView dgvBanconguoi;
         private System.Windows.Forms.TextBox txtBan;
         private System.Windows.Forms.Button btnThanhtoan;
+        private System.Windows.Forms.Button btnChuyenban;
+        private System.Windows.Forms.Button btnGhepban;
     }
 }

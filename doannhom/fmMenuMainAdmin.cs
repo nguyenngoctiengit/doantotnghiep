@@ -76,7 +76,21 @@ namespace doannhom
                 MessageBox.Show("Không vẽ được biểu đồ bởi: " + ex.Message);
             }
         }
+
         //Load Data từng tab
+        public void LoadThanhToan()
+        {
+            var maBan = txtBan.Text;
+            var ban = _context.Ban.Where(a => a.MaBan == maBan).FirstOrDefault();
+            if (ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
+        }
         public void LoaddgvBan()
         {
             var maBan = txtBan.Text;
@@ -101,8 +115,7 @@ namespace doannhom
         }
         public void Loadtk()
         {
-            var db = new NhaHangContext();
-            dgvtaikhoan.DataSource = (from c in db.TaiKhoan select c).ToList();
+            dgvtaikhoan.DataSource = (from a in _context.TaiKhoan select new { a.TenTk, a.MatKhau, a.MaNv, a.ChucVu, a.NgayDk }).ToList();
         }
         public void Loadnv()
         {
@@ -411,14 +424,12 @@ namespace doannhom
             loadmanvphancongtunhanvien();
             loadloaithucdontuloai();
             loadloaithucdonlenmonan();
-            /*loadmabanvaocb();*/
             loadthucdongoimon();
             loadnhanvienohd();
             dinhdangday();
             FillChart();
             chart1.Hide();
             dgvthuchi.Hide();
-            //timer1.Interval = 1000;
             timer1.Enabled = true;
         } //Load Data
         //----*********************Reload data********-------------------
@@ -1121,65 +1132,70 @@ namespace doannhom
         {
             try
             {
+                
                 var maBan = this.txtBan.Text;
                 var Ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
                 var HD = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
-                if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
+                int r = dgvmonan.CurrentCell.RowIndex;
+                var MaTD = dgvmonan.Rows[r].Cells[0];
+                var dongia = dgvmonan.Rows[r].Cells[2];
+                if (MaTD == null)
                 {
-                    var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a.MaHd).FirstOrDefault();
-                    var hoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
-                    var cthd = new Cthd();
-                    cthd.MaHd = maHoadon;
-                    int r = dgvmonan.CurrentCell.RowIndex;
-                    var MaTD = dgvmonan.Rows[r].Cells[0];
-                    var dongia = dgvmonan.Rows[r].Cells[2];
-                    var DonGia = (int)dongia.Value;
-                    var mamonan = MaTD.Value.ToString();
-                    cthd.MaMonAn = mamonan;
-                    cthd.SoLuong = 1;
-                    cthd.DonGia = DonGia;
-                    var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
-                    hoadon.TongTien = giatien.Sum() + DonGia;
-                    _context.HoaDon.Update(hoadon);
-                    _context.Cthd.Add(cthd);
-                    _context.SaveChanges();
-                    LoaddsBantrong();
-                    LoaddsBanconguoi();
-                    LoaddgvBan();
-                    MessageBox.Show("Gọi món thành công", "Thông Báo");
+                    MessageBox.Show("Vui lòng chọn món ăn", "Thông Báo");
                 }
                 else
                 {
-                    var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
-                    var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
-                    var hoadon = new HoaDon();
-                    var cthd = new Cthd();
-                    int r = dgvmonan.CurrentCell.RowIndex;
-                    var MaTD = dgvmonan.Rows[r].Cells[0];
-                    var dongia = dgvmonan.Rows[r].Cells[2];
-                    hoadon.MaHd = mahoadonmax + 1;
-                    var DonGia = (int)dongia.Value;
-                    var mamonan = MaTD.Value.ToString();
-                    hoadon.TinhTrang = 0;
-                    hoadon.MaBan = this.txtBan.Text.ToString();
-                    hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
-                    hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
-                    hoadon.TongTien = DonGia;
-                    cthd.MaMonAn = mamonan;
-                    cthd.SoLuong = 1;
-                    cthd.DonGia = DonGia;
-                    cthd.MaHd = hoadon.MaHd;
-                    update_ban.TinhTrang = 1;
-                    _context.Ban.Update(update_ban);
-                    _context.HoaDon.Add(hoadon);
-                    _context.Cthd.Add(cthd);
-                    _context.SaveChanges();
-                    LoaddsBantrong();
-                    LoaddsBanconguoi();
-                    LoaddgvBan();
-                    MessageBox.Show("Gọi món thành công", "Thông Báo");
+                    if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
+                    {
+                        var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a.MaHd).FirstOrDefault();
+                        var hoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
+                        var cthd = new Cthd();
+                        cthd.MaHd = maHoadon;
+                        var DonGia = (int)dongia.Value;
+                        var mamonan = MaTD.Value.ToString();
+                        cthd.MaMonAn = mamonan;
+                        cthd.SoLuong = 1;
+                        cthd.DonGia = DonGia;
+                        var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
+                        hoadon.TongTien = giatien.Sum() + DonGia;
+                        _context.HoaDon.Update(hoadon);
+                        _context.Cthd.Add(cthd);
+                        _context.SaveChanges();
+                        LoaddsBantrong();
+                        LoaddsBanconguoi();
+                        LoaddgvBan();
+                        MessageBox.Show("Gọi món thành công", "Thông Báo");
+                    }
+                    else
+                    {
+                        var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
+                        var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                        var hoadon = new HoaDon();
+                        var cthd = new Cthd();
+                        hoadon.MaHd = mahoadonmax + 1;
+                        var DonGia = (int)dongia.Value;
+                        var mamonan = MaTD.Value.ToString();
+                        hoadon.TinhTrang = 0;
+                        hoadon.MaBan = this.txtBan.Text.ToString();
+                        hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
+                        hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
+                        hoadon.TongTien = DonGia;
+                        cthd.MaMonAn = mamonan;
+                        cthd.SoLuong = 1;
+                        cthd.DonGia = DonGia;
+                        cthd.MaHd = hoadon.MaHd;
+                        update_ban.TinhTrang = 1;
+                        _context.Ban.Update(update_ban);
+                        _context.HoaDon.Add(hoadon);
+                        _context.Cthd.Add(cthd);
+                        _context.SaveChanges();
+                        btnThanhtoan.Visible = true;
+                        LoaddsBantrong();
+                        LoaddsBanconguoi();
+                        LoaddgvBan();
+                        MessageBox.Show("Gọi món thành công", "Thông Báo");
+                    }
                 }
-                
             }
             catch (SqlException)
             {
@@ -1211,6 +1227,18 @@ namespace doannhom
                 _context.Cthd.Remove(item_delete);
                 _context.HoaDon.Update(hoadon);
                 _context.SaveChanges();
+                var count_cthd = _context.Cthd.Where(a => a.MaHd == hoadon.MaHd).Count();
+                if (count_cthd == 0)
+                {
+                    var delete_hd = _context.HoaDon.Where(a => a.MaHd == hoadon.MaHd).FirstOrDefault();
+                    ban.TinhTrang = 0;
+                    _context.Ban.Update(ban);
+                    _context.HoaDon.Remove(delete_hd);
+                    _context.SaveChanges();
+                    LoaddsBantrong();
+                    LoaddsBanconguoi();
+                    LoaddgvBan();
+                }
                 LoaddsBantrong();
                 LoaddsBanconguoi();
                 LoaddgvBan();
@@ -1248,378 +1276,578 @@ namespace doannhom
         //load btn bàn------------------------
         private void ban1_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "1").Select(a => a.MaBan).FirstOrDefault();
-            txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "1").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                 join b in _context.Ban on a.MaBan equals b.MaBan
                                 join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                         {
                                         c.MaMonAn,
                                         c.SoLuong,
                                         c.DonGia
                                         }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban2_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "2").Select(a => a.MaBan).FirstOrDefault();
-            txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "2").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
-                                join b in _context.Ban on a.MaBan equals b.MaBan
-                                join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
-                                {
-                                    c.MaMonAn,
-                                    c.SoLuong,
-                                    c.DonGia
-                                }).ToList();
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban3_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "3").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "3").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
-                                join b in _context.Ban on a.MaBan equals b.MaBan
-                                join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
-                                {
-                                    c.MaMonAn,
-                                    c.SoLuong,
-                                    c.DonGia
-                                }).ToList();
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban4_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "4").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "4").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
-                                join b in _context.Ban on a.MaBan equals b.MaBan
-                                join c in _context.Cthd on a.MaHd equals c.MaHd
-                                where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 join b in _context.Ban on a.MaBan equals b.MaBan
+                                 join c in _context.Cthd on a.MaHd equals c.MaHd
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
-                                {
-                                    c.MaMonAn,
-                                    c.SoLuong,
-                                    c.DonGia
-                                }).ToList();
+                                 {
+                                     c.MaMonAn,
+                                     c.SoLuong,
+                                     c.DonGia
+                                 }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban5_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "5").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "5").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban6_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "6").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "6").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban7_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "7").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "7").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban8_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "8").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "8").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban9_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "9").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "9").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban10_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "10").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "10").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban11_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "11").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "11").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban12_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "12").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "12").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban13_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "13").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "13").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban14_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "14").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "14").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban15_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "15").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "15").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban16_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "16").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "16").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban17_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "17").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "17").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban18_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "18").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "18").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban19_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "19").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "19").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban20_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "20").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "20").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban21_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "21").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "21").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban22_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "22").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "22").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban23_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "23").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "23").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban24_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "24").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "24").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         private void ban25_Click(object sender, EventArgs e)
         {
-            var maBan = _context.Ban.Where(a => a.MaBan == "25").Select(a => a.MaBan).FirstOrDefault();
-            this.txtBan.Text = maBan;
+            var Ban = _context.Ban.Where(a => a.MaBan == "25").FirstOrDefault();
+            txtBan.Text = Ban.MaBan;
             dgvban.DataSource = (from a in _context.HoaDon
                                  join b in _context.Ban on a.MaBan equals b.MaBan
                                  join c in _context.Cthd on a.MaHd equals c.MaHd
-                                 where b.MaBan == maBan && b.TinhTrang == 1 && a.TinhTrang == 0
+                                 where b.MaBan == Ban.MaBan && b.TinhTrang == 1 && a.TinhTrang == 0
                                  select new
                                  {
                                      c.MaMonAn,
                                      c.SoLuong,
                                      c.DonGia
                                  }).ToList();
+            if (Ban.TinhTrang == 0)
+            {
+                btnThanhtoan.Visible = false;
+            }
+            else
+            {
+                btnThanhtoan.Visible = true;
+            }
         }
         //////------------------------------------------------------------------------//////////////
         //////-------------xu ly su kien thu chi--------------------------------------//////////////
@@ -2032,13 +2260,25 @@ namespace doannhom
         private void btnThanhtoan_Click(object sender, EventArgs e)
         {
             MaHoadon = (from a in _context.HoaDon where a.MaBan == this.txtBan.Text && a.TinhTrang == 0 select a.MaHd).FirstOrDefault();
-            Form2 form2 = new Form2(this);
+            FrmThanhtoan form2 = new FrmThanhtoan(this);
             form2.Show();
         }
 
         private void dgvBantrong_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void btnChuyenban_Click(object sender, EventArgs e)
+        {
+            FrmChuyenBan frmChuyenBan = new FrmChuyenBan(this);
+            frmChuyenBan.Show();
+        }
+
+        private void btnGhepban_Click(object sender, EventArgs e)
+        {
+            FrmGhepBan frmGhepBan = new FrmGhepBan(this);
+            frmGhepBan.Show();
         }
     }
 }

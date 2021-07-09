@@ -246,4 +246,6 @@ C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.csproj.CoreC
 C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.csproj.CopyComplete
 C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.exe
 C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.pdb
-C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.Form2.resources
+C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmThanhtoan.resources
+C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmChuyenBan.resources
+C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmGhepBan.resources

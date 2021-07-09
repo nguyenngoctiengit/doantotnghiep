@@ -1,7 +1,7 @@
 ﻿
 namespace doannhom
 {
-    partial class Form2
+    partial class FrmThanhtoan
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,7 @@ namespace doannhom
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmThanhtoan));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,6 +47,9 @@ namespace doannhom
             this.dgvMonAn = new System.Windows.Forms.DataGridView();
             this.lbMaBan = new System.Windows.Forms.Label();
             this.btnThanhToan = new System.Windows.Forms.Button();
+            this.btnPrint = new System.Windows.Forms.Button();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonAn)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +71,7 @@ namespace doannhom
             this.label2.Size = new System.Drawing.Size(259, 25);
             this.label2.TabIndex = 1;
             this.label2.Text = "PHIẾU THANH TOÁN BÀN:";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -97,6 +102,7 @@ namespace doannhom
             // 
             // txtMaHD
             // 
+            this.txtMaHD.Enabled = false;
             this.txtMaHD.Location = new System.Drawing.Point(99, 63);
             this.txtMaHD.Name = "txtMaHD";
             this.txtMaHD.Size = new System.Drawing.Size(100, 20);
@@ -113,6 +119,7 @@ namespace doannhom
             // 
             // txtMaBan
             // 
+            this.txtMaBan.Enabled = false;
             this.txtMaBan.Location = new System.Drawing.Point(272, 63);
             this.txtMaBan.Name = "txtMaBan";
             this.txtMaBan.Size = new System.Drawing.Size(100, 20);
@@ -129,6 +136,7 @@ namespace doannhom
             // 
             // txtMaNV
             // 
+            this.txtMaNV.Enabled = false;
             this.txtMaNV.Location = new System.Drawing.Point(162, 98);
             this.txtMaNV.Name = "txtMaNV";
             this.txtMaNV.Size = new System.Drawing.Size(210, 20);
@@ -145,6 +153,9 @@ namespace doannhom
             // 
             // dtpNgaytao
             // 
+            this.dtpNgaytao.CustomFormat = "dd/MM/yyyy";
+            this.dtpNgaytao.Enabled = false;
+            this.dtpNgaytao.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpNgaytao.Location = new System.Drawing.Point(99, 133);
             this.dtpNgaytao.Name = "dtpNgaytao";
             this.dtpNgaytao.Size = new System.Drawing.Size(273, 20);
@@ -161,6 +172,7 @@ namespace doannhom
             // 
             // txtTongTien
             // 
+            this.txtTongTien.Enabled = false;
             this.txtTongTien.Location = new System.Drawing.Point(99, 174);
             this.txtTongTien.Name = "txtTongTien";
             this.txtTongTien.Size = new System.Drawing.Size(273, 20);
@@ -194,11 +206,38 @@ namespace doannhom
             this.btnThanhToan.UseVisualStyleBackColor = true;
             this.btnThanhToan.Click += new System.EventHandler(this.button1_Click);
             // 
+            // btnPrint
+            // 
+            this.btnPrint.Location = new System.Drawing.Point(243, 403);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(75, 23);
+            this.btnPrint.TabIndex = 17;
+            this.btnPrint.Text = "In hóa đơn";
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
+            // printDocument1
+            // 
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Document = this.printDocument1;
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            this.printPreviewDialog1.Load += new System.EventHandler(this.printPreviewDialog1_Load);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(393, 450);
+            this.ClientSize = new System.Drawing.Size(393, 435);
+            this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnThanhToan);
             this.Controls.Add(this.lbMaBan);
             this.Controls.Add(this.dgvMonAn);
@@ -244,5 +283,8 @@ namespace doannhom
         private System.Windows.Forms.DataGridView dgvMonAn;
         private System.Windows.Forms.Label lbMaBan;
         private System.Windows.Forms.Button btnThanhToan;
+        private System.Windows.Forms.Button btnPrint;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
     }
 }
