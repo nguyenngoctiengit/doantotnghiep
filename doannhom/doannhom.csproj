@@ -201,6 +201,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmTachBan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTachBan.Designer.cs">
+      <DependentUpon>FrmTachBan.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmGhepBan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -272,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGhepBan.resx">
       <DependentUpon>FrmGhepBan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTachBan.resx">
+      <DependentUpon>FrmTachBan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmThanhtoan.resx">
       <DependentUpon>FrmThanhtoan.cs</DependentUpon>

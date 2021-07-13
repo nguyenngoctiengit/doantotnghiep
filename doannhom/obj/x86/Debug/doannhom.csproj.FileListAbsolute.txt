@@ -249,3 +249,4 @@ C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.pdb
 C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmThanhtoan.resources
 C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmChuyenBan.resources
 C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmGhepBan.resources
+C:\Users\User\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmTachBan.resources

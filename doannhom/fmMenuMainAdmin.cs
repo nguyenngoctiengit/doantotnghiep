@@ -1178,7 +1178,7 @@ namespace doannhom
                         hoadon.TinhTrang = 0;
                         hoadon.MaBan = this.txtBan.Text.ToString();
                         hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
-                        hoadon.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
+                        hoadon.NgayLap = DateTime.Now;
                         hoadon.TongTien = DonGia;
                         cthd.MaMonAn = mamonan;
                         cthd.SoLuong = 1;
@@ -2280,5 +2280,27 @@ namespace doannhom
             FrmGhepBan frmGhepBan = new FrmGhepBan(this);
             frmGhepBan.Show();
         }
+        private void btnTachBan_Click_1(object sender, EventArgs e)
+        {
+            FrmTachBan frmTachBan = new FrmTachBan();
+            frmTachBan.Show();
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTachBan_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
