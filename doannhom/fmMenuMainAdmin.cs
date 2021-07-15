@@ -26,7 +26,7 @@ namespace doannhom
         SqlCommand cmd;
         void ConnectDB()
         {
-            string strDB = @"Data Source=DESKTOP-GJ6UCAT;Initial Catalog=NhaHang;Integrated Security=True";
+            string strDB = @"Data Source=DESKTOP-Q145K1J\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True";
             cnn = new SqlConnection(strDB);
             cnn.Open();
         }
@@ -380,6 +380,9 @@ namespace doannhom
             txtmaca.Text = Convert.ToString(dgvca.CurrentRow.Cells[0].Value);
             txttenca.Text = Convert.ToString(dgvca.CurrentRow.Cells[1].Value);
             txtluuy.Text = Convert.ToString(dgvca.CurrentRow.Cells[2].Value);
+            dateBDca.Text = Convert.ToString(dgvca.CurrentRow.Cells[3].Value);
+            dateKTca.Text = Convert.ToString(dgvca.CurrentRow.Cells[4].Value);
+
         }
 
         private void dgvthucdon_SelectionChanged(object sender, EventArgs e)
@@ -744,7 +747,7 @@ namespace doannhom
                         Disnable_Phancong();
 
                         Loadpc();
-                        MessageBox.Show("Thêm nhân viên thành công", "Thông Báo");
+                        MessageBox.Show("Thêm phân công thành công", "Thông Báo");
                         
                     }
                     catch (SqlException)
@@ -781,7 +784,7 @@ namespace doannhom
                         btnEdit_pc.Text = "&EDIT";
                         button18.Text = "&NEW";
                         Loadpc();
-                        MessageBox.Show("Chỉnh sửa nhân viên thành công", "Thông Báo");
+                        MessageBox.Show("Chỉnh sửa phân công thành công", "Thông Báo");
 
                     }
                     catch (SqlException)
@@ -1164,7 +1167,7 @@ namespace doannhom
                         LoaddsBantrong();
                         LoaddsBanconguoi();
                         LoaddgvBan();
-                        MessageBox.Show("Gọi món thành công", "Thông Báo");
+                       
                     }
                     else
                     {
@@ -1221,6 +1224,7 @@ namespace doannhom
                 var MaTD = dgvban.Rows[r].Cells[0];
                 var dongia = dgvban.Rows[r].Cells[2];
                 var DonGia = (int)dongia.Value;
+
                 hoadon.TongTien = hoadon.TongTien - DonGia;
                 var mamonan = MaTD.Value.ToString();
                 var item_delete = (from a in _context.Cthd where a.MaHd == hoadon.MaHd && a.MaMonAn == mamonan select a).FirstOrDefault();
@@ -2301,6 +2305,129 @@ namespace doannhom
 
         }
 
-        
+        private void tkgbdanhmuc_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnaddca_Click(object sender, EventArgs e)
+        {
+            switch (btnaddca.Text)
+            {
+                case "add":
+                    btnaddca.Text = "save";
+                    txtmaca.Enabled = true; txtmaca.ResetText();
+                    txttenca.Enabled = true; txttenca.ResetText();
+                    txtluuy.Enabled = true; txtluuy.ResetText();
+                    dateBDca.Enabled = true; dateBDca.ResetText();
+                    dateKTca.Enabled = true; dateKTca.ResetText();
+
+                    break;
+                case "save":
+
+                    var item = new Ca();
+                    if (_context.Ca.Any(a => a.MaCa == this.txtmaca.Text.ToString()))
+                    {
+                        MessageBox.Show("Mã ca bị trùng, vui lòng nhập lại", "Thông Báo");
+                    }
+                    else if (!this.txtmaca.Text.StartsWith("ca"))
+                    {
+                        MessageBox.Show("Vui lòng nhập mã ca ca + số", "Thông Báo");
+                    }
+                    else
+                    {
+                        item.MaCa = this.txtmaca.Text.ToString();
+                        item.TenCa = this.txttenca.Text.ToString();
+                        item.LuuY = this.txtluuy.Text.ToString();
+                        item.NgayBd = this.dateBDca.Value;
+                        item.NgayKt = this.dateKTca.Value;
+                        _context.Ca.Add(item);
+                        _context.SaveChanges();
+                        btnaddca.Text = "add";
+                        Loadca();
+                        loadpc();
+                        MessageBox.Show("Thêm ca thành công", "Thông Báo");
+                    }
+
+                    break;
+            }
+                    
+            
+        }
+        private void label14_Click_1(object sender, EventArgs e)
+        {
+        }
+
+        private void btnxoaca_Click(object sender, EventArgs e)
+        {
+            DialogResult traloi;
+            traloi = MessageBox.Show("Xác nhận xóa ca", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (traloi == DialogResult.OK)
+            {
+
+                ConnectDB();
+                int c = dgvca.CurrentCell.RowIndex;
+                string maca= dgvca.Rows[c].Cells[0].Value.ToString();
+                var item_return = _context.Ca.Where(a => a.MaCa == maca).FirstOrDefault();
+                if (_context.PhanCong.Any(a => a.MaCa == item_return.MaCa))
+                {
+                    MessageBox.Show("ca đã được Phân công, vui lòng chọn ca khác ", "thông báo");
+                }
+                else
+                {
+
+                    _context.Ca.Remove(item_return);
+                    _context.SaveChanges();
+                    Loadca();
+                    loadpc();
+                    MessageBox.Show("xóa ca thành công ", "thông báo");
+                }
+
+
+            }
+        }
+
+        private void btnsuaca_Click(object sender, EventArgs e)
+        {
+            switch(btnsuaca.Text)
+            {
+                case "edit":
+                    
+                    btnsuaca.Text = "save";
+                    txtmaca.Enabled = true;
+                    txttenca.Enabled = true;
+                    txtluuy.Enabled = true;
+                    dateBDca.Enabled = true; 
+                    dateKTca.Enabled = true; 
+
+                    break;
+                case "save":
+
+                    int c = dgvca.CurrentCell.RowIndex;
+                    string maca = dgvca.Rows[c].Cells[0].Value.ToString();
+                    var item_return = (from a in _context.Ca where a.MaCa == maca select a).FirstOrDefault();
+                    item_return.TenCa = this.txttenca.Text.ToString();
+                    item_return.LuuY = this.txtluuy.Text.ToString();
+                    item_return.NgayBd = this.dateBDca.Value;
+                    item_return.NgayKt = this.dateKTca.Value;
+                    _context.Ca.Update(item_return);
+                    _context.SaveChanges();
+                    Loadca();
+                    loadpc();
+                    MessageBox.Show("Chỉnh sửa ca thành công", "Thông Báo");
+                    btnsuaca.Text = "edit";
+                    break;
+            }
+        }
+
+        private void dateBDca_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvca_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

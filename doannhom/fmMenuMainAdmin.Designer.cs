@@ -173,6 +173,13 @@
             this.cbmaban = new System.Windows.Forms.ComboBox();
             this.label47 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.dateKTca = new System.Windows.Forms.DateTimePicker();
+            this.dateBDca = new System.Windows.Forms.DateTimePicker();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.btnsuaca = new System.Windows.Forms.Button();
+            this.btnxoaca = new System.Windows.Forms.Button();
+            this.btnaddca = new System.Windows.Forms.Button();
             this.txtluuy = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -1636,7 +1643,7 @@
             this.groupBox16.Size = new System.Drawing.Size(618, 100);
             this.groupBox16.TabIndex = 22;
             this.groupBox16.TabStop = false;
-            this.groupBox16.Text = "Loại thực đơn";
+            this.groupBox16.Text = "Loại món ăn";
             // 
             // btnsualoaitd
             // 
@@ -1739,18 +1746,18 @@
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(12, 57);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(92, 17);
+            this.label21.Size = new System.Drawing.Size(84, 17);
             this.label21.TabIndex = 13;
-            this.label21.Text = "Tên thực đơn";
+            this.label21.Text = "Tên món ăn";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(20, 28);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(86, 17);
+            this.label22.Size = new System.Drawing.Size(78, 17);
             this.label22.TabIndex = 3;
-            this.label22.Text = "Mã thực đơn";
+            this.label22.Text = "Mã món ăn";
             // 
             // txtmatd
             // 
@@ -1847,7 +1854,7 @@
             this.gbtktd.Size = new System.Drawing.Size(605, 102);
             this.gbtktd.TabIndex = 9;
             this.gbtktd.TabStop = false;
-            this.gbtktd.Text = "Tìm kiếm thực đơn";
+            this.gbtktd.Text = "Tìm kiếm món ăn";
             // 
             // button10
             // 
@@ -1873,18 +1880,18 @@
             this.label55.AutoSize = true;
             this.label55.Location = new System.Drawing.Point(26, 52);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(92, 17);
+            this.label55.Size = new System.Drawing.Size(84, 17);
             this.label55.TabIndex = 38;
-            this.label55.Text = "Tên thực đơn";
+            this.label55.Text = "Tên món ăn";
             // 
             // label56
             // 
             this.label56.AutoSize = true;
             this.label56.Location = new System.Drawing.Point(32, 25);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(86, 17);
+            this.label56.Size = new System.Drawing.Size(78, 17);
             this.label56.TabIndex = 5;
-            this.label56.Text = "Mã thực đơn";
+            this.label56.Text = "Mã món ăn";
             // 
             // tkmtd
             // 
@@ -2021,6 +2028,7 @@
             this.dgvca.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvca.Size = new System.Drawing.Size(528, 325);
             this.dgvca.TabIndex = 0;
+            this.dgvca.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvca_CellContentClick);
             this.dgvca.SelectionChanged += new System.EventHandler(this.dgvca_SelectionChanged);
             // 
             // panel22
@@ -2162,6 +2170,13 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.dateKTca);
+            this.groupBox9.Controls.Add(this.dateBDca);
+            this.groupBox9.Controls.Add(this.label16);
+            this.groupBox9.Controls.Add(this.label14);
+            this.groupBox9.Controls.Add(this.btnsuaca);
+            this.groupBox9.Controls.Add(this.btnxoaca);
+            this.groupBox9.Controls.Add(this.btnaddca);
             this.groupBox9.Controls.Add(this.txtluuy);
             this.groupBox9.Controls.Add(this.label11);
             this.groupBox9.Controls.Add(this.label12);
@@ -2175,18 +2190,85 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Thông tin ca";
             // 
+            // dateKTca
+            // 
+            this.dateKTca.CustomFormat = "MM-dd-yyyy";
+            this.dateKTca.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateKTca.Location = new System.Drawing.Point(296, 50);
+            this.dateKTca.Name = "dateKTca";
+            this.dateKTca.Size = new System.Drawing.Size(130, 23);
+            this.dateKTca.TabIndex = 15;
+            // 
+            // dateBDca
+            // 
+            this.dateBDca.CustomFormat = "MM-dd-yyyy";
+            this.dateBDca.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateBDca.Location = new System.Drawing.Point(296, 16);
+            this.dateBDca.Name = "dateBDca";
+            this.dateBDca.Size = new System.Drawing.Size(130, 23);
+            this.dateBDca.TabIndex = 14;
+            this.dateBDca.ValueChanged += new System.EventHandler(this.dateBDca_ValueChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(199, 55);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(93, 17);
+            this.label16.TabIndex = 13;
+            this.label16.Text = "ngày kết thúc";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(199, 21);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(91, 17);
+            this.label14.TabIndex = 12;
+            this.label14.Text = "ngày bắt đầu";
+            // 
+            // btnsuaca
+            // 
+            this.btnsuaca.Location = new System.Drawing.Point(358, 89);
+            this.btnsuaca.Name = "btnsuaca";
+            this.btnsuaca.Size = new System.Drawing.Size(75, 23);
+            this.btnsuaca.TabIndex = 1;
+            this.btnsuaca.Text = "edit";
+            this.btnsuaca.UseVisualStyleBackColor = true;
+            this.btnsuaca.Click += new System.EventHandler(this.btnsuaca_Click);
+            // 
+            // btnxoaca
+            // 
+            this.btnxoaca.Location = new System.Drawing.Point(277, 89);
+            this.btnxoaca.Name = "btnxoaca";
+            this.btnxoaca.Size = new System.Drawing.Size(75, 23);
+            this.btnxoaca.TabIndex = 11;
+            this.btnxoaca.Text = "delete";
+            this.btnxoaca.UseVisualStyleBackColor = true;
+            this.btnxoaca.Click += new System.EventHandler(this.btnxoaca_Click);
+            // 
+            // btnaddca
+            // 
+            this.btnaddca.Location = new System.Drawing.Point(196, 89);
+            this.btnaddca.Name = "btnaddca";
+            this.btnaddca.Size = new System.Drawing.Size(75, 23);
+            this.btnaddca.TabIndex = 10;
+            this.btnaddca.Text = "add";
+            this.btnaddca.UseVisualStyleBackColor = true;
+            this.btnaddca.Click += new System.EventHandler(this.btnaddca_Click);
+            // 
             // txtluuy
             // 
             this.txtluuy.Enabled = false;
-            this.txtluuy.Location = new System.Drawing.Point(138, 57);
+            this.txtluuy.Location = new System.Drawing.Point(115, 86);
             this.txtluuy.Name = "txtluuy";
-            this.txtluuy.Size = new System.Drawing.Size(316, 23);
+            this.txtluuy.Size = new System.Drawing.Size(72, 23);
             this.txtluuy.TabIndex = 9;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(74, 60);
+            this.label11.Location = new System.Drawing.Point(43, 89);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(43, 17);
             this.label11.TabIndex = 8;
@@ -2195,7 +2277,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(74, 29);
+            this.label12.Location = new System.Drawing.Point(43, 24);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(46, 17);
             this.label12.TabIndex = 3;
@@ -2204,7 +2286,7 @@
             // txtmaca
             // 
             this.txtmaca.Enabled = false;
-            this.txtmaca.Location = new System.Drawing.Point(138, 26);
+            this.txtmaca.Location = new System.Drawing.Point(115, 15);
             this.txtmaca.Name = "txtmaca";
             this.txtmaca.Size = new System.Drawing.Size(72, 23);
             this.txtmaca.TabIndex = 4;
@@ -2212,15 +2294,15 @@
             // txttenca
             // 
             this.txttenca.Enabled = false;
-            this.txttenca.Location = new System.Drawing.Point(286, 26);
+            this.txttenca.Location = new System.Drawing.Point(115, 54);
             this.txttenca.Name = "txttenca";
-            this.txttenca.Size = new System.Drawing.Size(169, 23);
+            this.txttenca.Size = new System.Drawing.Size(72, 23);
             this.txttenca.TabIndex = 7;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(214, 29);
+            this.label15.Location = new System.Drawing.Point(43, 58);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(52, 17);
             this.label15.TabIndex = 6;
@@ -3048,6 +3130,7 @@
             this.tkgbdanhmuc.Size = new System.Drawing.Size(1045, 119);
             this.tkgbdanhmuc.TabIndex = 2;
             this.tkgbdanhmuc.TabStop = false;
+            this.tkgbdanhmuc.Enter += new System.EventHandler(this.tkgbdanhmuc_Enter);
             // 
             // timelbl
             // 
@@ -3466,5 +3549,12 @@
         private System.Windows.Forms.Button btnChuyenban;
         private System.Windows.Forms.Button btnGhepban;
         private System.Windows.Forms.Button btnTachBan;
+        private System.Windows.Forms.Button btnsuaca;
+        private System.Windows.Forms.Button btnxoaca;
+        private System.Windows.Forms.Button btnaddca;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.DateTimePicker dateKTca;
+        private System.Windows.Forms.DateTimePicker dateBDca;
     }
 }

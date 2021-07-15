@@ -66,7 +66,7 @@ namespace doannhom
                 var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
                 hd.MaHd = mahoadonmax + 1;
                 hd.MaBan = maBanTrong;
-                hd.NgayLap = DateTime.Parse(DateTime.Now.ToString("dd/MM/yyyy"));
+                hd.NgayLap = DateTime.Now;
                 hd.TinhTrang = 0;
                 hd.MaNv = cbbNV.SelectedValue.ToString();
                 var bantrong = _context.Ban.Where(a => a.MaBan == maBanTrong).FirstOrDefault();

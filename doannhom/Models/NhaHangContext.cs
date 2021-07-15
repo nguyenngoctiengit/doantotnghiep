@@ -34,7 +34,7 @@ namespace doannhom.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-GJ6UCAT;Database=NhaHang;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-Q145K1J\\SQLEXPRESS;Database=NhaHang;Trusted_Connection=True;");
             }
         }
 
