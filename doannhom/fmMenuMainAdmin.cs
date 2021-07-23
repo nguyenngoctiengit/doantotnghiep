@@ -1115,7 +1115,7 @@ namespace doannhom
             }
         }
         //=================================================================================================
-        //hãy thở cái rồi làm//
+   
         private void button37_Click(object sender, EventArgs e)
         {
             string strTen = comboBox1.SelectedValue.ToString();
@@ -1138,20 +1138,23 @@ namespace doannhom
                 
                 var maBan = this.txtBan.Text;
                 var Ban = (from a in _context.Ban where a.MaBan == maBan select a).FirstOrDefault();
-                var HD = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
+ /*               var mahd = (from a in _context.HoaDon where a.MaBan == maBan select a.MaHd).FirstOrDefault();*/
+                var maHD = _context.HoaDon.OrderByDescending(a => a.MaHd).Where(a => a.MaBan == maBan).Select(a => a.MaHd).FirstOrDefault();
+                var HD = (from a in _context.HoaDon where a.MaHd == maHD select a).FirstOrDefault();
                 int r = dgvmonan.CurrentCell.RowIndex;
-                var MaTD = dgvmonan.Rows[r].Cells[0];
-                var dongia = dgvmonan.Rows[r].Cells[2];
-                if (MaTD == null)
+
+                if (r == 0)
                 {
                     MessageBox.Show("Vui lòng chọn món ăn", "Thông Báo");
                 }
                 else
                 {
+                    var MaTD = dgvmonan.Rows[r].Cells[0];
+                    var dongia = dgvmonan.Rows[r].Cells[2];
                     if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
                     {
-                        var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a.MaHd).FirstOrDefault();
-                        var hoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).FirstOrDefault();
+                        var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).Max(a => a.MaHd);
+                        var hoadon = (from a in _context.HoaDon where a.MaHd == maHoadon select a).FirstOrDefault();
                         var cthd = new Cthd();
                         cthd.MaHd = maHoadon;
                         var DonGia = (int)dongia.Value;
@@ -1167,7 +1170,7 @@ namespace doannhom
                         LoaddsBantrong();
                         LoaddsBanconguoi();
                         LoaddgvBan();
-                       
+
                     }
                     else
                     {
@@ -1199,6 +1202,7 @@ namespace doannhom
                         MessageBox.Show("Gọi món thành công", "Thông Báo");
                     }
                 }
+
             }
             catch (SqlException)
             {
@@ -2281,6 +2285,7 @@ namespace doannhom
 
         private void btnGhepban_Click(object sender, EventArgs e)
         {
+            
             FrmGhepBan frmGhepBan = new FrmGhepBan(this);
             frmGhepBan.Show();
         }
@@ -2330,9 +2335,10 @@ namespace doannhom
                     {
                         MessageBox.Show("Mã ca bị trùng, vui lòng nhập lại", "Thông Báo");
                     }
-                    else if (!this.txtmaca.Text.StartsWith("ca"))
+                    else if (!this.txtmaca.Text.StartsWith("Ca"))
                     {
                         MessageBox.Show("Vui lòng nhập mã ca ca + số", "Thông Báo");
+
                     }
                     else
                     {
@@ -2426,6 +2432,21 @@ namespace doannhom
         }
 
         private void dgvca_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void groupBox13_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBan_TextChanged(object sender, EventArgs e)
         {
 
         }

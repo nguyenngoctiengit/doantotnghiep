@@ -42,7 +42,7 @@ namespace doannhom
                 var matkhau = (from a in _context.TaiKhoan where a.ChucVu == "Nhân Viên" select a.MatKhau).FirstOrDefault();
                 if (taikhoan == txtUser.Text && matkhau == txtPass.Text){ 
                      this.Hide();
-                    Form frm = new frMenuMain();
+                    Form frm = new FrMenuNV();
                     frm.ShowDialog();
                 }
                 else

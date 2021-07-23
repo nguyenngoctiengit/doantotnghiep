@@ -201,6 +201,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrMenuNV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrMenuNV.Designer.cs">
+      <DependentUpon>FrMenuNV.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmTachBan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,12 +230,6 @@
     </Compile>
     <Compile Include="FrmChuyenBan.Designer.cs">
       <DependentUpon>FrmChuyenBan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frMenuMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frMenuMain.Designer.cs">
-      <DependentUpon>frMenuMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Ca.cs" />
@@ -276,6 +276,9 @@
     <EmbeddedResource Include="FrmChuyenBan.resx">
       <DependentUpon>FrmChuyenBan.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrMenuNV.resx">
+      <DependentUpon>FrMenuNV.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmGhepBan.resx">
       <DependentUpon>FrmGhepBan.cs</DependentUpon>
     </EmbeddedResource>
@@ -284,9 +287,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmThanhtoan.resx">
       <DependentUpon>FrmThanhtoan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frMenuMain.resx">
-      <DependentUpon>frMenuMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="phanhoi.resx">
       <DependentUpon>phanhoi.cs</DependentUpon>

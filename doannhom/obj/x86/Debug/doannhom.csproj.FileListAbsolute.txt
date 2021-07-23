@@ -343,7 +343,6 @@ C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmChu
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmGhepBan.resources
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmTachBan.resources
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrmThanhtoan.resources
-C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.frMenuMain.resources
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.phanhoi.resources
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.phanhoiadmin.resources
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.Properties.Resources.resources
@@ -352,3 +351,4 @@ C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.csproj
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.csproj.CopyComplete
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.exe
 C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.pdb
+C:\Users\DoanKimHue\Desktop\doantotnghiep\doannhom\obj\x86\Debug\doannhom.FrMenuNV.resources

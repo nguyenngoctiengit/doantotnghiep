@@ -76,6 +76,7 @@ namespace doannhom
             _context.Ban.Update(ban);
             _context.SaveChanges();
             fmMenuMain.LoaddsBantrong();
+
             fmMenuMain.LoaddsBanconguoi();
             MessageBox.Show("Thanh toán thành công", "Thông Báo");
             this.Close();
