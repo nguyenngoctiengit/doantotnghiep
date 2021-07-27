@@ -164,7 +164,7 @@ namespace doannhom
             // dgvban
             // 
             this.dgvban.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvban.Location = new System.Drawing.Point(596, 270);
+            this.dgvban.Location = new System.Drawing.Point(596, 292);
             this.dgvban.Name = "dgvban";
             this.dgvban.Size = new System.Drawing.Size(301, 232);
             this.dgvban.TabIndex = 60;
@@ -231,6 +231,7 @@ namespace doannhom
             this.btnGhepban.TabIndex = 55;
             this.btnGhepban.Text = "Ghép bàn";
             this.btnGhepban.UseVisualStyleBackColor = true;
+            this.btnGhepban.Click += new System.EventHandler(this.btnGhepban_Click);
             // 
             // btnChuyenban
             // 
@@ -299,6 +300,7 @@ namespace doannhom
             // 
             // txtban
             // 
+            this.txtban.Enabled = false;
             this.txtban.Location = new System.Drawing.Point(18, 92);
             this.txtban.Name = "txtban";
             this.txtban.Size = new System.Drawing.Size(256, 24);
@@ -307,7 +309,8 @@ namespace doannhom
             // 
             // cbbmanv
             // 
-            this.cbbmanv.FormattingEnabled = true;
+            this.cbbmanv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbmanv.Enabled = false;
             this.cbbmanv.Location = new System.Drawing.Point(18, 47);
             this.cbbmanv.Name = "cbbmanv";
             this.cbbmanv.Size = new System.Drawing.Size(256, 26);
@@ -346,6 +349,8 @@ namespace doannhom
             // 
             // cbbloaithucdon
             // 
+            this.cbbloaithucdon.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbloaithucdon.Enabled = false;
             this.cbbloaithucdon.FormattingEnabled = true;
             this.cbbloaithucdon.Location = new System.Drawing.Point(113, 23);
             this.cbbloaithucdon.Name = "cbbloaithucdon";

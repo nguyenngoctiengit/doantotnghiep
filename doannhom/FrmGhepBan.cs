@@ -14,11 +14,17 @@ namespace doannhom
     public partial class FrmGhepBan : Form
     {
         public NhaHangContext _context = new NhaHangContext();
+   
         fmMenuMainAdmin fmMenuMain;
-        public FrmGhepBan(fmMenuMainAdmin fmMenuMainAdmin)
+        FrMenuNV FrMenunv;
+        public FrmGhepBan(fmMenuMainAdmin fmMenuMainAdmin, FrMenuNV frMenuNV)
         {
             InitializeComponent();
             this.fmMenuMain = fmMenuMainAdmin;
+            this.FrMenunv = frMenuNV;
+
+
+
         }
         private void FrmGhepBan_Load(object sender, EventArgs e)
         {
@@ -55,44 +61,91 @@ namespace doannhom
             }
             else
             {
-                var maBanTrong = cbbBanTrong.SelectedValue.ToString();
-                var MahoaDonBan1 = _context.HoaDon.Where(a => a.MaBan == maBan1 && a.TinhTrang == 0).Max(a => a.MaHd);
-                var HoadonBan1 = _context.HoaDon.Where(a => a.MaHd == MahoaDonBan1).FirstOrDefault();
-                var CthdBan1 = _context.Cthd.Where(a => a.MaHd == HoadonBan1.MaHd).FirstOrDefault();
-                var MahoaDonBan2 = _context.HoaDon.Where(a => a.MaBan == maBan2 && a.TinhTrang == 0).Max(a => a.MaHd);
-                var HoadonBan2 = _context.HoaDon.Where(a => a.MaHd == MahoaDonBan2).FirstOrDefault();
-                var CthdBan2 = _context.Cthd.Where(a => a.MaHd == HoadonBan2.MaHd).FirstOrDefault();
-                HoaDon hd = new HoaDon();
-                var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
-                hd.MaHd = mahoadonmax + 1;
-                hd.MaBan = maBanTrong;
-                hd.NgayLap = DateTime.Now;
-                hd.TinhTrang = 0;
-                hd.MaNv = cbbNV.SelectedValue.ToString();
-                var bantrong = _context.Ban.Where(a => a.MaBan == maBanTrong).FirstOrDefault();
-                var ban1 = _context.Ban.Where(a => a.MaBan == maBan1).FirstOrDefault();
-                var ban2 = _context.Ban.Where(a => a.MaBan == maBan2).FirstOrDefault();
-                bantrong.TinhTrang = 1;
-                ban1.TinhTrang = 0;
-                ban2.TinhTrang = 0;
-                CthdBan1.MaHd = mahoadonmax + 1;
-                CthdBan2.MaHd = mahoadonmax + 1;
-                HoadonBan1.TinhTrang = 2;
-                HoadonBan2.TinhTrang = 2;
-                _context.Ban.Update(ban1);
-                _context.Ban.Update(ban2);
-                _context.Ban.Update(bantrong);
-                _context.HoaDon.Add(hd);
-                _context.Cthd.Update(CthdBan1);
-                _context.Cthd.Update(CthdBan2);
-                _context.HoaDon.Update(HoadonBan1);
-                _context.HoaDon.Update(HoadonBan2);
-                _context.SaveChanges();
+                if (FrMenuNV.MaHoadon == 0)
+                {
+                    var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
+                    var maBanTrong = cbbBanTrong.SelectedValue.ToString();
+                    var MahoaDonBan1 = _context.HoaDon.Where(a => a.MaBan == maBan1 && a.TinhTrang == 0).Max(a => a.MaHd);
+                    var HoadonBan1 = _context.HoaDon.Where(a => a.MaHd == MahoaDonBan1).FirstOrDefault();
+                    var CthdBan1 = _context.Cthd.Where(a => a.MaHd == HoadonBan1.MaHd).FirstOrDefault();
+                    var MahoaDonBan2 = _context.HoaDon.Where(a => a.MaBan == maBan2 && a.TinhTrang == 0).Max(a => a.MaHd);
+                    var HoadonBan2 = _context.HoaDon.Where(a => a.MaHd == MahoaDonBan2).FirstOrDefault();
+                    var CthdBan2 = _context.Cthd.Where(a => a.MaHd == HoadonBan2.MaHd).FirstOrDefault();
+                    HoaDon hd = new HoaDon();
+                    var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                    hd.MaHd = mahoadonmax + 1;
+                    hd.MaBan = maBanTrong;
+                    hd.NgayLap = DateTime.Now;
+                    hd.TinhTrang = 0;
+                    hd.MaNv = cbbNV.SelectedValue.ToString();
+                    var bantrong = _context.Ban.Where(a => a.MaBan == maBanTrong).FirstOrDefault();
+                    var ban1 = _context.Ban.Where(a => a.MaBan == maBan1).FirstOrDefault();
+                    var ban2 = _context.Ban.Where(a => a.MaBan == maBan2).FirstOrDefault();
+                    bantrong.TinhTrang = 1;
+                    ban1.TinhTrang = 0;
+                    ban2.TinhTrang = 0;
+                    CthdBan1.MaHd = mahoadonmax + 1;
+                    CthdBan2.MaHd = mahoadonmax + 1;
+                    HoadonBan1.TinhTrang = 2;
+                    HoadonBan2.TinhTrang = 2;
+                    _context.Ban.Update(ban1);
+                    _context.Ban.Update(ban2);
+                    _context.Ban.Update(bantrong);
+                    _context.HoaDon.Add(hd);
+                    _context.Cthd.Update(CthdBan1);
+                    _context.Cthd.Update(CthdBan2);
+                    _context.HoaDon.Update(HoadonBan1);
+                    _context.HoaDon.Update(HoadonBan2);
+                    _context.SaveChanges();
+                    fmMenuMain.LoaddsBantrong();
+                    fmMenuMain.LoaddsBanconguoi();
+                    fmMenuMain.LoadThanhToan();
+                    fmMenuMain.LoaddgvBan();
+
+                }
+                else if (FrMenuNV.MaHoadon != 0)
+                {
+                    var mahoadon = FrMenuNV.MaHoadon.ToString();
+                    var maBanTrong = cbbBanTrong.SelectedValue.ToString();
+                    var MahoaDonBan1 = _context.HoaDon.Where(a => a.MaBan == maBan1 && a.TinhTrang == 0).Max(a => a.MaHd);
+                    var HoadonBan1 = _context.HoaDon.Where(a => a.MaHd == MahoaDonBan1).FirstOrDefault();
+                    var CthdBan1 = _context.Cthd.Where(a => a.MaHd == HoadonBan1.MaHd).FirstOrDefault();
+                    var MahoaDonBan2 = _context.HoaDon.Where(a => a.MaBan == maBan2 && a.TinhTrang == 0).Max(a => a.MaHd);
+                    var HoadonBan2 = _context.HoaDon.Where(a => a.MaHd == MahoaDonBan2).FirstOrDefault();
+                    var CthdBan2 = _context.Cthd.Where(a => a.MaHd == HoadonBan2.MaHd).FirstOrDefault();
+                    HoaDon hd = new HoaDon();
+                    var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                    hd.MaHd = mahoadonmax + 1;
+                    hd.MaBan = maBanTrong;
+                    hd.NgayLap = DateTime.Now;
+                    hd.TinhTrang = 0;
+                    hd.MaNv = cbbNV.SelectedValue.ToString();
+                    var bantrong = _context.Ban.Where(a => a.MaBan == maBanTrong).FirstOrDefault();
+                    var ban1 = _context.Ban.Where(a => a.MaBan == maBan1).FirstOrDefault();
+                    var ban2 = _context.Ban.Where(a => a.MaBan == maBan2).FirstOrDefault();
+                    bantrong.TinhTrang = 1;
+                    ban1.TinhTrang = 0;
+                    ban2.TinhTrang = 0;
+                    CthdBan1.MaHd = mahoadonmax + 1;
+                    CthdBan2.MaHd = mahoadonmax + 1;
+                    HoadonBan1.TinhTrang = 2;
+                    HoadonBan2.TinhTrang = 2;
+                    _context.Ban.Update(ban1);
+                    _context.Ban.Update(ban2);
+                    _context.Ban.Update(bantrong);
+                    _context.HoaDon.Add(hd);
+                    _context.Cthd.Update(CthdBan1);
+                    _context.Cthd.Update(CthdBan2);
+                    _context.HoaDon.Update(HoadonBan1);
+                    _context.HoaDon.Update(HoadonBan2);
+                    _context.SaveChanges();
+                    FrMenunv.LoaddsBantrong();
+                    FrMenunv.LoaddsBanconguoi();
+                    FrMenunv.LoaddgvBan();
+                    
+                }
                 MessageBox.Show("Ghép bàn thành công", "Thông Báo");
-                fmMenuMain.LoaddsBantrong();
-                fmMenuMain.LoaddsBanconguoi();
-                fmMenuMain.LoadThanhToan();
-                fmMenuMain.LoaddgvBan();
+
                 this.Close();
             }
         }

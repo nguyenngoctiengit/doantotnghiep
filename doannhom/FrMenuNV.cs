@@ -859,5 +859,11 @@ namespace doannhom
                 MessageBox.Show("Xóa món ăn thành công", "Thông Báo");
             }
         }
+
+        private void btnGhepban_Click(object sender, EventArgs e)
+        {
+            FrmGhepBan frmGhepBan = new FrmGhepBan(fmMenuMainAdmin,this);
+            frmGhepBan.Show();
+        }
     }
 }

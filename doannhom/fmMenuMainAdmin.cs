@@ -1155,10 +1155,12 @@ namespace doannhom
                 }
                 else
                 {
+
                     var MaTD = dgvmonan.Rows[r].Cells[0];
                     var dongia = dgvmonan.Rows[r].Cells[2];
                     if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
                     {
+
                         var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).Max(a => a.MaHd);
                         var hoadon = (from a in _context.HoaDon where a.MaHd == maHoadon select a).FirstOrDefault();
                         var cthd = new Cthd();
@@ -2292,7 +2294,7 @@ namespace doannhom
         private void btnGhepban_Click(object sender, EventArgs e)
         {
             
-            FrmGhepBan frmGhepBan = new FrmGhepBan(this);
+            FrmGhepBan frmGhepBan = new FrmGhepBan(this, frMenuNV);
             frmGhepBan.Show();
         }
         private void btnTachBan_Click_1(object sender, EventArgs e)
