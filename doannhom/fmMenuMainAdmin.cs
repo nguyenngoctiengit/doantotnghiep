@@ -14,7 +14,7 @@ namespace doannhom
 {
     public partial class fmMenuMainAdmin : Form
     {
-        FrMenuNV FrMenuNV;
+        FrMenuNV frMenuNV;
         public static int MaHoadon;
         public static int MaBan;
         public fmMenuMainAdmin()
@@ -26,7 +26,7 @@ namespace doannhom
 
         SqlConnection cnn;
         SqlCommand cmd;
-        private FrMenuNV frMenuNV;
+
 
         void ConnectDB()
         {
@@ -486,7 +486,9 @@ namespace doannhom
                 int rowIndex = dgvtaikhoan.CurrentCell.RowIndex;
                 string tenTK = dgvtaikhoan.Rows[rowIndex].Cells[0].Value.ToString();
                 var item_change = (from a in _context.TaiKhoan where a.TenTk == tenTK select a).FirstOrDefault();
+               
                 item_change.MatKhau = this.tkmk.Text;
+                
                 _context.TaiKhoan.Update(item_change);
                 _context.SaveChanges();
                 Loadtk();
@@ -2283,7 +2285,7 @@ namespace doannhom
 
         private void btnChuyenban_Click(object sender, EventArgs e)
         {
-            FrmChuyenBan frmChuyenBan = new FrmChuyenBan(this, FrMenuNV);
+            FrmChuyenBan frmChuyenBan = new FrmChuyenBan(this, frMenuNV);
             frmChuyenBan.Show();
         }
 

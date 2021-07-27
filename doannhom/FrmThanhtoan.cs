@@ -15,12 +15,13 @@ namespace doannhom
     {
         public NhaHangContext _context = new NhaHangContext();
         fmMenuMainAdmin fmMenuMain;
-        FrMenuNV frMenunv;
+        FrMenuNV FrMenu;
         public FrmThanhtoan(fmMenuMainAdmin fmMenuMainAdmin, FrMenuNV frMenuNV )
         {
             InitializeComponent();
+            this.FrMenu = frMenuNV;
             this.fmMenuMain = fmMenuMainAdmin;
-            this.frMenunv = frMenuNV;
+            
         }
 
         public void Loadlb()
@@ -31,29 +32,63 @@ namespace doannhom
         }
         public void LoadPTT()
         {
+            if (FrMenuNV.MaHoadon == 0)
+            {
+                var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
+                var MaHD = int.Parse(mahoadon);
+                var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
+                this.txtMaBan.Text = hoadon.MaBan;
+                this.txtMaHD.Text = hoadon.MaHd.ToString();
+                this.txtMaNV.Text = (from a in _context.NhanVien where a.MaNv == hoadon.MaNv select a.TenNv).FirstOrDefault();
+                this.txtTongTien.Text = hoadon.TongTien.ToString();
+                this.dtpNgaytao.Text = hoadon.NgayLap.ToString();
+
+            }
+            else if (FrMenuNV.MaHoadon != 0)
+            {
+                var mahoadon = FrMenuNV.MaHoadon.ToString();
+                var MaHD = int.Parse(mahoadon);
+                var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
+                this.txtMaBan.Text = hoadon.MaBan;
+                this.txtMaHD.Text = hoadon.MaHd.ToString();
+                this.txtMaNV.Text = (from a in _context.NhanVien where a.MaNv == hoadon.MaNv select a.TenNv).FirstOrDefault();
+                this.txtTongTien.Text = hoadon.TongTien.ToString();
+                this.dtpNgaytao.Text = hoadon.NgayLap.ToString();
+                
+            }
             
-            var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
-            var MaHD = int.Parse(mahoadon);
-            var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
-            this.txtMaBan.Text = hoadon.MaBan;
-            this.txtMaHD.Text = hoadon.MaHd.ToString();
-            this.txtMaNV.Text = (from a in _context.NhanVien where a.MaNv == hoadon.MaNv select a.TenNv).FirstOrDefault();
-            this.txtTongTien.Text = hoadon.TongTien.ToString();
-            this.dtpNgaytao.Text = hoadon.NgayLap.ToString();
         }
         public void LoadDgvMonAn()
         {
-            var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
-            var MaHD = int.Parse(mahoadon);
-            var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
-            dgvMonAn.DataSource = (from a in _context.Cthd
-                                   where a.MaHd == hoadon.MaHd
-                                   select new
-                                   {
-                                       a.MaCTHD,
-                                       a.MaMonAn,
-                                       a.DonGia
-                                   }).ToList();
+            if (FrMenuNV.MaHoadon == 0)
+            {
+                var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
+                var MaHD = int.Parse(mahoadon);
+                var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
+                dgvMonAn.DataSource = (from a in _context.Cthd
+                                       where a.MaHd == hoadon.MaHd
+                                       select new
+                                       {
+                                           a.MaCTHD,
+                                           a.MaMonAn,
+                                           a.DonGia
+                                       }).ToList();
+            }
+            else if (FrMenuNV.MaHoadon != 0)
+            {
+                var mahoadon = FrMenuNV.MaHoadon.ToString();
+                var MaHD = int.Parse(mahoadon);
+                var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
+                dgvMonAn.DataSource = (from a in _context.Cthd
+                                       where a.MaHd == hoadon.MaHd
+                                       select new
+                                       {
+                                           a.MaCTHD,
+                                           a.MaMonAn,
+                                           a.DonGia
+                                       }).ToList();
+            }
+            
         }
         private void Form2_Load(object sender, EventArgs e)
         {
@@ -69,23 +104,45 @@ namespace doannhom
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
-         
-            var MaHD = int.Parse(mahoadon);
-            var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
-            hoadon.TinhTrang = 1;
-            var ban = (from a in _context.Ban where a.MaBan == hoadon.MaBan select a).FirstOrDefault();
-            ban.TinhTrang = 0;
-            _context.HoaDon.Update(hoadon);
-            _context.Ban.Update(ban);
-            _context.SaveChanges();
-            fmMenuMain.LoaddsBantrong();
-            fmMenuMain.LoaddsBanconguoi();
-            frMenunv.LoaddsBantrong();
-            frMenunv.LoaddsBanconguoi();
+            if (FrMenuNV.MaHoadon == 0)
+            {
+                var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
 
-            MessageBox.Show("Thanh toán thành công", "Thông Báo");
-            this.Close();
+                var MaHD = int.Parse(mahoadon);
+                var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
+                hoadon.TinhTrang = 1;
+                var ban = (from a in _context.Ban where a.MaBan == hoadon.MaBan select a).FirstOrDefault();
+                ban.TinhTrang = 0;
+                _context.HoaDon.Update(hoadon);
+                _context.Ban.Update(ban);
+                _context.SaveChanges();
+                fmMenuMain.LoaddsBantrong();
+                fmMenuMain.LoaddsBanconguoi();
+
+                MessageBox.Show("Thanh toán thành công", "Thông Báo");
+                this.Close();
+
+            }
+            else if (FrMenuNV.MaHoadon != 0)
+            {
+                var mahoadon = FrMenuNV.MaHoadon.ToString();
+
+                var MaHD = int.Parse(mahoadon);
+                var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
+                hoadon.TinhTrang = 1;
+                var ban = (from a in _context.Ban where a.MaBan == hoadon.MaBan select a).FirstOrDefault();
+                ban.TinhTrang = 0;
+                _context.HoaDon.Update(hoadon);
+                _context.Ban.Update(ban);
+                _context.SaveChanges();
+                FrMenu.LoaddsBantrong();
+                FrMenu.LoaddsBanconguoi();
+
+                MessageBox.Show("Thanh toán thành công", "Thông Báo");
+                this.Close();
+
+            }
+            
         }
 
         private void label2_Click(object sender, EventArgs e)

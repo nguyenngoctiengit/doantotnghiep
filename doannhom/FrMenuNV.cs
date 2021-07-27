@@ -15,13 +15,13 @@ namespace doannhom
     public partial class FrMenuNV : Form
     {
         fmMenuMainAdmin fmMenuMainAdmin;
+        public static int MaHoadon;
         public FrMenuNV()
         {
             InitializeComponent();
         }
         public NhaHangContext _context = new NhaHangContext();
 
-        public int MaHoadon { get; private set; }
 
         private void ban1_Click(object sender, EventArgs e)
         {
@@ -659,16 +659,13 @@ namespace doannhom
             cbbloaithucdon.DisplayMember = "TenLoai";
             cbbloaithucdon.ValueMember = "MaLoai";
         }
-        public void loadthucdongoimon()
+/*        public void loadthucdongoimon()
         {
             string strSQL = "select ThucDon.MaTD, ThucDon.TenTD, ThucDon.DonGia, LoaiThucDon.TenLoai from ThucDon, LoaiThucDon where ThucDon.MaLoai = LoaiThucDon.MaLoai";
-            dgvmonan.DataSource = FillDataTable(strSQL);
-        }
+            dgvmonan.DataSource = fill
+        }*/
         
-        private object FillDataTable(string strSQL)/////##########################################################
-        {
-            throw new NotImplementedException();
-        }
+
 
         public void loadnhanvienohd()
         {
@@ -703,6 +700,7 @@ namespace doannhom
         {
             MaHoadon = (from a in _context.HoaDon where a.MaBan == this.txtban.Text && a.TinhTrang == 0 select a.MaHd).FirstOrDefault();
             FrmThanhtoan form2 = new FrmThanhtoan(fmMenuMainAdmin,this);
+            var l = 0;
             form2.Show();
         }
 
