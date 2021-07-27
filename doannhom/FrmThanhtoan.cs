@@ -15,10 +15,12 @@ namespace doannhom
     {
         public NhaHangContext _context = new NhaHangContext();
         fmMenuMainAdmin fmMenuMain;
-        public FrmThanhtoan(fmMenuMainAdmin fmMenuMainAdmin)
+        FrMenuNV frMenunv;
+        public FrmThanhtoan(fmMenuMainAdmin fmMenuMainAdmin, FrMenuNV frMenuNV )
         {
             InitializeComponent();
             this.fmMenuMain = fmMenuMainAdmin;
+            this.frMenunv = frMenuNV;
         }
 
         public void Loadlb()
@@ -29,6 +31,7 @@ namespace doannhom
         }
         public void LoadPTT()
         {
+            
             var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
             var MaHD = int.Parse(mahoadon);
             var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
@@ -67,6 +70,7 @@ namespace doannhom
         private void button1_Click(object sender, EventArgs e)
         {
             var mahoadon = fmMenuMainAdmin.MaHoadon.ToString();
+         
             var MaHD = int.Parse(mahoadon);
             var hoadon = (from a in _context.HoaDon where a.MaHd == MaHD select a).FirstOrDefault();
             hoadon.TinhTrang = 1;
@@ -76,8 +80,10 @@ namespace doannhom
             _context.Ban.Update(ban);
             _context.SaveChanges();
             fmMenuMain.LoaddsBantrong();
-
             fmMenuMain.LoaddsBanconguoi();
+            frMenunv.LoaddsBantrong();
+            frMenunv.LoaddsBanconguoi();
+
             MessageBox.Show("Thanh toán thành công", "Thông Báo");
             this.Close();
         }

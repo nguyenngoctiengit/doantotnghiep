@@ -15,11 +15,15 @@ namespace doannhom
     {
         public NhaHangContext _context = new NhaHangContext();
         fmMenuMainAdmin fmMenuMain;
-        public FrmChuyenBan(fmMenuMainAdmin fmMenuMainAdmin)
+        FrMenuNV FrMenunv;
+        public FrmChuyenBan(fmMenuMainAdmin fmMenuMainAdmin,FrMenuNV frMenuNV)
         {
             InitializeComponent();
             this.fmMenuMain = fmMenuMainAdmin;
+            this.FrMenunv = frMenuNV;
+            
         }
+
         private void FrmChuyenBan_Load(object sender, EventArgs e)
         {
             LoadCbbBanconguoi();
@@ -53,6 +57,10 @@ namespace doannhom
             fmMenuMain.LoaddsBanconguoi();
             fmMenuMain.LoadThanhToan();
             fmMenuMain.LoaddgvBan();
+            FrMenunv.LoaddsBantrong();
+            FrMenunv.LoaddsBanconguoi();
+            FrMenunv.LoaddgvBan();
+
             MessageBox.Show("Chuyển bàn thành công", "Thông Báo");
             this.Close();
         }

@@ -14,16 +14,20 @@ namespace doannhom
 {
     public partial class fmMenuMainAdmin : Form
     {
+        FrMenuNV FrMenuNV;
         public static int MaHoadon;
         public static int MaBan;
         public fmMenuMainAdmin()
         {
             InitializeComponent();
         }
+  
         public NhaHangContext _context = new NhaHangContext();
 
         SqlConnection cnn;
         SqlCommand cmd;
+        private FrMenuNV frMenuNV;
+
         void ConnectDB()
         {
             string strDB = @"Data Source=DESKTOP-Q145K1J\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True";
@@ -2268,7 +2272,7 @@ namespace doannhom
         private void btnThanhtoan_Click(object sender, EventArgs e)
         {
             MaHoadon = (from a in _context.HoaDon where a.MaBan == this.txtBan.Text && a.TinhTrang == 0 select a.MaHd).FirstOrDefault();
-            FrmThanhtoan form2 = new FrmThanhtoan(this);
+            FrmThanhtoan form2 = new FrmThanhtoan(this, frMenuNV);
             form2.Show();
         }
 
@@ -2279,7 +2283,7 @@ namespace doannhom
 
         private void btnChuyenban_Click(object sender, EventArgs e)
         {
-            FrmChuyenBan frmChuyenBan = new FrmChuyenBan(this);
+            FrmChuyenBan frmChuyenBan = new FrmChuyenBan(this, FrMenuNV);
             frmChuyenBan.Show();
         }
 
@@ -2447,6 +2451,11 @@ namespace doannhom
         }
 
         private void txtBan_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabTC_Click(object sender, EventArgs e)
         {
 
         }
