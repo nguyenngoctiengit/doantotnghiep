@@ -746,7 +746,7 @@ namespace doannhom
                 var HD = (from a in _context.HoaDon where a.MaHd == maHD select a).FirstOrDefault();
                 int r = dgvmonan.CurrentCell.RowIndex;
 
-                if (r == 0)
+                if (r == null)
                 {
                     MessageBox.Show("Vui lòng chọn món ăn", "Thông Báo");
                 }
@@ -762,17 +762,35 @@ namespace doannhom
                         cthd.MaHd = maHoadon;
                         var DonGia = (int)dongia.Value;
                         var mamonan = MaTD.Value.ToString();
-                        cthd.MaMonAn = mamonan;
-                        cthd.SoLuong = 1;
-                        cthd.DonGia = DonGia;
-                        var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
-                        hoadon.TongTien = giatien.Sum() + DonGia;
-                        _context.HoaDon.Update(hoadon);
-                        _context.Cthd.Add(cthd);
-                        _context.SaveChanges();
-                        LoaddsBantrong();
-                        LoaddsBanconguoi();
-                        LoaddgvBan();
+                      
+                        if (_context.Cthd.Where(a => a.MaHd == maHoadon).Any(a => a.MaMonAn == mamonan))
+                        {
+                            var item = _context.Cthd.Where(a => a.MaHd == maHoadon && a.MaMonAn==mamonan).FirstOrDefault();
+                            var tien = item.DonGia / item.SoLuong;
+                            item.SoLuong = item.SoLuong + 1;
+                            
+                            item.DonGia = item.DonGia + tien;
+                            _context.Cthd.Update(item);
+                            _context.SaveChanges();
+                            LoaddsBantrong();
+                            LoaddsBanconguoi();
+                            LoaddgvBan();
+                        }
+                        else
+                        {
+                            cthd.MaMonAn = mamonan;
+                            cthd.SoLuong = 1;
+                            cthd.DonGia = DonGia;
+                            var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
+                            hoadon.TongTien = giatien.Sum() + DonGia;
+                            _context.HoaDon.Update(hoadon);
+                            _context.Cthd.Add(cthd);
+                            _context.SaveChanges();
+                            LoaddsBantrong();
+                            LoaddsBanconguoi();
+                            LoaddgvBan();
+                        }
+                        
 
                     }
                     else

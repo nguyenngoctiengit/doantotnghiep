@@ -310,7 +310,6 @@ namespace doannhom
             // cbbmanv
             // 
             this.cbbmanv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbmanv.Enabled = false;
             this.cbbmanv.Location = new System.Drawing.Point(18, 47);
             this.cbbmanv.Name = "cbbmanv";
             this.cbbmanv.Size = new System.Drawing.Size(256, 26);
@@ -350,7 +349,6 @@ namespace doannhom
             // cbbloaithucdon
             // 
             this.cbbloaithucdon.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbloaithucdon.Enabled = false;
             this.cbbloaithucdon.FormattingEnabled = true;
             this.cbbloaithucdon.Location = new System.Drawing.Point(113, 23);
             this.cbbloaithucdon.Name = "cbbloaithucdon";

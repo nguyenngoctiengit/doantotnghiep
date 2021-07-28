@@ -97,10 +97,9 @@ namespace doannhom
                     _context.HoaDon.Update(HoadonBan1);
                     _context.HoaDon.Update(HoadonBan2);
                     _context.SaveChanges();
-                    fmMenuMain.LoaddsBantrong();
-                    fmMenuMain.LoaddsBanconguoi();
-                    fmMenuMain.LoadThanhToan();
-                    fmMenuMain.LoaddgvBan();
+                    FrMenunv.LoaddsBantrong();
+                    FrMenunv.LoaddsBanconguoi();
+                    FrMenunv.LoaddgvBan();
 
                 }
                 else if (FrMenuNV.MaHoadon != 0)
@@ -139,9 +138,11 @@ namespace doannhom
                     _context.HoaDon.Update(HoadonBan1);
                     _context.HoaDon.Update(HoadonBan2);
                     _context.SaveChanges();
-                    FrMenunv.LoaddsBantrong();
-                    FrMenunv.LoaddsBanconguoi();
-                    FrMenunv.LoaddgvBan();
+                    fmMenuMain.LoaddsBantrong();
+                    fmMenuMain.LoaddsBanconguoi();
+                    fmMenuMain.LoadThanhToan();
+                    fmMenuMain.LoaddgvBan();
+                  
                     
                 }
                 MessageBox.Show("Ghép bàn thành công", "Thông Báo");

@@ -2188,9 +2188,9 @@
             this.groupBox9.Controls.Add(this.txtmaca);
             this.groupBox9.Controls.Add(this.txttenca);
             this.groupBox9.Controls.Add(this.label15);
-            this.groupBox9.Location = new System.Drawing.Point(786, 6);
+            this.groupBox9.Location = new System.Drawing.Point(799, 3);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(528, 120);
+            this.groupBox9.Size = new System.Drawing.Size(415, 120);
             this.groupBox9.TabIndex = 2;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Thông tin ca";

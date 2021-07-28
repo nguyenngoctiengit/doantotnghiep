@@ -373,9 +373,9 @@ namespace doannhom
         }
         private void dgvphancong_SelectionChanged(object sender, EventArgs e)
         {
+            cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
             cbmaca.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[2].Value);
             cbmanv.SelectedValue = Convert.ToString(dgvphancong.CurrentRow.Cells[3].Value);
-            cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
             pcdaybd.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[4].Value);
             pcdaykt.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[5].Value);
         }
@@ -1149,7 +1149,8 @@ namespace doannhom
                 var HD = (from a in _context.HoaDon where a.MaHd == maHD select a).FirstOrDefault();
                 int r = dgvmonan.CurrentCell.RowIndex;
 
-                if (r == 0)
+                if (r == null
+                    )
                 {
                     MessageBox.Show("Vui lòng chọn món ăn", "Thông Báo");
                 }
@@ -1160,24 +1161,45 @@ namespace doannhom
                     var dongia = dgvmonan.Rows[r].Cells[2];
                     if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
                     {
-
                         var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).Max(a => a.MaHd);
                         var hoadon = (from a in _context.HoaDon where a.MaHd == maHoadon select a).FirstOrDefault();
                         var cthd = new Cthd();
                         cthd.MaHd = maHoadon;
                         var DonGia = (int)dongia.Value;
                         var mamonan = MaTD.Value.ToString();
-                        cthd.MaMonAn = mamonan;
-                        cthd.SoLuong = 1;
-                        cthd.DonGia = DonGia;
-                        var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
-                        hoadon.TongTien = giatien.Sum() + DonGia;
-                        _context.HoaDon.Update(hoadon);
-                        _context.Cthd.Add(cthd);
-                        _context.SaveChanges();
-                        LoaddsBantrong();
-                        LoaddsBanconguoi();
-                        LoaddgvBan();
+                       
+
+                        if (_context.Cthd.Where(a => a.MaHd == maHoadon).Any(a => a.MaMonAn == mamonan))
+                        {
+                            var item = _context.Cthd.Where(a => a.MaHd == maHoadon && a.MaMonAn == mamonan).FirstOrDefault();
+                            var tien = item.DonGia / item.SoLuong;
+                            item.SoLuong = item.SoLuong + 1;
+                            item.DonGia = item.DonGia + tien;                           
+                            _context.Cthd.Update(item);
+                            _context.SaveChanges();
+                            LoaddsBantrong();
+                            LoaddsBanconguoi();
+                            LoaddgvBan();
+
+                        }
+                       
+
+
+                        else
+                        {
+                            cthd.MaMonAn = mamonan;
+                            cthd.SoLuong = 1;
+                            cthd.DonGia = DonGia;
+                            var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
+                            hoadon.TongTien = giatien.Sum() + DonGia;
+                            _context.HoaDon.Update(hoadon);
+                            _context.Cthd.Add(cthd);
+                            _context.SaveChanges();
+                            LoaddsBantrong();
+                            LoaddsBanconguoi();
+                            LoaddgvBan();
+                        }
+
 
                     }
                     else
@@ -1195,6 +1217,7 @@ namespace doannhom
                         hoadon.NgayLap = DateTime.Now;
                         hoadon.TongTien = DonGia;
                         cthd.MaMonAn = mamonan;
+
                         cthd.SoLuong = 1;
                         cthd.DonGia = DonGia;
                         cthd.MaHd = hoadon.MaHd;
@@ -1210,6 +1233,7 @@ namespace doannhom
                         MessageBox.Show("Gọi món thành công", "Thông Báo");
                     }
                 }
+               
 
             }
             catch (SqlException)
