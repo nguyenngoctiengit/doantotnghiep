@@ -12,11 +12,11 @@ namespace doannhom.Models
         public int MaPC { get; set; }
         public string MaCa { get; set; }
         public string MaNv { get; set; }
-        public string MaBan { get; set; }
+        public int MaKhuVuc { get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime? NgayKetThuc { get; set; }
 
-        public virtual Ban MaBanNavigation { get; set; }
+        public virtual KhuVuc MaKhuVucNavigation { get; set; }
         public virtual Ca MaCaNavigation { get; set; }
         public virtual NhanVien MaNvNavigation { get; set; }
     }

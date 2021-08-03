@@ -30,7 +30,7 @@ namespace doannhom
 
         void ConnectDB()
         {
-            string strDB = @"Data Source=DESKTOP-Q145K1J\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True";
+            string strDB = @"Data Source=DESKTOP-MO33L1P\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True";
             cnn = new SqlConnection(strDB);
             cnn.Open();
         }
@@ -119,7 +119,7 @@ namespace doannhom
         }
         public void Loadtk()
         {
-            dgvtaikhoan.DataSource = (from a in _context.TaiKhoan select new { a.TenTk, a.MatKhau, a.MaNv, a.ChucVu, a.NgayDk }).ToList();
+            dgvtaikhoan.DataSource = (from a in _context.TaiKhoan where a.ChucVu == "Nhân Viên" select new { a.TenTk, a.MatKhau, a.MaNv, a.ChucVu, a.NgayDk }).ToList();
         }
         public void Loadnv()
         {
@@ -141,16 +141,21 @@ namespace doannhom
         }
         public void Loadpc()
         {
-            dgvphancong.DataSource = (from a in _context.PhanCong
+            DateTime today = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+            DateTime tomorrow = today.AddDays(1); 
+            dgvphancong.DataSource = (from a in _context.PhanCong join b in _context.NhanVien on a.MaNv equals b.MaNv
+                                      where a.NgayBatDau >= today && a.NgayBatDau <= tomorrow
                                      select new
                                      {
                                          a.MaPC,
-                                         a.MaBan,
+                                         a.MaKhuVuc,
                                          a.MaCa,
                                          a.MaNv,
+                                         b.TenNv,
                                          a.NgayBatDau,
                                          a.NgayKetThuc
-                                     }).ToList();            
+                                     }).ToList();
+            dgvphancong.Columns["MaNv"].Visible = false;
             gbtkpc.Hide();
         }
         public void Loadca()
@@ -200,11 +205,9 @@ namespace doannhom
         }
         public void loadmabanphancongtuban()
         {
-            string strSQL = "select * from Ban";
-            cbmaban.DataSource = FillDataTable(strSQL);
-            cbmaban.DisplayMember = "MaBan";
-            cbmaban.ValueMember = "MaBan";
-            cnn.Close();
+            cbmaban.DataSource = (from a in _context.Khuvuc select new { a.MaKhuVuc, a.TenKhuVuc }).ToList();
+            cbmaban.DisplayMember = "TenKhuVuc";
+            cbmaban.ValueMember = "MaKhuVuc";
         }
         public void loadloaithucdontuloai()
         {
@@ -376,8 +379,8 @@ namespace doannhom
             cbmaban.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[1].Value);
             cbmaca.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[2].Value);
             cbmanv.SelectedValue = Convert.ToString(dgvphancong.CurrentRow.Cells[3].Value);
-            pcdaybd.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[4].Value);
-            pcdaykt.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[5].Value);
+            pcdaybd.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[5].Value);
+            pcdaykt.Text = Convert.ToString(dgvphancong.CurrentRow.Cells[6].Value);
         }
         private void dgvca_SelectionChanged(object sender, EventArgs e)
         {
@@ -743,7 +746,7 @@ namespace doannhom
                         var pc = new PhanCong();
                         pc.MaCa = this.cbmaca.SelectedValue.ToString();
                         pc.MaNv = this.cbmanv.SelectedValue.ToString();
-                        pc.MaBan = this.cbmaban.SelectedValue.ToString();
+                        pc.MaKhuVuc = int.Parse(this.cbmaban.SelectedValue.ToString());
                         pc.NgayBatDau = this.pcdaybd.Value;
                         pc.NgayKetThuc = this.pcdaykt.Value;
                         _context.PhanCong.Add(pc);
@@ -781,7 +784,7 @@ namespace doannhom
                         var item_return = (from a in _context.PhanCong where a.MaPC == MaPc select a).FirstOrDefault();
                         item_return.MaCa = this.cbmaca.SelectedValue.ToString();
                         item_return.MaNv = this.cbmanv.SelectedValue.ToString();
-                        item_return.MaBan = this.cbmaban.SelectedValue.ToString();
+                        item_return.MaKhuVuc = int.Parse(this.cbmaban.SelectedValue.ToString());
                         item_return.NgayBatDau = this.pcdaybd.Value;
                         item_return.NgayKetThuc = this.pcdaykt.Value;
                         _context.PhanCong.Update(item_return);
@@ -1149,8 +1152,7 @@ namespace doannhom
                 var HD = (from a in _context.HoaDon where a.MaHd == maHD select a).FirstOrDefault();
                 int r = dgvmonan.CurrentCell.RowIndex;
 
-                if (r == null
-                    )
+                if (r == null)
                 {
                     MessageBox.Show("Vui lòng chọn món ăn", "Thông Báo");
                 }
@@ -1167,8 +1169,6 @@ namespace doannhom
                         cthd.MaHd = maHoadon;
                         var DonGia = (int)dongia.Value;
                         var mamonan = MaTD.Value.ToString();
-                       
-
                         if (_context.Cthd.Where(a => a.MaHd == maHoadon).Any(a => a.MaMonAn == mamonan))
                         {
                             var item = _context.Cthd.Where(a => a.MaHd == maHoadon && a.MaMonAn == mamonan).FirstOrDefault();
@@ -1182,9 +1182,6 @@ namespace doannhom
                             LoaddgvBan();
 
                         }
-                       
-
-
                         else
                         {
                             cthd.MaMonAn = mamonan;
@@ -2486,6 +2483,39 @@ namespace doannhom
         private void tabTC_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbmaban_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DateTo_ValueChanged(object sender, EventArgs e)
+        {
+            DateTime fromdate = Convert.ToDateTime(DateFrom.Text);
+            DateTime dateto = Convert.ToDateTime(DateTo.Text);
+            if (fromdate <= dateto)
+            {
+                TimeSpan ts = dateto.Subtract(fromdate);
+                int days = Convert.ToInt16(ts.Days);
+                var item = (from a in _context.PhanCong join b in _context.NhanVien on a.MaNv equals b.MaNv where a.NgayBatDau >= fromdate && a.NgayBatDau <= dateto
+                            select new
+                            {
+                                a.MaPC,
+                                a.MaKhuVuc,
+                                a.MaCa,
+                                a.MaNv,
+                                b.TenNv,
+                                a.NgayBatDau,
+                                a.NgayKetThuc
+                            }).ToList();
+                dgvphancong.DataSource = item;
+                dgvphancong.Columns["MaNv"].Visible = false;
+            }
+            else
+            {
+                MessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc ", "thông báo");
+            }
         }
     }
 }

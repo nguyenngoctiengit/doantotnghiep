@@ -29,12 +29,13 @@ namespace doannhom.Models
         public virtual DbSet<PhanCong> PhanCong { get; set; }
         public virtual DbSet<PhanHoi> PhanHoi { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoan { get; set; }
+        public virtual DbSet<KhuVuc> Khuvuc { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-Q145K1J\\SQLEXPRESS;Database=NhaHang;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-MO33L1P\\SQLEXPRESS;Database=NhaHang;Trusted_Connection=True;");
             }
         }
 
@@ -50,7 +51,14 @@ namespace doannhom.Models
                 entity.Property(e => e.TinhTrang)
                     .IsRequired().HasColumnType("tinyint");
             });
+            modelBuilder.Entity<KhuVuc>(entity =>
+            {
+                entity.HasKey(e => e.MaKhuVuc).HasName("PK__KhuVuc__0676EB83140A0AB8");
 
+                entity.Property(e => e.MaKhuVuc).HasColumnName("MaKhuVuc");
+
+                entity.Property(e => e.TenKhuVuc).HasColumnName("TenKhuVuc");
+            });
             modelBuilder.Entity<Ca>(entity =>
             {
                 entity.HasKey(e => e.MaCa)
@@ -213,17 +221,17 @@ namespace doannhom.Models
                     .HasColumnName("MaNV")
                     .HasMaxLength(10);
 
-                entity.Property(e => e.MaBan).HasMaxLength(10);
+                entity.Property(e => e.MaKhuVuc).HasMaxLength(10);
 
                 entity.Property(e => e.NgayBatDau).HasColumnType("datetime");
 
                 entity.Property(e => e.NgayKetThuc).HasColumnType("datetime");
 
-                entity.HasOne(d => d.MaBanNavigation)
+                entity.HasOne(d => d.MaKhuVucNavigation)
                     .WithMany(p => p.PhanCong)
-                    .HasForeignKey(d => d.MaBan)
+                    .HasForeignKey(d => d.MaKhuVuc)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_phancong_maban");
+                    .HasConstraintName("FK__PhanCong__MaKhuV__73BA3083");
 
                 entity.HasOne(d => d.MaCaNavigation)
                     .WithMany(p => p.PhanCong)

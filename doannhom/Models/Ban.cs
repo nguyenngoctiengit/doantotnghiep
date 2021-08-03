@@ -12,13 +12,11 @@ namespace doannhom.Models
         public Ban()
         {
             HoaDon = new HashSet<HoaDon>();
-            PhanCong = new HashSet<PhanCong>();
         }
 
         public string MaBan { get; set; }
         public int TinhTrang { get; set; }
 
         public virtual ICollection<HoaDon> HoaDon { get; set; }
-        public virtual ICollection<PhanCong> PhanCong { get; set; }
     }
 }

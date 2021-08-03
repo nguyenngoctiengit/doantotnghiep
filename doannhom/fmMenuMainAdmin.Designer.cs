@@ -162,6 +162,10 @@
             this.panel22 = new System.Windows.Forms.Panel();
             this.dgvphancong = new System.Windows.Forms.DataGridView();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.DateTo = new System.Windows.Forms.DateTimePicker();
+            this.DateFrom = new System.Windows.Forms.DateTimePicker();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.cbmaca = new System.Windows.Forms.ComboBox();
             this.cbmanv = new System.Windows.Forms.ComboBox();
             this.label49 = new System.Windows.Forms.Label();
@@ -2060,6 +2064,10 @@
             // 
             // groupBox14
             // 
+            this.groupBox14.Controls.Add(this.DateTo);
+            this.groupBox14.Controls.Add(this.DateFrom);
+            this.groupBox14.Controls.Add(this.label18);
+            this.groupBox14.Controls.Add(this.label17);
             this.groupBox14.Controls.Add(this.cbmaca);
             this.groupBox14.Controls.Add(this.cbmanv);
             this.groupBox14.Controls.Add(this.label49);
@@ -2077,14 +2085,51 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Thông tin phân công";
             // 
+            // DateTo
+            // 
+            this.DateTo.CustomFormat = "yyyy-MM-dd";
+            this.DateTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DateTo.Location = new System.Drawing.Point(492, 91);
+            this.DateTo.Name = "DateTo";
+            this.DateTo.Size = new System.Drawing.Size(280, 23);
+            this.DateTo.TabIndex = 27;
+            this.DateTo.CloseUp += new System.EventHandler(this.DateTo_ValueChanged);
+            // 
+            // DateFrom
+            // 
+            this.DateFrom.CustomFormat = "yyyy-MM-dd";
+            this.DateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DateFrom.Location = new System.Drawing.Point(107, 86);
+            this.DateFrom.Name = "DateFrom";
+            this.DateFrom.Size = new System.Drawing.Size(280, 23);
+            this.DateFrom.TabIndex = 26;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(393, 86);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(25, 17);
+            this.label18.TabIndex = 25;
+            this.label18.Text = "To";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 86);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(44, 17);
+            this.label17.TabIndex = 24;
+            this.label17.Text = "From ";
+            // 
             // cbmaca
             // 
             this.cbmaca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbmaca.Enabled = false;
             this.cbmaca.FormattingEnabled = true;
-            this.cbmaca.Location = new System.Drawing.Point(174, 24);
+            this.cbmaca.Location = new System.Drawing.Point(54, 26);
             this.cbmaca.Name = "cbmaca";
-            this.cbmaca.Size = new System.Drawing.Size(190, 25);
+            this.cbmaca.Size = new System.Drawing.Size(133, 25);
             this.cbmaca.TabIndex = 23;
             this.cbmaca.SelectedIndexChanged += new System.EventHandler(this.cbmaca_SelectedIndexChanged);
             // 
@@ -2093,34 +2138,34 @@
             this.cbmanv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbmanv.Enabled = false;
             this.cbmanv.FormattingEnabled = true;
-            this.cbmanv.Location = new System.Drawing.Point(537, 24);
+            this.cbmanv.Location = new System.Drawing.Point(245, 26);
             this.cbmanv.Name = "cbmanv";
-            this.cbmanv.Size = new System.Drawing.Size(190, 25);
+            this.cbmanv.Size = new System.Drawing.Size(249, 25);
             this.cbmanv.TabIndex = 22;
             this.cbmanv.SelectedIndexChanged += new System.EventHandler(this.cbmanv_SelectedIndexChanged);
             // 
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(460, 60);
+            this.label49.Location = new System.Drawing.Point(500, 29);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(55, 17);
+            this.label49.Size = new System.Drawing.Size(80, 17);
             this.label49.TabIndex = 20;
-            this.label49.Text = "Mã bàn";
+            this.label49.Text = "Mã khu vực";
             // 
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(414, 29);
+            this.label50.Location = new System.Drawing.Point(193, 29);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(93, 17);
+            this.label50.Size = new System.Drawing.Size(46, 17);
             this.label50.TabIndex = 21;
-            this.label50.Text = "Mã nhân viên";
+            this.label50.Text = "Mã nv";
             // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(51, 89);
+            this.label44.Location = new System.Drawing.Point(6, 57);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(95, 17);
             this.label44.TabIndex = 19;
@@ -2129,7 +2174,7 @@
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(54, 60);
+            this.label45.Location = new System.Drawing.Point(393, 57);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(93, 17);
             this.label45.TabIndex = 18;
@@ -2139,18 +2184,18 @@
             // 
             this.pcdaykt.Enabled = false;
             this.pcdaykt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.pcdaykt.Location = new System.Drawing.Point(174, 84);
+            this.pcdaykt.Location = new System.Drawing.Point(107, 57);
             this.pcdaykt.Name = "pcdaykt";
-            this.pcdaykt.Size = new System.Drawing.Size(190, 23);
+            this.pcdaykt.Size = new System.Drawing.Size(280, 23);
             this.pcdaykt.TabIndex = 17;
             // 
             // pcdaybd
             // 
             this.pcdaybd.Enabled = false;
             this.pcdaybd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.pcdaybd.Location = new System.Drawing.Point(176, 55);
+            this.pcdaybd.Location = new System.Drawing.Point(492, 57);
             this.pcdaybd.Name = "pcdaybd";
-            this.pcdaybd.Size = new System.Drawing.Size(190, 23);
+            this.pcdaybd.Size = new System.Drawing.Size(280, 23);
             this.pcdaybd.TabIndex = 16;
             this.pcdaybd.ValueChanged += new System.EventHandler(this.pcdaybd_ValueChanged);
             // 
@@ -2159,15 +2204,16 @@
             this.cbmaban.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbmaban.Enabled = false;
             this.cbmaban.FormattingEnabled = true;
-            this.cbmaban.Location = new System.Drawing.Point(537, 55);
+            this.cbmaban.Location = new System.Drawing.Point(586, 26);
             this.cbmaban.Name = "cbmaban";
-            this.cbmaban.Size = new System.Drawing.Size(190, 25);
+            this.cbmaban.Size = new System.Drawing.Size(186, 25);
             this.cbmaban.TabIndex = 15;
+            this.cbmaban.SelectedIndexChanged += new System.EventHandler(this.cbmaban_SelectedIndexChanged);
             // 
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(110, 29);
+            this.label47.Location = new System.Drawing.Point(6, 29);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(46, 17);
             this.label47.TabIndex = 3;
@@ -3108,7 +3154,7 @@
             this.dgvtaikhoan.Location = new System.Drawing.Point(3, 100);
             this.dgvtaikhoan.Name = "dgvtaikhoan";
             this.dgvtaikhoan.RowTemplate.Height = 24;
-            this.dgvtaikhoan.Size = new System.Drawing.Size(1311, 353);
+            this.dgvtaikhoan.Size = new System.Drawing.Size(1216, 353);
             this.dgvtaikhoan.TabIndex = 0;
             this.dgvtaikhoan.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvtaikhoan_CellContentClick);
             this.dgvtaikhoan.SelectionChanged += new System.EventHandler(this.dgvtaikhoan_SelectionChanged);
@@ -3561,5 +3607,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.DateTimePicker dateKTca;
         private System.Windows.Forms.DateTimePicker dateBDca;
+        private System.Windows.Forms.DateTimePicker DateTo;
+        private System.Windows.Forms.DateTimePicker DateFrom;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
     }
 }
