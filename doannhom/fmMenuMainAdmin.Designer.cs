@@ -78,6 +78,7 @@
             this.button11 = new System.Windows.Forms.Button();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.txtTrinhtrangBan = new System.Windows.Forms.TextBox();
             this.txtTinhtrangHD = new System.Windows.Forms.TextBox();
             this.txtBan = new System.Windows.Forms.TextBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -274,7 +275,6 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.txtTrinhtrangBan = new System.Windows.Forms.TextBox();
             this.tabPage1.SuspendLayout();
             this.tabHT.SuspendLayout();
             this.panel18.SuspendLayout();
@@ -897,12 +897,22 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Thông tin thanh toán";
             // 
+            // txtTrinhtrangBan
+            // 
+            this.txtTrinhtrangBan.Location = new System.Drawing.Point(132, 123);
+            this.txtTrinhtrangBan.Name = "txtTrinhtrangBan";
+            this.txtTrinhtrangBan.Size = new System.Drawing.Size(50, 23);
+            this.txtTrinhtrangBan.TabIndex = 29;
+            this.txtTrinhtrangBan.Visible = false;
+            this.txtTrinhtrangBan.TextChanged += new System.EventHandler(this.txtTrinhtrangBan_TextChanged);
+            // 
             // txtTinhtrangHD
             // 
             this.txtTinhtrangHD.Location = new System.Drawing.Point(76, 123);
             this.txtTinhtrangHD.Name = "txtTinhtrangHD";
             this.txtTinhtrangHD.Size = new System.Drawing.Size(50, 23);
             this.txtTinhtrangHD.TabIndex = 28;
+            this.txtTinhtrangHD.Visible = false;
             this.txtTinhtrangHD.TextChanged += new System.EventHandler(this.txtTinhtrangHD_TextChanged);
             // 
             // txtBan
@@ -3281,14 +3291,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // txtTrinhtrangBan
-            // 
-            this.txtTrinhtrangBan.Location = new System.Drawing.Point(132, 123);
-            this.txtTrinhtrangBan.Name = "txtTrinhtrangBan";
-            this.txtTrinhtrangBan.Size = new System.Drawing.Size(50, 23);
-            this.txtTrinhtrangBan.TabIndex = 29;
-            this.txtTrinhtrangBan.TextChanged += new System.EventHandler(this.txtTrinhtrangBan_TextChanged);
             // 
             // fmMenuMainAdmin
             // 

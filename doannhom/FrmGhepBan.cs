@@ -97,9 +97,12 @@ namespace doannhom
                     _context.HoaDon.Update(HoadonBan1);
                     _context.HoaDon.Update(HoadonBan2);
                     _context.SaveChanges();
-                    FrMenunv.LoaddsBantrong();
-                    FrMenunv.LoaddsBanconguoi();
-                    FrMenunv.LoaddgvBan();
+                    fmMenuMain.LoaddsBantrong();
+                    fmMenuMain.LoaddsBanconguoi();
+                    fmMenuMain.LoadThanhToan();
+                    fmMenuMain.LoaddgvBan();
+                    fmMenuMain.loadTinhTrangHD();
+                    fmMenuMain.loadTinhTrangBan();
 
                 }
                 else if (FrMenuNV.MaHoadon != 0)

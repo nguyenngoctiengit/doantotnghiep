@@ -56,9 +56,12 @@ namespace doannhom
                 _context.Ban.Update(banchuyen);
                 _context.Ban.Update(bantrong);
                 _context.SaveChanges();
-                FrMenunv.LoaddsBantrong();
-                FrMenunv.LoaddsBanconguoi();
-                FrMenunv.LoaddgvBan();
+                fmMenuMain.LoaddsBantrong();
+                fmMenuMain.LoaddsBanconguoi();
+                fmMenuMain.LoadThanhToan();
+                fmMenuMain.LoaddgvBan();
+                fmMenuMain.loadTinhTrangBan();
+                fmMenuMain.loadTinhTrangHD();
 
             }
             else if(FrMenuNV.MaHoadon  != 0)

@@ -30,7 +30,7 @@ namespace doannhom
 
         void ConnectDB()
         {
-            string strDB = @"Data Source=DESKTOP-MO33L1P\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True";
+            string strDB = @"Data Source=DESKTOP-Q145K1J\SQLEXPRESS;Initial Catalog=NhaHang;Integrated Security=True";
             cnn = new SqlConnection(strDB);
             cnn.Open();
         }
@@ -1154,8 +1154,9 @@ namespace doannhom
                 var MaTD = dgvmonan.Rows[r].Cells[0];
                 var dongia = dgvmonan.Rows[r].Cells[2];
                 var tinhTrangHd = txtTinhtrangHD.Text.ToString();
+                
                 var tinhtrangBan = txtTrinhtrangBan.Text.ToString();
-                if (tinhtrangBan == "0" && tinhTrangHd == "1")
+                if ((tinhtrangBan == "0" && tinhTrangHd == "1") || (tinhtrangBan == "0" && tinhTrangHd == "2"))
                 {
                     var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
                     var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
@@ -2542,7 +2543,7 @@ namespace doannhom
         public void loadTinhTrangHD()
         {
             var maBan = this.txtBan.Text;
-            txtTinhtrangHD.Text = (from a in _context.HoaDon where a.MaBan == maBan && a.TinhTrang == 1 select a.TinhTrang.ToString()).FirstOrDefault();
+            txtTinhtrangHD.Text = (from a in _context.HoaDon where (a.MaBan == maBan && a.TinhTrang == 1) || (a.MaBan == maBan && a.TinhTrang == 2)select a.TinhTrang.ToString()).FirstOrDefault();
         }
         public void loadTinhTrangBan()
         {
