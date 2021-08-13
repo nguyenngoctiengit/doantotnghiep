@@ -118,7 +118,9 @@ namespace doannhom
                 _context.SaveChanges();
                 fmMenuMain.LoaddsBantrong();
                 fmMenuMain.LoaddsBanconguoi();
-
+                fmMenuMain.loadTinhTrangHD();
+                fmMenuMain.loadTinhTrangBan();
+                fmMenuMain.Refresh();
                 MessageBox.Show("Thanh toán thành công", "Thông Báo");
                 this.Close();
 

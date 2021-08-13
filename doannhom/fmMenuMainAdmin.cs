@@ -1151,85 +1151,106 @@ namespace doannhom
                 var maHD = _context.HoaDon.OrderByDescending(a => a.MaHd).Where(a => a.MaBan == maBan).Select(a => a.MaHd).FirstOrDefault();
                 var HD = (from a in _context.HoaDon where a.MaHd == maHD select a).FirstOrDefault();
                 int r = dgvmonan.CurrentCell.RowIndex;
-
-                if (r == null)
+                var MaTD = dgvmonan.Rows[r].Cells[0];
+                var dongia = dgvmonan.Rows[r].Cells[2];
+                var tinhTrangHd = txtTinhtrangHD.Text.ToString();
+                var tinhtrangBan = txtTrinhtrangBan.Text.ToString();
+                if (tinhtrangBan == "0" && tinhTrangHd == "1")
                 {
-                    MessageBox.Show("Vui lòng chọn món ăn", "Thông Báo");
-                }
-                else
+                    var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
+                    var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                    var hoadon = new HoaDon();
+                    var cthd = new Cthd();
+                    hoadon.MaHd = mahoadonmax + 1;
+                    var DonGia = (int)dongia.Value;
+                    var mamonan = MaTD.Value.ToString();
+                    hoadon.TinhTrang = 0;
+                    hoadon.MaBan = this.txtBan.Text.ToString();
+                    hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
+                    hoadon.NgayLap = DateTime.Now;
+                    hoadon.TongTien = DonGia;
+                    cthd.MaMonAn = mamonan;
+                    cthd.SoLuong = 1;
+                    cthd.DonGia = DonGia;
+                    cthd.MaHd = hoadon.MaHd;
+                    update_ban.TinhTrang = 1;
+                    _context.Ban.Update(update_ban);
+                    _context.HoaDon.Add(hoadon);
+                    _context.Cthd.Add(cthd);
+                    _context.SaveChanges();
+                    btnThanhtoan.Visible = true;
+                    LoaddsBantrong();
+                    LoaddsBanconguoi();
+                    LoaddgvBan();
+                    MessageBox.Show("Gọi món thành công", "Thông Báo");
+                } else if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
                 {
-
-                    var MaTD = dgvmonan.Rows[r].Cells[0];
-                    var dongia = dgvmonan.Rows[r].Cells[2];
-                    if (Ban.TinhTrang == 1 && _context.HoaDon.Any(a => a.MaBan == maBan) && HD.TinhTrang == 0)
+                    var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).Max(a => a.MaHd);
+                    var hoadon = (from a in _context.HoaDon where a.MaHd == maHoadon select a).FirstOrDefault();
+                    var cthd = new Cthd();
+                    cthd.MaHd = maHoadon;
+                    var DonGia = (int)dongia.Value;
+                    var mamonan = MaTD.Value.ToString();
+                    if (_context.Cthd.Where(a => a.MaHd == maHoadon).Any(a => a.MaMonAn == mamonan))
                     {
-                        var maHoadon = (from a in _context.HoaDon where a.MaBan == maBan select a).Max(a => a.MaHd);
-                        var hoadon = (from a in _context.HoaDon where a.MaHd == maHoadon select a).FirstOrDefault();
-                        var cthd = new Cthd();
-                        cthd.MaHd = maHoadon;
-                        var DonGia = (int)dongia.Value;
-                        var mamonan = MaTD.Value.ToString();
-                        if (_context.Cthd.Where(a => a.MaHd == maHoadon).Any(a => a.MaMonAn == mamonan))
-                        {
-                            var item = _context.Cthd.Where(a => a.MaHd == maHoadon && a.MaMonAn == mamonan).FirstOrDefault();
-                            var tien = item.DonGia / item.SoLuong;
-                            item.SoLuong = item.SoLuong + 1;
-                            item.DonGia = item.DonGia + tien;                           
-                            _context.Cthd.Update(item);
-                            _context.SaveChanges();
-                            LoaddsBantrong();
-                            LoaddsBanconguoi();
-                            LoaddgvBan();
-
-                        }
-                        else
-                        {
-                            cthd.MaMonAn = mamonan;
-                            cthd.SoLuong = 1;
-                            cthd.DonGia = DonGia;
-                            var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
-                            hoadon.TongTien = giatien.Sum() + DonGia;
-                            _context.HoaDon.Update(hoadon);
-                            _context.Cthd.Add(cthd);
-                            _context.SaveChanges();
-                            LoaddsBantrong();
-                            LoaddsBanconguoi();
-                            LoaddgvBan();
-                        }
-
+                        var item = _context.Cthd.Where(a => a.MaHd == maHoadon && a.MaMonAn == mamonan).FirstOrDefault();
+                        var tien = item.DonGia / item.SoLuong;
+                        item.SoLuong = item.SoLuong + 1;
+                        item.DonGia = item.DonGia + tien;                           
+                        _context.Cthd.Update(item);
+                        _context.SaveChanges();
+                        LoaddsBantrong();
+                        LoaddsBanconguoi();
+                        LoaddgvBan();
 
                     }
                     else
                     {
-                        var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
-                        var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
-                        var hoadon = new HoaDon();
-                        var cthd = new Cthd();
-                        hoadon.MaHd = mahoadonmax + 1;
-                        var DonGia = (int)dongia.Value;
-                        var mamonan = MaTD.Value.ToString();
-                        hoadon.TinhTrang = 0;
-                        hoadon.MaBan = this.txtBan.Text.ToString();
-                        hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
-                        hoadon.NgayLap = DateTime.Now;
-                        hoadon.TongTien = DonGia;
                         cthd.MaMonAn = mamonan;
-
                         cthd.SoLuong = 1;
                         cthd.DonGia = DonGia;
-                        cthd.MaHd = hoadon.MaHd;
-                        update_ban.TinhTrang = 1;
-                        _context.Ban.Update(update_ban);
-                        _context.HoaDon.Add(hoadon);
+                        var giatien = (from a in _context.HoaDon join b in _context.Cthd on a.MaHd equals b.MaHd where a.MaBan == maBan select b.DonGia).ToList();
+                        hoadon.TongTien = giatien.Sum() + DonGia;
+                        _context.HoaDon.Update(hoadon);
                         _context.Cthd.Add(cthd);
                         _context.SaveChanges();
-                        btnThanhtoan.Visible = true;
                         LoaddsBantrong();
                         LoaddsBanconguoi();
                         LoaddgvBan();
-                        MessageBox.Show("Gọi món thành công", "Thông Báo");
                     }
+
+
                 }
+                else 
+                {
+                    var update_ban = (from a in _context.Ban where a.MaBan == this.txtBan.Text select a).FirstOrDefault();
+                    var mahoadonmax = _context.HoaDon.OrderByDescending(a => a.MaHd).Select(a => a.MaHd).FirstOrDefault();
+                    var hoadon = new HoaDon();
+                    var cthd = new Cthd();
+                    hoadon.MaHd = mahoadonmax + 1;
+                    var DonGia = (int)dongia.Value;
+                    var mamonan = MaTD.Value.ToString();
+                    hoadon.TinhTrang = 0;
+                    hoadon.MaBan = this.txtBan.Text.ToString();
+                    hoadon.MaNv = this.comboBox4.SelectedValue.ToString();
+                    hoadon.NgayLap = DateTime.Now;
+                    hoadon.TongTien = DonGia;
+                    cthd.MaMonAn = mamonan;
+                    cthd.SoLuong = 1;
+                    cthd.DonGia = DonGia;
+                    cthd.MaHd = hoadon.MaHd;
+                    update_ban.TinhTrang = 1;
+                    _context.Ban.Update(update_ban);
+                    _context.HoaDon.Add(hoadon);
+                    _context.Cthd.Add(cthd);
+                    _context.SaveChanges();
+                    btnThanhtoan.Visible = true;
+                    LoaddsBantrong();
+                    LoaddsBanconguoi();
+                    LoaddgvBan();
+                    MessageBox.Show("Gọi món thành công", "Thông Báo");
+                }
+                
                
 
             }
@@ -2516,6 +2537,26 @@ namespace doannhom
             {
                 MessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc ", "thông báo");
             }
+        }
+        
+        public void loadTinhTrangHD()
+        {
+            var maBan = this.txtBan.Text;
+            txtTinhtrangHD.Text = (from a in _context.HoaDon where a.MaBan == maBan && a.TinhTrang == 1 select a.TinhTrang.ToString()).FirstOrDefault();
+        }
+        public void loadTinhTrangBan()
+        {
+            var maBan = this.txtBan.Text;
+            txtTrinhtrangBan.Text = (from a in _context.Ban where a.MaBan == maBan && a.TinhTrang == 0 select a.TinhTrang.ToString()).FirstOrDefault();
+        }
+        private void txtTinhtrangHD_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTrinhtrangBan_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
